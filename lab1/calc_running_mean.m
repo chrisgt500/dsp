@@ -5,13 +5,15 @@ function [y,s] = calc_running_mean(x,s)
 % X : data 
 % structure { M, blocksize, array}
 
-%%% Calculating average;
-s.runningtotal(1:  %%init runningtotal with values    
+%%% Calculating average/ preallocation for speed;
+y = zeros(1,length(x));
+s.runningtotal(end-length(s.array)+1:end) = s.array(1:end);  %%init runningtotal with values    
 
-
-for i = 1:length(x):
+for i = 1:length(x)
+    s.runningtotal(1) = x(i);
+    y(i) = mean(s.runningtotal);
     s.runningtotal = circshift(s.runningtotal, [0,1]);   %%mean of vector, shift by 1, mean ...
-  
+    
 
 
 %%% Setting array
