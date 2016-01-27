@@ -5,9 +5,7 @@ function [s] = init_running_mean( M, blocksize )
 %
 %
 
-s = struct('M', M, 'blocksize', blocksize, 'array', zeros(1,M-1), 'runningtotal', zeros(1,M));
-
-
+s = struct('M', M, 'blocksize', blocksize, 'runningtotal', zeros(1,M));
 
 end
 
