@@ -14,7 +14,7 @@
 #include "running_mean.h"
 
 
-struct * memalloc(int bs, int n) {		//performs allocations and initializations
+struct s * memalloc(int bs, int n) {		//performs allocations and initializations
 	struct s *data_props = {
 		n, 
 		bs,
