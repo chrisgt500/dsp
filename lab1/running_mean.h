@@ -18,7 +18,16 @@
  * @returns
  *
  */
+
+struct s {
+    int M;
+    int blocksize;
+    float *data_array;
+}
   
-  
+void memalloc(int bs, int n);
+void shift(struct s *data_props, float start);
+float mean(struct s *data_props);
+float * calc_running_mean(float *x, struct s *data_props);
   
 #endif
