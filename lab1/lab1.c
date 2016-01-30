@@ -17,12 +17,12 @@ int main(void){
   int M, blocksize, i, j, k;
   float x[10][10];
   float y[10][10];
-  //struct data;
+  struct s *data;
   M = 2;
   blocksize = 10;
   k = 1;
   
-  *data = memalloc(M, blocksize);
+  data = memalloc(M, blocksize);
   
   for (i=0; i <10; i++) {
     for (j=0; j<10; j++) {
