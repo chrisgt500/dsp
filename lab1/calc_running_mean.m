@@ -1,5 +1,5 @@
 function [y,s] = calc_running_mean(x,s)
-%CALC_RUNNING_MEAN Summary of this function goes here
+%CALC_RUNNING_MEAN Calculates the last mean of the last M values
 %   Detailed explanation goes here
 % M : how many to average over
 % X : data 
