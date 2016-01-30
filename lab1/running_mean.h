@@ -30,14 +30,15 @@ struct s {
  * @brief Set number of elements to average over, the blocksize and initialize
  * the data array.
  *
- * @returns 	On return, the data_props struct elements are initialized.
+ * @returns 	On return, the data_props struct elements are initialized and
+				the struct is returned.
  */
-void memalloc(
+struct * memalloc(
 	int bs,		//!< [in] The blocksize of the data to be averaged over.
 	int n		//!< [in] The number of elements to be averaged over.
 );
 
-/*!
+/*!git 
  * @brief Shift each element in data_props->data_array to the right by one.
  *
  * The last element of the array is destroyed by the shifting process and a new			

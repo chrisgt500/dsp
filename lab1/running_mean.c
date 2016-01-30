@@ -10,16 +10,17 @@
  */
  
 
-#include "running_mean.h"
 #include <stdlib.h>
-#include <stdio.h>
+#include "running_mean.h"
 
-void memalloc(int bs, int n) {		//performs allocations and initializations
+
+struct * memalloc(int bs, int n) {		//performs allocations and initializations
 	struct s *data_props = {
 		n, 
 		bs,
-    	calloc(n, sizeof(float))		//allocate memory for data_array for the running sum
-    };
+		calloc(n, sizeof(float))		//allocate memory for data_array for the running sum
+	};
+	return data_props;
 }
 
 void shift(struct s *data_props, float start) {
@@ -32,20 +33,26 @@ void shift(struct s *data_props, float start) {
 
 
 
-float mean(struct s *data_props) {
+float mean(struct s *data_props) {			//calculates the mean of the data_array in data_props
 	int i;
-  	float sum;
-  	for (i = 0; i < data_props->M; i++) {
-    	sum += data_props->data_array[i];  
-    }
+	float sum;			//holds the sum
+	for (i = 0; i < data_props->M; i++) {
+			sum += data_props->data_array[i];  
+	}
   	return sum/data_props->M;
     
 }  
 
 float * calc_running_mean(float *x, struct s *data_props) {		//calculates the running mean, given data in array x of blocksize
 	int i;
-	float y[data_props->blocksize];
-  	for (i = 0; i < data_props->blocksize, i++) {
-		y[i] = mean(data_props
+	float y[data_props->blocksize];					//hold calculated means
+  	for (i = 0; i < data_props->blocksize; i++) {	//calculates the runnning mean
+		shift(data_props, x[i]);
+    	y[i] = mean(data_props);
     }
+	return y;
+}
+
+void memclean(struct s *data_props) {
+  	free(data_props->data_array);					//cleanly deallocate memory
 }
