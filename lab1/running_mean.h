@@ -23,7 +23,7 @@ struct s {
     int M;
     int blocksize;
     float *data_array;
-}
+};
 
 
 /*!
@@ -33,7 +33,7 @@ struct s {
  * @returns 	On return, the data_props struct elements are initialized and
 				the struct is returned.
  */
-struct * memalloc(
+struct s * memalloc(
 	int bs,		//!< [in] The blocksize of the data to be averaged over.
 	int n		//!< [in] The number of elements to be averaged over.
 );
