@@ -14,30 +14,39 @@
 #include "running_mean.h"
 
 int main(void){
-  int M, blocksize, i, j, k;
-  float x[10][10];
-  float *y[10];
+  int M, blocksize, i, j, k, iterations;  //initialize variables
   struct s *data;
   M = 2;
-  blocksize = 10;
-  k = 1;
-    
-  data = memalloc(blocksize, M);
+  blocksize = 5;
+  iterations = 10;
   
-  for (i=0; i <10; i++) {
-    for (j=0; j<10; j++) {
+  float x[iterations][blocksize];
+  float *y[blocksize];
+
+  
+  k = 1;                    //initialize testing vectors (iteration number of blocks, of size 10, containing numbers 1:iterations*blocksize)
+  for (i=0; i <iterations; i++) {
+    for (j=0; j<blocksize; j++) {
       x[i][j] = k;
       k++;
     }
   }
   
+    data = memalloc(blocksize, M);    //dynamically allocates memory for a struct that holds blocksize, M, and current data array
   
-  for (i=0; i < 10; i++) {
-  	y[i] = calc_running_mean(x[i], data); //currently causing a segfault(shift function)
+  
+  for (i=0; i < iterations; i++) {          //performs the running mean routine, iterations number of times
+  	y[i] = calc_running_mean(x[i], data);
   }
-  
+ 
+for (i=0; i <iterations; i++) {             //prints the result
+    for (j=0; j<blocksize; j++) {
+        printf("%f ",y[i][j]);
+    }
+    printf("\n");
+  }
   	  
-  memclean(data);
+ memclean(data);
     
     return 0;
 }

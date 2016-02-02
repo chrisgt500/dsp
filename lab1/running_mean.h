@@ -19,7 +19,7 @@
  *
  */
 
-struct s {
+struct s{
     int M;
     int blocksize;
     float *data_array;
