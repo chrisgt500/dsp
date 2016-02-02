@@ -34,7 +34,7 @@ struct s {
 				the struct is returned.
  */
 struct s * memalloc(
-	int bs,		//!< [in] The blocksize of the data to be averaged over.
+	int block,		//!< [in] The blocksize of the data to be averaged over.
 	int n		//!< [in] The number of elements to be averaged over.
 );
 
