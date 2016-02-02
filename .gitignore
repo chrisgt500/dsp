@@ -1,0 +1,11 @@
+*
+!*/
+!*.c
+!*.h
+!*.m
+!*.md
+!*.mk
+!Makefile
+!Doxyfile
+!README
+!scripts/*
