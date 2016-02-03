@@ -52,7 +52,7 @@ float mean(struct s *data_props) {			//calculates the mean of the data_array in 
 
 float * calc_running_mean(float *x, struct s *data_props) {		//calculates the running mean, given data in array x of blocksize
 	int i;
-	//float *y[data_props->blocksize];					//hold calculated means
+	//float y[data_props->blocksize];					//hold calculated means
   	float *y = malloc(data_props->blocksize*sizeof(float));
     
   	for (i = 0; i < data_props->blocksize; i++) {	//calculates the runnning mean
@@ -64,5 +64,6 @@ float * calc_running_mean(float *x, struct s *data_props) {		//calculates the ru
 }
 
 void memclean(struct s *data_props) {
-  	free(data_props->data_array);					//cleanly deallocate memory
+  	free(data_props->data_array);
+  	free(data_props);					//cleanly deallocate memory
 }
