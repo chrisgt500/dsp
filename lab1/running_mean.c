@@ -14,7 +14,7 @@
 #include "running_mean.h"
 
 
-struct s * memalloc(int bs, int n) {		//performs allocations and initializations
+struct s * memalloc(int bs, int n) {		//!<Performs memory allocations and struct initialization
     struct s *data_props = malloc(sizeof(struct s));
     data_props->M = n;
     data_props->blocksize = bs;
@@ -40,9 +40,9 @@ void shift(struct s *data_props, float start) {
 
 
 
-float mean(struct s *data_props) {			//calculates the mean of the data_array in data_props
+float mean(struct s *data_props) {			//!<calculates the mean of the data_array in data_props
 	int i;
-	float sum;			//holds the sum
+	float sum;			//!<holds the sum
 	for (i = 0; i < data_props->M; i++) {
 			sum += data_props->data_array[i];
 	}
@@ -50,12 +50,12 @@ float mean(struct s *data_props) {			//calculates the mean of the data_array in 
     
 }  
 
-float * calc_running_mean(float *x, struct s *data_props) {		//calculates the running mean, given data in array x of blocksize
+float * calc_running_mean(float *x, struct s *data_props) {		//!<calculates the running mean, given data in array x of blocksize
 	int i;
 	//float y[data_props->blocksize];					//hold calculated means
   	float *y = malloc(data_props->blocksize*sizeof(float));
     
-  	for (i = 0; i < data_props->blocksize; i++) {	//calculates the runnning mean
+  	for (i = 0; i < data_props->blocksize; i++) {	//!<calculates the runnning mean
 		shift(data_props, x[i]);
         y[i] = mean(data_props);
         //printf("%f\n",y[i]);
@@ -65,5 +65,5 @@ float * calc_running_mean(float *x, struct s *data_props) {		//calculates the ru
 
 void memclean(struct s *data_props) {
   	free(data_props->data_array);
-  	free(data_props);					//cleanly deallocate memory
+  	free(data_props);					//!cleanly deallocate memory
 }
