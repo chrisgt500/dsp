@@ -14,11 +14,11 @@
 #include "running_mean.h"
 
 int main(void){
-  int M, blocksize, i, j, k, iterations;  //initialize variables
+  int M, blocksize, i, j, k, iterations;  //!<initialize variables
   struct s *data;
   
-  /* There are 3 scenarios: M > blocksize, M < blocksize, and M = blocksize */
-  // M < blocksize:
+  /*! There are 3 scenarios: M > blocksize, M < blocksize, and M = blocksize */
+  //! M < blocksize:
   M = 3;
   blocksize = 5;
   iterations = 5;
@@ -27,7 +27,8 @@ int main(void){
   float *y[blocksize];
 
   
-  k = 1;                    //initialize testing vectors (iteration number of blocks, of size 10, containing numbers 1:iterations*blocksize)
+  k = 1;                   
+ //!initialize testing vectors (iteration number of blocks, of size 10, containing numbers 1:iterations*blocksize)
   for (i=0; i <iterations; i++) {
     for (j=0; j<blocksize; j++) {
       x[i][j] = k;
@@ -35,14 +36,14 @@ int main(void){
     }
   }
   
-    data = memalloc(blocksize, M);    //dynamically allocates memory for a struct that holds blocksize, M, and current data array
+    data = memalloc(blocksize, M);    //!<dynamically allocates memory for a struct that holds blocksize, M, and current data array
   
   
-  for (i=0; i < iterations; i++) {          //performs the running mean routine, iterations number of times
+  for (i=0; i < iterations; i++) {          //!<performs the running mean routine, iterations number of times
   	y[i] = calc_running_mean(x[i], data);
   }
  
-for (i=0; i <iterations; i++) {             //prints the result and frees the result memory
+for (i=0; i <iterations; i++) {             //!<prints the result and frees the result memory
     for (j=0; j<blocksize; j++) {
         printf("%f ",y[i][j]);
     }
@@ -50,9 +51,9 @@ for (i=0; i <iterations; i++) {             //prints the result and frees the re
     printf("\n");
   }
 
- memclean(data);    //free the memory from the struct
+ memclean(data);    //!<free the memory from the struct
  
-// M > blocksize
+//! M > blocksize
 printf("\n\n"); 
    M = 10;
   blocksize = 5;
@@ -60,7 +61,8 @@ printf("\n\n");
   
 
   
-  k = 1;                    //initialize testing vectors (iteration number of blocks, of size 10, containing numbers 1:iterations*blocksize)
+  k = 1;  
+//! initialize testing vectors (iteration number of blocks, of size 10, containing numbers 1:iterations*blocksize)
   for (i=0; i <iterations; i++) {
     for (j=0; j<blocksize; j++) {
       x[i][j] = k;
