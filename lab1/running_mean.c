@@ -20,21 +20,22 @@ struct s * memalloc(int bs, int n) {		//!<Performs memory allocations and struct
     data_props->blocksize = bs;
     data_props->data_array = calloc(n, sizeof(float));
 
-	return data_props;
+	return data_props;	//!< Returns pointer to initialized struct
 	
 }
 
 void shift(struct s *data_props, float start) {
 	int i;  
 	
-	for (i = ((data_props->M)-1); i > 0; i--){		//shifts every value right once in data_array, discarding oldest value
+	for (i = ((data_props->M)-1); i > 0; i--){		//!< Shifts every value right once in data_array, discarding oldest value
 		data_props->data_array[i] = data_props->data_array[i-1];
 		}
-	data_props->data_array[0] = start;		//sets the first array entry to 0 so it can be reinitialized
+	data_props->data_array[0] = start;		//!< Sets the first array entry to 0 so it can be reinitialized
 }
 
 void testfunction(int M, int bsize, int iters) {
-
+	
+	//! Performs variable initializations necessary for testing
   int i,j,k;
 	struct s *data;
   float x[iters][bsize];
