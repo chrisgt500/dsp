@@ -84,7 +84,31 @@ float mean(
 	struct s *data_props	//!< [in] Pointer to the structure that holds the array
 										//!< to be averaged.
 );
-float * calc_running_mean(float *x, struct s *data_props);
-void memclean(struct s *data_props);
+
+/*
+ * @brief Calculates the running means and stores them in an array. 
+ * 
+ * The function allocates an array to store the runnning means. It calculates
+ * the running means and stores them in the array.
+ * 
+ * @returns		On return, the pointer to the array of running means is returned.  
+ */
+
+float * calc_running_mean(
+	float *x,	//!< [in] Pointer to the data to be shifted into data_props
+	struct s *data_props	//!< [in] Pointer to the structure which will hold the data
+);
+
+/*
+ * @brief Frees the data_array in data_props, then frees data_props.
+ * 
+ * Used in testfunction to deallocate memory after the means have been
+ * printed.
+ *
+ * @returns		On return, all memory is freed, and the function returns nothing.
+ */
+void memclean(
+	struct s *data_props	//!< [in] Pointer to the structure that needs to be deallocated.
+);
 
 #endif
