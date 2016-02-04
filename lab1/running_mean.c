@@ -38,7 +38,40 @@ void shift(struct s *data_props, float start) {
 	data_props->data_array[0] = start;		//sets the first array entry to 0 so it can be reinitialized
 }
 
+void testfunction(int M, int bsize, int iters) {
 
+  int i,j,k;
+	struct s *data;
+  float x[iters][bsize];
+  float *y[bsize];
+
+   k = 1;
+//!initialize testing vectors (iteration number of blocks, of size 10, containing numbers 1:iterations*blocksize)
+  for (i=0; i <iters; i++) {
+    for (j=0; j<bsize; j++) {
+      x[i][j] = k;
+      k++;
+    }
+  }
+
+  data = memalloc(bsize, M);    //!<dynamically allocates memory for a struct that holds blocksize, M, and current data array
+
+
+  for (i=0; i < iters; i++) {          //!<performs the running mean routine, iterations number of times
+    y[i] = calc_running_mean(x[i], data);
+  }
+
+  for (i=0; i <iters; i++) {             //!<prints the result and frees the result memory
+    for (j=0; j<bsize; j++) {
+        printf("%f ",y[i][j]);
+    }
+    free(y[i]);
+    printf("\n");
+  }
+ printf("\n\n");
+ memclean(data);    //!<free the memory from the struct
+
+}
 
 float mean(struct s *data_props) {			//!<calculates the mean of the data_array in data_props
 	int i;

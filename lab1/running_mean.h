@@ -38,6 +38,10 @@ struct s * memalloc(
 	int n		//!< [in] The number of elements to be averaged over.
 );
 
+void testfunction(
+	int M,
+	int bsize,
+	int iters);
 /*!git 
  * @brief Shift each element in data_props->data_array to the right by one.
  *

@@ -14,15 +14,29 @@
 #include "running_mean.h"
 
 int main(void){
-  int M, blocksize, i, j, k, iterations;  //!<initialize variables
-  struct s *data;
+  int M, blocksize, iterations;  //!<initialize variables
+  
   
   /*! There are 3 scenarios: M > blocksize, M < blocksize, and M = blocksize */
   //! M < blocksize:
   M = 3;
   blocksize = 5;
   iterations = 5;
-  
+
+	testfunction(M, blocksize, iterations);
+
+	M = 4;
+	blocksize = 2;
+	iterations = 5;
+	
+	testfunction(M, blocksize, iterations);
+
+	M=6;
+	blocksize=6;
+	iterations=5;
+
+	testfunction(M, blocksize, iterations); 
+/* 
   float x[iterations][blocksize];
   float *y[blocksize];
 
@@ -119,5 +133,6 @@ for (i=0; i <iterations; i++) {             //prints the result and frees the re
   }
 
  memclean(data);        //free the memory from the struct
+	*/
     return 0;
 }
