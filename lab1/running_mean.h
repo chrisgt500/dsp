@@ -38,10 +38,23 @@ struct s * memalloc(
 	int n		//!< [in] The number of elements to be averaged over.
 );
 
+/*!
+ * @brief Create test cases based on the M, blocksize, and number of iterations
+ * passed to the function.
+ * 
+ * Data is generated and inserted into an array of size iterations x blocksize.
+ * The data is then processed through calc_running_mean, and the running averages
+ * are printed.
+ * 
+ * @returns		All memory that was allocated is freed.  The function's return type is void;
+ * therefore, it does not return anything.
+ */
+
 void testfunction(
-	int M,
-	int bsize,
-	int iters);
+	int M,	//!< [in] Integer which holds the value of M
+	int bsize,	//!< [in] Integer which holds the blocksize for testing
+	int iters	 //!< [in] Integer which holds the the number of test iterations to perform
+);
 /*!git 
  * @brief Shift each element in data_props->data_array to the right by one.
  *
