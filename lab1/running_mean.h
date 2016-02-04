@@ -72,7 +72,18 @@ void shift(
 							//!< the array.
 );
 
-float mean(struct s *data_props);
+/*
+ * @brief Calculates the mean of data_props->data_array and returns it.
+ * 
+ * The array of size M is totaled in the variable sum.
+ * 
+ * @returns		On return, the mean of the array is returned by returning sum/M. 
+ * The result will be passed into calc_running_mean. 
+ */
+float mean(
+	struct s *data_props	//!< [in] Pointer to the structure that holds the array
+										//!< to be averaged.
+);
 float * calc_running_mean(float *x, struct s *data_props);
 void memclean(struct s *data_props);
 
