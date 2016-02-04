@@ -20,11 +20,6 @@ struct s * memalloc(int bs, int n) {		//!<Performs memory allocations and struct
     data_props->blocksize = bs;
     data_props->data_array = calloc(n, sizeof(float));
 
-	/*struct s *data_props = {
-		n, 
-		bs,
-		calloc(n, sizeof(float))		//allocate memory for data_array for the running sum
-	};*/
 	return data_props;
 	
 }
@@ -85,13 +80,11 @@ float mean(struct s *data_props) {			//!<calculates the mean of the data_array i
 
 float * calc_running_mean(float *x, struct s *data_props) {		//!<calculates the running mean, given data in array x of blocksize
 	int i;
-	//float y[data_props->blocksize];					//hold calculated means
   	float *y = malloc(data_props->blocksize*sizeof(float));
     
   	for (i = 0; i < data_props->blocksize; i++) {	//!<calculates the runnning mean
 		shift(data_props, x[i]);
         y[i] = mean(data_props);
-        //printf("%f\n",y[i]);
     }
 	return y;
 }
