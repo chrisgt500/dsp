@@ -12,10 +12,13 @@
 #ifndef ECE486_IIR_H
 #define ECE486_IIR_H
 
-struct IIR_T{
-  int M;
+struct BIQUAD_T{
+  float g;
+  int sections;
   int blocksize;
-  float *data_array;
+  float stored_data[2];
+  float current_coefs[5];
+  float *all_coefs;
 };
 
 /*!
