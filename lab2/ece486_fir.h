@@ -9,8 +9,8 @@
  *
  */
 
-#ifndef ECE486_IIR_H
-#define ECE486_IIR_H
+#ifndef ECE486_FIR_H
+#define ECE486_FIR_H
 
 /*!
   * @brief A structure for holding FIR_T components
