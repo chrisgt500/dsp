@@ -34,5 +34,8 @@ void calc_fir (FIR_T *s, float *x, float *y) {
 }
 
 void destroy_fir (FIR_T *s) {
-
+	
+	free(fir_data->array_data);
+	free(fir_data);
+		
 }
