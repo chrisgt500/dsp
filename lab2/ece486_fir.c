@@ -15,8 +15,18 @@
  
 struct FIR_T * init_fir (float *fir_coefs, int n_coef, int blocksize) {
 
-	struct FIR_T *fir_data = malloc(sizeof(struct FIR_T));
-		
+	int i;
+	struct s *fir_data = malloc(sizeof(struct FIR_T));
+	fir_data->M = n_coef;
+	fir_data->blocksize = blocksize;
+	fir_data->data_array = calloc(n_coef, sizeof(float));
+
+	for(i=0; i < n_coef; i++) {
+
+		fir_data->data_array[i] = fir_coefs[i];
+
+	}	
+			
 }
 
 void calc_fir (FIR_T *s, float *x, float *y) {
