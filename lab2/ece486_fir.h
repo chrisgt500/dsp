@@ -9,25 +9,25 @@
  *
  */
 
- #ifndef ECE486_IIR_H
- #define ECE486_IIR_H
+#ifndef ECE486_IIR_H
+#define ECE486_IIR_H
 
- struct s{
-     int M;
-     int blocksize;
-     float *data_array;
- };
+struct FIR_T{
+  int M;
+  int blocksize;
+  float *data_array;
+};
 
- /*!
+/*!
   * @brief
   *
   * @returns
-  */
+*/
 
- FIR_T * 	init_fir (
-   float *fir_coefs, //!<
-   int n_coef, //!<
-   int blocksize //!<
+FIR_T * 	init_fir (
+  float *fir_coefs, //!<
+  int n_coef, //!<
+  int blocksize //!<
  );
 
  /*!
