@@ -13,8 +13,10 @@
 #include <stdlib.h>
 #include "ece486_fir.h"
  
-FIR_T * init_fir (float *fir_coefs, int n_coef, int blocksize) {
+struct FIR_T * init_fir (float *fir_coefs, int n_coef, int blocksize) {
 
+	struct FIR_T *fir_data = malloc(sizeof(struct FIR_T));
+		
 }
 
 void calc_fir (FIR_T *s, float *x, float *y) {
