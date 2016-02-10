@@ -1,6 +1,6 @@
-TARGET=fir_test
+TARGET=fir_test ece486_fir
 
-OBJS  =fir_test.o
+OBJS  =fir_test.o ece486_fir
 
 INSTALLDIR = /usr/local/stmdev/
 

@@ -11,12 +11,13 @@
 
 #include "stm32l4xx_hal.h"
 #include "stm32l476g_discovery.h"
+#include "ece486_fir.h"
 
 #include "ece486.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
-#include "ece486_fir.h"
+
 
 int main(void)
 {
@@ -32,7 +33,7 @@ int main(void)
   input = (float *)malloc(sizeof(float)*blocksize);
   output = (float *)malloc(sizeof(float)*blocksize);
 
-  data = init_fir(*h,10,blocksize);
+  data = init_fir(h,10,blocksize);
 
   while(1){
     getblock(input);

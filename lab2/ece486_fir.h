@@ -28,7 +28,7 @@ struct FIR_T{
   *
   * @returns
 */
-FIR_T * 	init_fir (
+struct FIR_T * 	init_fir (
   float *fir_coefs, //!<
   int n_coef, //!<
   int blocksize //!<
@@ -40,7 +40,7 @@ FIR_T * 	init_fir (
  * @returns
 */
 void 	calc_fir (
-  FIR_T *s, //!<
+  struct FIR_T *s, //!<
   float *x, //!<
   float *y //!<
 );
@@ -51,7 +51,7 @@ void 	calc_fir (
   * @returns
 */
 void 	destroy_fir (
-  FIR_T *s //!<
+  struct FIR_T *s //!<
 );
 
 
