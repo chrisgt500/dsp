@@ -13,10 +13,10 @@
 #include <stdlib.h>
 #include "ece486_fir.h"
 
-struct FIR_T * init_fir (float *fir_coefs, int n_coef, int blocksize) {
+FIR_T * init_fir (float *fir_coefs, int n_coef, int blocksize) {
 
 	int i;
-	struct FIR_T *fir_data = malloc(sizeof(struct FIR_T));
+	FIR_T *fir_data = malloc(sizeof(FIR_T));
 	fir_data->M = n_coef;
 	fir_data->blocksize = blocksize;
 	fir_data->h = calloc(n_coef, sizeof(float));
@@ -27,7 +27,7 @@ struct FIR_T * init_fir (float *fir_coefs, int n_coef, int blocksize) {
 	return fir_data;
 }
 
-void calc_fir (struct FIR_T *s, float *x, float *y) {
+void calc_fir (FIR_T *s, float *x, float *y) {
   int n, k;
   float sum;
   for (n = 0; n < s->blocksize; n++){
@@ -39,7 +39,7 @@ void calc_fir (struct FIR_T *s, float *x, float *y) {
   }
 }
 
-void destroy_fir (struct FIR_T *s) {
+void destroy_fir (FIR_T *s) {
 
 	free(s->h);
 	free(s);

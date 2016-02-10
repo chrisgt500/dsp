@@ -1,4 +1,4 @@
-TARGET=fir_test ece486_fir
+TARGET=fir_test
 
 OBJS  =fir_test.o ece486_fir.o
 
