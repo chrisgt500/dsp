@@ -27,21 +27,21 @@ struct FIR_T * init_fir (float *fir_coefs, int n_coef, int blocksize) {
 	return fir_data;
 }
 
-void calc_fir (FIR_T *s, float *x, float *y) {
+void calc_fir (struct FIR_T *s, float *x, float *y) {
   int n, k;
   float sum;
   for (n = 0; n < s->blocksize; n++){
     sum = 0;
     for (k = 0; k < s->M; k++){
-      sum += h[k] * x[n-k];
+      sum += s->h[k] * x[n-k];
     }
     y[n] = sum;
   }
 }
 
-void destroy_fir (FIR_T *s) {
+void destroy_fir (struct FIR_T *s) {
 
-	free(fir_data->array_data);
-	free(fir_data);
+	free(s->h);
+	free(s);
 
 }
