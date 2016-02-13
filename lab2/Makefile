@@ -1,6 +1,6 @@
-TARGET=fir_test
+TARGET=iir_test
 
-OBJS  =fir_test.o ece486_fir.o
+OBJS  =iir_test.o ece486_iir.o
 
 INSTALLDIR = /usr/local/stmdev/
 
@@ -15,7 +15,7 @@ OBJCOPY=arm-none-eabi-objcopy
 INCDIRS = -I$(INSTALLDIR)/include -I.
 LIBDIRS = -L$(INSTALLDIR)/lib
 
-LIBS=  -lece486_$(ARCH) -l$(ARCH) -lcmsis_dsp_$(ARCH)  
+LIBS=  -lece486_$(ARCH) -l$(ARCH) -lcmsis_dsp_$(ARCH)
 
 LINKSCRIPT = $(INSTALLDIR)/lib/$(ARCH)_FLASH.ld
 
@@ -29,7 +29,7 @@ LDFLAGS = -u _printf_float \
 	  -Wl,-T$(LINKSCRIPT) \
 	  -static \
           -Wl,--gc-sections $(LIBDIRS)
-               
+
 .PHONY : all flash clean debug
 
 all: $(TARGET) $(TARGET).bin

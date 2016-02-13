@@ -22,7 +22,7 @@ FIR_T * init_fir (float *fir_coefs, int n_coef, int blocksize) {
 	fir_data->h = calloc(n_coef, sizeof(float));
 
 	for(i=0; i < n_coef; i++) {
-		fir_data->h[i] = fir_coefs[i];  //talk to Colin about this
+		fir_data->h[i] = fir_coefs[i];
 	}
 	return fir_data;
 }

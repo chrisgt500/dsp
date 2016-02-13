@@ -25,6 +25,7 @@ int main(void)
   int blocksize;
   FIR_T *data;
   float h[10] ={2.2044, 1.3420, .8827, -.7646,-1.3219,-.0629,1.2442,.8185,-.7088,-1.2257};
+  int n_coefs;
 
 
   initialize(FS_50K, MONO_IN, MONO_OUT);
@@ -33,7 +34,7 @@ int main(void)
   input = (float *)malloc(sizeof(float)*blocksize);
   output = (float *)malloc(sizeof(float)*blocksize);
 
-  data = init_fir(h,10,blocksize);
+  data = init_fir(h,n_coefs,blocksize);
 
   while(1){
     getblock(input);

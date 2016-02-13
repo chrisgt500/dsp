@@ -19,14 +19,14 @@
  * values needed to execute calc_biquad
  *
  */
-struct BIQUAD_T{
+typedef struct{
   float g; //!< The gain value
   int sections; //!< How many 2nd order filters to cascade
   int blocksize; //!< How many data values are passed at once
   float stored_data[2]; //!< Holds two values needed to calculate the transposed direct form II
   float current_coefs[5]; //!< Only holds the current difference equation coefficients
   float *all_coefs; //!< Holds all of the difference equation coefficients
-};
+}BIQUAD_T;
 
 /*!
   * @brief A function for initializing the BIQUAD_T structure
@@ -36,7 +36,7 @@ struct BIQUAD_T{
   *
   * @returns On return, the allocated and filled in struct is returned
 */
-BIQUAD_T *init_biquad (
+BIQUAD_T * init_biquad (
   int sections, //!< How many 2nd order filters to cascade
   float g, //!< The gain value
   float *biquad_coefs, //!< A pointer to the array of in the form [b10, b11, b12
