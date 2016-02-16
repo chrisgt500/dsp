@@ -1,6 +1,6 @@
-TARGET=iir_test
+TARGET=fir_test
 
-OBJS  =iir_test.o ece486_iir.o
+OBJS  =fir_test.o ece486_fir.o
 
 INSTALLDIR = /usr/local/stmdev/
 
@@ -49,4 +49,4 @@ flash: $(TARGET).bin
 	st-flash write $(TARGET).bin 0x08000000
 
 clean:
-	rm -f $(OBJS) $(TARGET) $(TARGET).bin $(TARGET).map
+	rm -f $(OBJS) $(TARGET).bin $(TARGET).map

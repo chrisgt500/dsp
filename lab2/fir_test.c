@@ -22,14 +22,17 @@
 int main(void)
 {
   float *input, *output;
+  int i;
   int blocksize;
   FIR_T *data;
-  float h[10] ={2.2044, 1.3420, .8827, -.7646,-1.3219,-.0629,1.2442,.8185,-.7088,-1.2257};
-  int n_coefs;
+  float h[20] ={2.2044, 1.3420, .8827, -.7646,-1.3219,-.0629,1.2442,.8185,-.7088,-1.2257,
+                -.0585, 1.1535, .759,-.6571,-1.1364,-.0544,1.0695,.7038,-.6091,-1.0537};
+  int n_coefs = 20;
 
 
   initialize(FS_50K, MONO_IN, MONO_OUT);
   blocksize = getblocksize();
+
 
   input = (float *)malloc(sizeof(float)*blocksize);
   output = (float *)malloc(sizeof(float)*blocksize);

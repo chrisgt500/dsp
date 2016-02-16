@@ -33,7 +33,7 @@ void calc_fir (FIR_T *s, float *x, float *y) {
   for (n = 0; n < s->blocksize; n++){
     sum = 0;
     for (k = 0; k < s->M; k++){
-      sum += s->h[k] * x[n-k];
+      sum += (s->h[k] * x[n-k]);
     }
     y[n] = sum;
   }
