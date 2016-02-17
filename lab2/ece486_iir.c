@@ -23,12 +23,8 @@ BIQUAD_T * init_biquad (int sections, float g, float *biquad_coefs, int blocksiz
 	s->blocksize = blocksize;
 	s->stored_data[0] = 0; // v1(n)
 	s->stored_data[1] = 0; //v2(n)
-	s->all_coefs = calloc(totalcoefs, sizeof(float));
+	s->all_coefs = biquid_coefs;
 
-	for(i = 0; i < totalcoefs; i++) {
-		s->all_coefs[i] = biquad_coefs[i];
-		//if(i < 5) s->current_coefs[i] = biquad_coefs[i];
-	}
 
 return s;
 
