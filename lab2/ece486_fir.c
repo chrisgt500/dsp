@@ -1,6 +1,7 @@
 /*!
  * @file
- * @brief ECE 486 Lab 2 ece486_fir.c
+ *
+ * @brief Convolves two functions x and y
  *
  * @author ECE486 Lab Group 9
  * @author Colin Leary, Forrest Smith, Sean Turner
@@ -24,15 +25,13 @@ FIR_T * init_fir(float *fir_coefs, int n_coef, int blocksize) {
 
 void calc_fir(FIR_T *s, float *x, float *y) {
 	int n, k, kmin, kmax;
-	float sum;
 	for (n = 0; n < s->blocksize; n++){
-		sum = 0;
-		kmin = (n >= s->M-1) ? n-s->M-1:0;
+		y[n] = 0;
+		kmin = (n >= s->M-1) ? n-(s->M)-1 : 0;
 		kmax = (n < s->blocksize) ? n : s->blocksize;
 		for (k = kmin; k < kmax; k++){
-			sum += x[k] * s->h[n-k];
+			y[n] += x[k] * s->h[n-k];
 		}
-		y[n] = sum;
 	}
 }
 
