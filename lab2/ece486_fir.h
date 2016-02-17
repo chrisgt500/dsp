@@ -24,34 +24,41 @@ typedef struct {
 }FIR_T;
 
 /*!
-  * @brief The function
+  * @brief The function initializes and returns a structure of type FIR_T.
   *
-  * @returns
+  * This function takes several parameters and declares a struct containing the
+  * parameters.  The function dynamically allocates the memory for the structure.
+  *
+  * @returns On return, an allocated and filled structure of type FIR_T is returned.
 */
 FIR_T * init_fir (
-  float *fir_coefs, //!<
-  int n_coef, //!<
-  int blocksize //!<
+  float *fir_coefs, //!< A pointer to the array of filter coefficients
+  int n_coef, //!< The number of coefficients in the filter
+  int blocksize //!< How many data values are passed
  );
 
 /*!
- * @brief
+ * @brief The function performs a discrete time convolution.
  *
- * @returns
+ * The function performs a discrete time convolution of the input data with the
+ * impulse reponse found in the FIR_T structure.  The program stores the convoluted
+ * filter data in y.
+ *
 */
 void calc_fir (
-  FIR_T *s, //!<
-  float *x, //!<
-  float *y //!<
+  FIR_T *s, //!< [in,out] The structu
+  float *x, //!< [in] The data stream to filter, in size of blocksize
+  float *y //!< [out]  The filter data after the discrete time convolution
 );
 
 /*!
-  * @brief
+  * @brief The function frees allocated memory.
   *
-  * @returns
-*/
+  * The function frees the allocated FIR_T structure.
+  *
+ */
 void destroy_fir (
-  FIR_T *s //!<
+  FIR_T *s //!< This is the structure that needs to be freed
 );
 
 #endif
