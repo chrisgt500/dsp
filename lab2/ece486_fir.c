@@ -28,7 +28,7 @@ FIR_T * init_fir(float *fir_coefs, int n_coef, int blocksize) {
 	fir_data->blocksize = blocksize;
 	fir_data->h = fir_coefs;	/* Since h will only be read from, no copy
 									needed */
-
+  fir_data->stored_data = malloc(sizeof(float)*n_coef);
 	return fir_data;	/* return pointer to the struct */
 }
 
@@ -37,9 +37,8 @@ void calc_fir(FIR_T *s, float *x, float *y) {
 	/* n starts at zero and goes (length of s->h + length of x -1) times */
 	for (n = 0; n < s->blocksize + s->M - 1; n++) {
 		y[n] = 0;
-		kmin = (n >= s->M-1) ? n-(s->M)-1 : 0; /* ensure n-k will be valid */
-		kmax = (n < s->blocksize) ? n : s->blocksize; /* array bound */
-		for (k = kmin; k < kmax; k++){	/* for all valid values of k */
+		for (k = 0; k < M; k++){	/* for all valid values of k */
+			if
 			y[n] += x[k] * s->h[n-k];
 		}
 	}

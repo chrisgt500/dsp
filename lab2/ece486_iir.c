@@ -15,15 +15,15 @@
 
 BIQUAD_T * init_biquad (int sections, float g, float *biquad_coefs, int blocksize) {
 
-	int totalcoefs, i;
-	totalcoefs = 5*sections;
+	//int totalcoefs, i;
+	//totalcoefs = 5*sections;
 	BIQUAD_T *s = malloc(sizeof(BIQUAD_T));
 	s->sections = sections;
 	s->g = g;
 	s->blocksize = blocksize;
 	s->stored_data[0] = 0; // v1(n)
 	s->stored_data[1] = 0; //v2(n)
-	s->all_coefs = biquid_coefs;
+	s->all_coefs = biquad_coefs;
 
 
 return s;
@@ -32,9 +32,17 @@ return s;
 
 void calc_biquad (BIQUAD_T *s, float *x, float *y) {
 	int i,j;
+	int flag;
+	flag = 0;
 	for (j = 0; j < s->sections ; j++ ){
 		for(i = 0; i < 5; i++){
 			s->current_coefs[i] = s->all_coefs[i+j*5];
+		}
+		if(flag == 0){
+			s->current_coefs[0] *= s->g;
+			s->current_coefs[1] *= s->g;
+			s->current_coefs[2] *= s->g;
+			flag++;
 		}
 		for (i = 0; i < s->blocksize; i++){
 			y[i] = s->stored_data[0] + s->current_coefs[0]*x[i];
@@ -42,7 +50,6 @@ void calc_biquad (BIQUAD_T *s, float *x, float *y) {
 			s->stored_data[1] = s->current_coefs[2]*x[i] - s->current_coefs[4]*y[i];
 		}
 	}
-
 }
 
 void  destroy_biquad (BIQUAD_T *s) {
