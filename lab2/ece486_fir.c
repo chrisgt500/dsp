@@ -13,35 +13,30 @@
 #include <stdlib.h>
 #include "ece486_fir.h"
 
-FIR_T * init_fir (float *fir_coefs, int n_coef, int blocksize) {
+FIR_T * init_fir(float *fir_coefs, int n_coef, int blocksize) {
 
-	int i;
 	FIR_T *fir_data = malloc(sizeof(FIR_T));
 	fir_data->M = n_coef;
 	fir_data->blocksize = blocksize;
-	fir_data->h = calloc(n_coef, sizeof(float));
+	fir_data->h = fir_coefs;
 
-	for(i=0; i < n_coef; i++) {
-		fir_data->h[i] = fir_coefs[i];
-	}
 	return fir_data;
 }
 
-void calc_fir (FIR_T *s, float *x, float *y) {
-  int n, k;
-  float sum;
-  for (n = 0; n < s->blocksize; n++){
-    sum = 0;
-    for (k = 0; k < s->M; k++){
-      sum += (s->h[k] * x[n-k]);
-    }
-    y[n] = sum;
-  }
+void calc_fir(FIR_T *s, float *x, float *y) {
+	int n, k;
+	float sum;
+	for (n = 0; n < s->blocksize; n++){
+		sum = 0;
+		for (k = 0; k < s->M; k++){
+			sum += s->h[k] * ((s->M-1-n-k)>0 ? x[s->M-k-n-1] : 0);
+		}
+		y[n] = sum;
+	}
 }
 
-void destroy_fir (FIR_T *s) {
+void destroy_fir(FIR_T *s) {
 
-	free(s->h);
 	free(s);
 
 }
