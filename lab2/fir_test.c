@@ -35,7 +35,7 @@ int main(void)
 
 
   input = (float *)malloc(sizeof(float)*blocksize);
-  output = (float *)malloc(sizeof(float)*blocksize + sizeof(float)*n_coefs -1);
+  output = (float *)malloc(sizeof(float)*(blocksize + n_coefs -1));
 
   data = init_fir(h,n_coefs,blocksize);
 
