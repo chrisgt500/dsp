@@ -68,10 +68,29 @@ BIQUAD_T * init_biquad (
   * the struct, and then frees the memory for the struct itself.
   */
 void 	destroy_biquad (
-  BIQUAD_T *s //!< This is struct that has memory to be freed
+  BIQUAD_T *s //!< This is struct that has all the pointers to memory to be freed
 );
 
-float update(float *u,float *v, float *coefs, float x, int j);
+/*!
+ * @brief A function to update one data point through all filters
+ *
+ * The function takes 1 data point and puts it through all filters, storing the
+ * intermediate values from call to call, based on the current filter
+ *
+ * @returns On return, the updated intermediate values stored in u and v are returned,
+ * along with a float value that is the filtered point
+ */
+float update(
+  float *u, //!< [in, out] Pointer to array that holds needed transposed direct form II
+            //!< intermediate values
+  float *v, //!< [in, out] Pointer to array that holds the other transposed direct form II
+            //!< intermediate values
+  float *coefs, //!< [in, out] Pointer to array that holds all of the biquad coefficients in
+                //!< in the form [b00, b01, b02, a01, a02, b10, b11, ...]
+  float x, //!< [in] The current data point to go through all of the filters
+  int j //!< [in] The current filter being used, used to choose the appropriate u,v and coef
+        //!< values
+);
 
 
 #endif
