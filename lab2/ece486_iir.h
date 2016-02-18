@@ -23,7 +23,8 @@ typedef struct{
   float g; //!< The gain value
   int sections; //!< How many 2nd order filters to cascade
   int blocksize; //!< How many data values are passed at once
-  float stored_data[2]; //!< Holds two values needed to calculate the transposed direct form II
+  float *u; //!< Holds two values needed to calculate the transposed direct form II
+  float *v;
   float current_coefs[5]; //!< Only holds the current difference equation coefficients
   float *all_coefs; //!< Holds all of the difference equation coefficients
 }BIQUAD_T;
@@ -69,6 +70,8 @@ BIQUAD_T * init_biquad (
 void 	destroy_biquad (
   BIQUAD_T *s //!< This is struct that has memory to be freed
 );
+
+float update(float *u,float *v, float *coefs, float x, int j);
 
 
 #endif

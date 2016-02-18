@@ -26,13 +26,18 @@ int main(void)
 
   initialize(FS_50K, MONO_IN, MONO_OUT);
   float coefs[10] = {2.2044, 0.0, 2.2044, -.6088, .9702, 2.9658,-3.4865,2.9658,-.350,-.4250};
-  float g = 1;//.0173;
+  float g = .0173;
   int sections = 2;
 
   blocksize = getblocksize();
 
   input = (float *)malloc(sizeof(float)*blocksize);
   output = (float *)malloc(sizeof(float)*blocksize);
+
+  if (input==NULL || output==NULL) {
+    flagerror(MEMORY_ALLOCATION_ERROR);
+    while(1);
+  }
 
   data = init_biquad(sections,g,coefs,blocksize);
 
