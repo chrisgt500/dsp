@@ -44,9 +44,10 @@ FIR_T * init_fir (
  * impulse reponse found in the FIR_T structure.  The program stores the convoluted
  * filter data in y.
  *
+ * @returns The struct and output data are both returned
 */
 void calc_fir (
-  FIR_T *s, //!< [in,out] The structu
+  FIR_T *s, //!< [in,out] The structure that holds all data needed to calculate y
   float *x, //!< [in] The data stream to filter, in size of blocksize
   float *y //!< [out]  The filter data after the discrete time convolution
 );
