@@ -21,7 +21,7 @@
 int main(void)
 {
   float *input, *output;
-  int blocksize;
+  int i,blocksize;
   BIQUAD_T *data;
 
   initialize(FS_50K, MONO_IN, MONO_OUT);

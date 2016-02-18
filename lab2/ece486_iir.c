@@ -11,6 +11,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "ece486_iir.h"
+#include <string.h>
 
 
 BIQUAD_T * init_biquad (int sections, float g, float *biquad_coefs, int blocksize) {
@@ -34,22 +35,33 @@ void calc_biquad (BIQUAD_T *s, float *x, float *y) {
 	int i,j;
 	int flag;
 	flag = 0;
+
 	for (j = 0; j < s->sections ; j++ ){
 		for(i = 0; i < 5; i++){
 			s->current_coefs[i] = s->all_coefs[i+j*5];
 		}
-		if(flag == 0){
+
+		/*if(flag == 0){
 			s->current_coefs[0] *= s->g;
 			s->current_coefs[1] *= s->g;
 			s->current_coefs[2] *= s->g;
 			flag++;
-		}
+		}*/
 		for (i = 0; i < s->blocksize; i++){
 			y[i] = s->stored_data[0] + s->current_coefs[0]*x[i];
 			s->stored_data[0] = s->stored_data[1] - s->current_coefs[3]*y[i] + s->current_coefs[1]*x[i];
 			s->stored_data[1] = s->current_coefs[2]*x[i] - s->current_coefs[4]*y[i];
 		}
+
+		for ( i = 0; i < s->blocksize; i++){
+			x[i] = y[i];
+		}
+
+		s->stored_data[0] = 0; // v1(n)
+		s->stored_data[1] = 0; //v2(n)
 	}
+
+
 }
 
 void  destroy_biquad (BIQUAD_T *s) {

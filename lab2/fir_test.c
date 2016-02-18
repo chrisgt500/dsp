@@ -35,7 +35,11 @@ int main(void)
 
 
   input = (float *)malloc(sizeof(float)*blocksize);
+<<<<<<< Updated upstream
   output = (float *)malloc(sizeof(float)*(blocksize + n_coefs -1));
+=======
+  output = (float *)malloc(sizeof(float)*blocksize + sizeof(float)*n_coefs - 1);
+>>>>>>> Stashed changes
 
   data = init_fir(h,n_coefs,blocksize);
 
