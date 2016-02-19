@@ -40,30 +40,26 @@ FIR_T * init_fir(float *fir_coefs, int n_coef, int blocksize) {
 	return fir_data;	/* return pointer to the struct */
 }
 
-void shift(float *array, int size, int *index, float newdata) {
-	array[(*index)++] = newdata;
-	if (*index >= size) *index = 0;
-}
-
 void calc_fir(FIR_T *s, float *x, float *y) {
 	int n,k,tmp;
-
+	float g = .0173;
 	for(n=0; n < s->blocksize; n++) {  //Loops over every element in blocksize
 		s->index = s->index%s->M;  //makes sure index is not out of bounds
 		tmp = s->index;
-		s->stored_data[s->index] = .7*x[n];  //sets some attenuation to prevent overflow
+		s->stored_data[s->index] = g*x[n];  //sets some attenuation to prevent overflow
+		y[n] = 0.0;  //prevents garbage data
+
 		for(k=0; k < s->M; k++) {  //loops over all M elements in h, and in stored_data
-			y[n] = 0;  //prevents garbage data
 			if(tmp==-1) tmp = s->M -1;  //Sort of a negative modulo, if the index gets below 0, reset to maximum value
 			y[n] += (s->h[k]*s->stored_data[tmp]); //Performs multiplication part of convolution
 			tmp -= 1;  //decrements r-index
 		}
 		s->index += 1;  //increments index of circular buffer
 	}
+}
 
 
 void destroy_fir(FIR_T *s) {  //frees any used data
 	free(s->stored_data);
 	free(s);
-
 }
