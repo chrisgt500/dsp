@@ -29,7 +29,8 @@ FIR_T * init_fir(float *fir_coefs, int n_coef, int blocksize) {
 	fir_data->blocksize = blocksize;
 	fir_data->h = fir_coefs;	/* Since h will only be read from, no copy
 									needed */
-  fir_data->stored_data = malloc(sizeof(float)*n_coef);
+	fir_data->stored_data = malloc(sizeof(float) * n_coef);
+	fir_data->oldest = fir_data->stored_data;
 	return fir_data;	/* return pointer to the struct */
 }
 
