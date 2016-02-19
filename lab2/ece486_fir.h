@@ -24,6 +24,8 @@ typedef struct {
   int M; //!< This is number of coefficients of h
   int blocksize; //!< This is the number of data values passed in at once
   float *h; //!< This is a vector containing the coefficients of an impulse response
+  float *oldest; //!< This is the index of stored_data that points to the oldest value
+  float *stored_data; //!< The array that hold the last M values
 }FIR_T;
 
 /*!
