@@ -29,24 +29,44 @@ FIR_T * init_fir(float *fir_coefs, int n_coef, int blocksize) {
 	fir_data->blocksize = blocksize;
 	fir_data->h = fir_coefs;	/* Since h will only be read from, no copy
 									needed */
-	fir_data->stored_data = malloc(sizeof(float) * n_coef);
-	fir_data->oldest = fir_data->stored_data;
+	fir_data->stored_data = malloc(sizeof(float) * n_coef);	/* Needs to hold the
+				last M values of input data */
+	fir_data->oldest = fir_data->stored_data;	/* Points to oldest data value
+					in stored_data */
+	int i;
+	for (i = 0; i < n_coef; i++) {	/* Set stored data to 0.0 for starting out*/
+		fir_data->stored_data[0] = 0.0;
+	}
 	return fir_data;	/* return pointer to the struct */
 }
 
 void calc_fir(FIR_T *s, float *x, float *y) {
+	int n, k, d;
+	for (n = 0; n < s->blocksize; n++) {
+		y[n] = 0.0;
+		*s->oldest++ = x[n];
+		d = s->oldest - s->stored_data;
+		if (d >= s->M) s->oldest = s->stored_data;
+		for (k = 0; k < s->M; k++) {
+			y[n] += s->h[k] * s->oldest[(k+d)%s->M];
+		}
+	}
+
+/*
 	int n, k, kmin, kmax;
-	/* n starts at zero and goes (length of s->h + length of x -1) times */
+	 n starts at zero and goes (length of s->h + length of x -1) times
 	for (n = 0; n < s->blocksize + s->M - 1; n++) {
 		y[n] = 0;
-		for (k = 0; k < M; k++){	/* for all valid values of k */
+		for (k = 0; k < M; k++){	for all valid values of k
 			if
 			y[n] += x[k] * s->h[n-k];
 		}
 	}
+*/
 }
 
 void destroy_fir(FIR_T *s) {
+	free(s->stored_data);
 	free(s);
 
 }

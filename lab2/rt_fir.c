@@ -22,7 +22,6 @@
 int main(void)
 {
   float *input, *output;
-  int i;
   int blocksize;
   FIR_T *data;
   float h[20] ={2.2044, 1.3420, .8827, -.7646,-1.3219,-.0629,1.2442,.8185,-.7088,-1.2257,
