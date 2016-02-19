@@ -14,7 +14,7 @@
 #include <string.h>
 
 
-BIQUAD_T * init_biquad (int sections, float g, float *biquad_coefs, int blocksize) {
+BIQUAD_T * init_biquad(int sections, float g, float *biquad_coefs, int blocksize) {
 
 	int i; 	//!< Performs struct initialization based on passed parameters, and dynamically
 					//!< allocates required memory
@@ -30,18 +30,16 @@ BIQUAD_T * init_biquad (int sections, float g, float *biquad_coefs, int blocksiz
 		s->u[i] = 0;
 		s->v[i] = 0;
 	}
-
 return s;
-
 }
 
-void calc_biquad (BIQUAD_T *s, float *x, float *y) {
+void calc_biquad(BIQUAD_T *s, float *x, float *y) {
 	int i,j;
 	float tmp;
 
-	for ( i = 0; i < s->blocksize; i++){ //!< Loops over every element in a block
+	for (i = 0; i < s->blocksize; i++){ //!< Loops over every element in a block
 		tmp = x[i] * s->g;
-		for( j = 0; j < s->sections; j++){ //!< Filters every element in the block, sections number of times
+		for (j = 0; j < s->sections; j++){ //!< Filters every element in the block, sections number of times
 			tmp = update(s->u,s->v,s->all_coefs,tmp,j); //!< tmp is the ouput of 1 filter, and the input to the next
 		}
 		y[i] = tmp; //!< This could be returned in the input array to save space, but the
@@ -49,13 +47,10 @@ void calc_biquad (BIQUAD_T *s, float *x, float *y) {
 	}
 }
 
-void  destroy_biquad (BIQUAD_T *s) {
-
-	free(s->all_coefs); //!< Frees all allocated memory
-	free(s->u);
+void destroy_biquad(BIQUAD_T *s) {
+	free(s->u);//!< Frees all allocated memory
 	free(s->v);
 	free(s);
-
 }
 
 float update(float *u,float *v, float *coefs, float x, int j){
