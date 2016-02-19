@@ -7,7 +7,7 @@
  *
  * @date Feb 9 2016
  *
- *
+ * The file contains the necessary functions to perform a discrete time convolution 
  *
  *
  */
@@ -28,8 +28,6 @@ typedef struct {
   float *stored_data; //!< The array that hold the last M values
 }FIR_T;
 
-
-void shift(float *array, int size, int *index, float newdata);
 
 /*!
   * @brief The function initializes and returns a structure of type FIR_T.

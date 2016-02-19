@@ -29,7 +29,7 @@ FIR_T * init_fir(float *fir_coefs, int n_coef, int blocksize) {
 	fir_data->blocksize = blocksize;
 	fir_data->h = fir_coefs;	/* Since h will only be read from, no copy
 									needed */
-	fir_data->stored_data = malloc(sizeof(float) * n_coef);	/* Needs to hold the
+	fir_data->stored_data = malloc(sizeof(float) * n_coef);	/* A circular buffer to hold the
 				last M values of input data */
 	fir_data->index = 0;			/* Points to oldest data value
 					in stored_data */
@@ -46,44 +46,23 @@ void shift(float *array, int size, int *index, float newdata) {
 }
 
 void calc_fir(FIR_T *s, float *x, float *y) {
-	int n,k,r;
+	int n,k,tmp;
 
-	for(n=0; n < s->blocksize; n++) {
-		s->index = s->index%s->M;
-		//shift(s->stored_data, s->M, &(s->index), x[n]);
-		r = s->index;
-		s->stored_data[s->index] = .7*x[n];
-		for(k=0; k < s->M; k++) {
-			y[n] = 0;
-			if(r==-1) r = s->M -1;
-			y[n] += (s->h[k]*s->stored_data[r]);
-			r -= 1;
+	for(n=0; n < s->blocksize; n++) {  //Loops over every element in blocksize
+		s->index = s->index%s->M;  //makes sure index is not out of bounds
+		tmp = s->index;
+		s->stored_data[s->index] = .7*x[n];  //sets some attenuation to prevent overflow
+		for(k=0; k < s->M; k++) {  //loops over all M elements in h, and in stored_data
+			y[n] = 0;  //prevents garbage data
+			if(tmp==-1) tmp = s->M -1;  //Sort of a negative modulo, if the index gets below 0, reset to maximum value
+			y[n] += (s->h[k]*s->stored_data[tmp]); //Performs multiplication part of convolution
+			tmp -= 1;  //decrements r-index
 		}
-		s->index += 1;
+		s->index += 1;  //increments index of circular buffer
 	}
-	/*int n, k;
-	for (n = 0; n < s->blocksize; n++) {
-		y[n] = 0.0;
-		shift(s->stored_data, s->M, &(s->index), x[n]);
-		for (k = 0; k < s->M; k++) {
-			y[n] += s->h[k] * s->stored_data[(k+s->index)%s->M];
-		}*/
 
 
-/*
-	int n, k, kmin, kmax;
-	 n starts at zero and goes (length of s->h + length of x -1) times
-	for (n = 0; n < s->blocksize + s->M - 1; n++) {
-		y[n] = 0;
-		for (k = 0; k < M; k++){	for all valid values of k
-			if
-			y[n] += x[k] * s->h[n-k];
-		}
-	}
-*/
-}
-
-void destroy_fir(FIR_T *s) {
+void destroy_fir(FIR_T *s) {  //frees any used data
 	free(s->stored_data);
 	free(s);
 

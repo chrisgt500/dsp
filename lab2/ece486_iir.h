@@ -7,6 +7,9 @@
  *
  * @date Feb 9 2016
  *
+ * This file contains the functions needed to perform a discrete time convolution.
+ * Init biquad initializes any needed information, and calc_biquad calculates the transposed
+ * Direct form 2 filter.
  */
 
 #ifndef ECE486_IIR_H

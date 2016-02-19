@@ -6,6 +6,10 @@
  *
  * @date Feb 9 2016
  *
+ * The file has the code needed to perform an IIR filter, built on cascaded biquad coefficients
+ * Init_biquad initializes any data needed from call to call. Calc_Biquad perfms the Transposed direct
+ * Form 2 filter. Free_Biquad frees any memory allocated. Update is a helper function of Calc_Biquad
+ * used to filter one data point at a time
  */
 
 #include <stdio.h>

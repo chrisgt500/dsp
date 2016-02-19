@@ -7,10 +7,10 @@
  *
  * @date Feb 18 2016
  *
- *
- *
- *
- *
+ * This is code to show that IIR functions work as expected. A known x array and
+ * coefficients are put into MATLABs filter function and put below. The same array
+ * and coefficients are put into calc_biquad. Then both MATLAB and our code outputs
+ * are printed, and the maximum error between them is printed.
  *
  */
 
@@ -21,7 +21,7 @@
 
 int main(void){
 
-	int i,blocksize;
+	int i,blocksize; //initializations
 	BIQUAD_T *data;
 	float max_error;
 
@@ -39,18 +39,18 @@ int main(void){
 
 	data = init_biquad(sections,g,coefs,blocksize);
 
-	calc_biquad(data,input,output);
+	calc_biquad(data,input,output);  //performs filtering
 
-	printf("Output				Matlab\n");
+	printf("Output				Matlab\n");  //printing formatting
 
 	for (i = 0; i < blocksize; i++){
-		printf("%f			%f\n",output[i],matlab_ouput[i]);
+		printf("%f			%f\n",output[i],matlab_ouput[i]);  //displays matlab and calc_biquad outputs
   	}
 	printf("\n\n");
-	for( i = 0; i < blocksize; i++){
+	for( i = 0; i < blocksize; i++){ //calculates maximum error
 		if( fabsf( output[i] - matlab_ouput[i] ) > max_error) max_error = fabsf( output[i] - matlab_ouput[i] );
 	}
-	printf("Maximum Error: %f\n",max_error);
-	destroy_biquad(data);
+	printf("Maximum Error: %f\n",max_error); // displays maxim error
+	destroy_biquad(data); //free allocated memory
 
 }
