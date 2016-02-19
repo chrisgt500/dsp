@@ -21,13 +21,9 @@
   * This structure holds everything needed to use calc_fir
 */
 typedef struct {
-    int M;              //!< This is number of coefficients of h
-    int blocksize;      //!< This is the number of data values passed in at once
-    float *h;           //!< This is a vector containing the coefficients of an
-						//!< impulse response
-    int *oldest;        //!< This will point to the oldest piece of data in
-						//!< stored_data
-    float *stored_data; //!< Holds the last M values of x
+  int M; //!< This is number of coefficients of h
+  int blocksize; //!< This is the number of data values passed in at once
+  float *h; //!< This is a vector containing the coefficients of an impulse response
 }FIR_T;
 
 /*!
@@ -39,9 +35,9 @@ typedef struct {
   * @returns On return, an allocated and filled structure of type FIR_T is returned.
 */
 FIR_T * init_fir (
-    float *fir_coefs, //!< A pointer to the array of filter coefficients
-    int n_coef, //!< The number of coefficients in the filter
-    int blocksize //!< How many data values are passed
+  float *fir_coefs, //!< [in] A pointer to the array of filter coefficients
+  int n_coef, //!< [in] The number of coefficients in the filter
+  int blocksize //!< [in] How many data values are passed
  );
 
 /*!
@@ -54,9 +50,9 @@ FIR_T * init_fir (
  * @returns The struct and output data are both returned
 */
 void calc_fir (
-    FIR_T *s, //!< [in,out] The structure that holds all data needed to calculate y
-    float *x, //!< [in] The data stream to filter, in size of blocksize
-    float *y //!< [out]  The filter data after the discrete time convolution
+  FIR_T *s, //!< [in,out] The structure that holds all data needed to calculate y
+  float *x, //!< [in] The data stream to filter, in size of blocksize
+  float *y //!< [out]  The filter data after the discrete time convolution
 );
 
 /*!
@@ -66,7 +62,7 @@ void calc_fir (
   *
  */
 void destroy_fir (
-    FIR_T *s //!< This is the structure that needs to be freed
+  FIR_T *s //!< This is the structure that needs to be freed
 );
 
 #endif
