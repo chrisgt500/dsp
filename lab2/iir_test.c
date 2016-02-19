@@ -1,11 +1,16 @@
 /*!
  * @file
- * @brief ECE 486 Lab 2 Real Time IIR Test
+ * @brief ECE 486 Lab 2 IIR Test Code
  *
  * @author ECE486 Lab Group 9
  * @author Colin Leary, Forrest Smith, Sean Turner
  *
- * @date Feb 9 2016
+ * @date Feb 18 2016
+ *
+ *
+ *
+ *
+ *
  *
  */
 
@@ -30,7 +35,6 @@ int main(void){
 
   for( i = 0 ; i < blocksize; i++){
     input[i] =
-  
   }
 
 

@@ -1,19 +1,20 @@
 /*!
  * @file
  *
- * @brief Convolves two functions x and y
+ * @brief Performs a discrete time convolution on two functions
  *
  * @author ECE486 Lab Group 9
  * @author Colin Leary, Forrest Smith, Sean Turner
  *
  * @date Feb 9 2016
+ *
  * This file has the implementation for the initialization and destruction of a
  * struct which holds the data for an FIR filter. It also has the function which
  * calculates the output for a given input.
  *
  * The init_fir function sets the variable values in the struct with the
  * provided values, the calc_fir function performs a convolution of the given
- * x x values with the h vlaues in the FIR_T struct: the output is stored in y.
+ * x values with the h vlaues in the FIR_T struct: the output is stored in y.
  * The destroy_fir function frees the memory allocated by init_fir.
  *
  */
@@ -45,7 +46,6 @@ void calc_fir(FIR_T *s, float *x, float *y) {
 }
 
 void destroy_fir(FIR_T *s) {
-
 	free(s);
 
 }

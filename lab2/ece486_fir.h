@@ -1,11 +1,14 @@
 /*!
  * @file
- * @brief ECE 486 Lab 2 FIR Filter
+ * @brief ECE 486 Lab 2 FIR Filter header file
  *
  * @author ECE486 Lab Group 9
  * @author Colin Leary, Forrest Smith, Sean Turner
  *
  * @date Feb 9 2016
+ *
+ *
+ *
  *
  */
 

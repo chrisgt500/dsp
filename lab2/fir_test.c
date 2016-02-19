@@ -5,7 +5,10 @@
  * @author ECE486 Lab Group 9
  * @author Colin Leary, Forrest Smith, Sean Turner
  *
- * @date Feb 9 2016
+ * @date Feb 18 2016
+ *
+ * The file has the code for testing the FIR filter and proving that it works
+ * as intended.
  *
  */
 
