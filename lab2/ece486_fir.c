@@ -55,7 +55,7 @@ void calc_fir(FIR_T *s, float *x, float *y) {
 		s->stored_data[s->index] = .7*x[n];
 		for(k=0; k < s->M; k++) {
 			y[n] = 0;
-			if(r==0) r = s->M;
+			if(r==-1) r = s->M -1;
 			y[n] += (s->h[k]*s->stored_data[r]);
 			r -= 1;
 		}
