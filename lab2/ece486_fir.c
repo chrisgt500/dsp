@@ -31,7 +31,7 @@ FIR_T * init_fir(float *fir_coefs, int n_coef, int blocksize) {
 									needed */
 	fir_data->stored_data = malloc(sizeof(float) * n_coef);	/* Needs to hold the
 				last M values of input data */
-	fir_data->oldest = fir_data->stored_data;	/* Points to oldest data value
+	fir_data->index = 0;			/* Points to oldest data value
 					in stored_data */
 	int i;
 	for (i = 0; i < n_coef; i++) {	/* Set stored data to 0.0 for starting out*/
@@ -40,15 +40,18 @@ FIR_T * init_fir(float *fir_coefs, int n_coef, int blocksize) {
 	return fir_data;	/* return pointer to the struct */
 }
 
+void shift(float *array, int size, int *index, float newdata) {
+	array[(*index)++] = newdata;
+	if (*index >= size) *index = 0;
+}
+
 void calc_fir(FIR_T *s, float *x, float *y) {
-	int n, k, d;
+	int n, k;
 	for (n = 0; n < s->blocksize; n++) {
 		y[n] = 0.0;
-		*s->oldest++ = x[n];
-		d = s->oldest - s->stored_data;
-		if (d >= s->M) s->oldest = s->stored_data;
+		shift(s->stored_data, s->M, &(s->index), x[n]);
 		for (k = 0; k < s->M; k++) {
-			y[n] += s->h[k] * s->oldest[(k+d)%s->M];
+			y[n] += s->h[k] * s->stored_data[(k+s->index)%s->M];
 		}
 	}
 
