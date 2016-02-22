@@ -35,7 +35,7 @@ FIR_T * init_fir(float *fir_coefs, int n_coef, int blocksize) {
 					in stored_data */
 	int i;
 	for (i = 0; i < n_coef; i++) {	/* Set stored data to 0.0 for starting out*/
-		fir_data->stored_data[0] = 0.0;
+		fir_data->stored_data[i] = 0.0;
 	}
 	return fir_data;	/* return pointer to the struct */
 }
