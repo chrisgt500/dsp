@@ -11,5 +11,5 @@ for i = 1:size(sos,1);
     end
     fprintf('\n');
 end
-fprintf('\b\b\b\n};');
+fprintf('\b\b\b\n};\n');
 
