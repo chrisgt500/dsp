@@ -7,8 +7,8 @@
 %the graph given in the lab manual.
 
 N = 1024;
-w = 2*pi*f;
 f = linspace(0,1,N);
+w = 2*pi*f;
 z = exp(j*w);
 
 
@@ -23,7 +23,8 @@ iir_poles =[
 ];
 
 iir_zeros =[
-   	exp(j*2*pi*0*[1 -1]), ...
+   	1, ...
+    -1, ...
     exp(j*2*pi*.1*[1 -1]), ...
     exp(j*2*pi*.05*[1 -1]), ...
     exp(j*2*pi*.35*[1 -1]), ...
@@ -40,8 +41,25 @@ grid;
 axis square;
 
 H = 20*log10(abs(polyval(num,z)./polyval(den,z)));
+
 figure;
 plot(f,H);
+hold on;
+grid on;
 xlim([0 .5]);
+ylim([-60, 5]);
+
+%% Geometric Limits for Gain
+plot([0 .1 .1 0 0],[-40 -40 -60 -60 -40])
+plot([.35 .5 .5 .35 .35],[-50 -50 -60 -60 -50])
+
+plot([.15 .2 .2 .15 .15],[1 -4 -6 -1 1])
+plot([.2 .25 .25 .2 .2],[-4 1 -1 -6 -4]);
+
+
+
+
+
+
 
 
