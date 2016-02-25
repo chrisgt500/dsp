@@ -11,23 +11,39 @@ f = linspace(0,1,N);
 w = 2*pi*f;
 z = exp(j*w);
 
+limits = true;
 
 
 
 iir_poles =[
+    %{
     .9 * exp(j*2*pi*.14*[1 -1]), ...
     .93 * exp(j*2*pi*.15*[1 -1]), ...
     .615 * exp(j*2*pi*.2*[1 -1]), ...
     .92 * exp(j*2*pi*.25*[1 -1]), ...
-    .001 * exp(j*2*pi* 0*[1 -1]), ...
-    .001 * exp(j*2*pi* 0 *[1 -1])
+    .000 * exp(j*2*pi* 0*[1 -1]), ...
+    .000 * exp(j*2*pi* 0 *[1 -1])
+    %}
+    .972 * exp(j*2*pi*.142*[1 -1]), ...
+    .91 * exp(j*2*pi*.157*[1 -1]), ...
+    .665 * exp(j*2*pi*.197*[1 -1]), ...
+    .94 * exp(j*2*pi*.25*[1 -1]), ...
+    .68 * exp(j*2*pi*.225*[1 -1])
     
-    
+
 ];
 
 iir_zeros =[
+    %{
    	1, ...
     -1, ...
+    exp(j*2*pi*.05*[1 -1]), ...
+    exp(j*2*pi*.07*[1 -1]), ...
+    exp(j*2*pi*.1*[1 -1]), ...
+    exp(j*2*pi*.35*[1 -1]), ...
+    exp(j*2*pi*.43*[1 -1])
+%}
+
     exp(j*2*pi*.05*[1 -1]), ...
     exp(j*2*pi*.07*[1 -1]), ...
     exp(j*2*pi*.1*[1 -1]), ...
@@ -37,12 +53,12 @@ iir_zeros =[
 
 num = poly(iir_zeros);
 den = poly(iir_poles);
-hold on;
-plot(iir_poles, 'x');
-plot(iir_zeros, 'o');
-rectangle('Position',[-1 -1 2 2],'Curvature',[1 1]);
-grid;
-axis square;
+%hold on;
+%plot(iir_poles, 'x');
+%plot(iir_zeros, 'o');
+%rectangle('Position',[-1 -1 2 2],'Curvature',[1 1]);
+%grid;
+%axis square;
 
 k = 1/(max(abs(polyval(num,z)./polyval(den,z))));
 
@@ -56,13 +72,18 @@ xlim([0 .5]);
 ylim([-60, 5]);
 
 %% Geometric Limits for Gain
-plot([0 .1 .1 0 0],[-40 -40 -60 -60 -40])
-plot([.35 .5 .5 .35 .35],[-50 -50 -60 -60 -50])
+if(limits)
+    plot([0 .1 .1 0 0],[-40 -40 -60 -60 -40]);
+    plot([.35 .5 .5 .35 .35],[-50 -50 -60 -60 -50]);
 
-plot([.15 .2 .2 .15 .15],[1 -4 -6 -1 1])
-plot([.2 .25 .25 .2 .2],[-4 1 -1 -6 -4]);
+    plot([.15 .2 .2 .15 .15],[1 -4 -6 -1 1]);
+    plot([.2 .25 .25 .2 .2],[-4 1 -1 -6 -4]);
+end
 
-[sos,g] = zp2sos(num,den,k,'up','inf'); %need inf?
+%% Creates second order sections
+%[sos,g] = zp2sos(iir_zeros,iir_poles,k,'up','inf');
 
-lab3_task3(sos,g);
+%lab3_task3(sos,g);
+
+
 
