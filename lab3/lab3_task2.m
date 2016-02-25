@@ -40,7 +40,9 @@ rectangle('Position',[-1 -1 2 2],'Curvature',[1 1]);
 grid;
 axis square;
 
-H = 20*log10(abs(polyval(num,z)./polyval(den,z)));
+k = 1/(max(abs(polyval(num,z)./polyval(den,z))));
+
+H = 20*log10(k*abs(polyval(num,z)./polyval(den,z)));
 
 figure;
 plot(f,H);
