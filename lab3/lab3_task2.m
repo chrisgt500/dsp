@@ -62,7 +62,7 @@ plot([.35 .5 .5 .35 .35],[-50 -50 -60 -60 -50])
 plot([.15 .2 .2 .15 .15],[1 -4 -6 -1 1])
 plot([.2 .25 .25 .2 .2],[-4 1 -1 -6 -4]);
 
-[sos,g] = zp2sos(num,den,k,'up','inf'); %need inf?
+[sos,g] = zp2sos(num,den,k,'up','inf'); %need inf? yes
 
 lab3_task3(sos,g);
 
