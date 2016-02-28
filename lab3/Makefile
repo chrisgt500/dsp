@@ -36,13 +36,21 @@ LDFLAGS = -u _printf_float \
           -Wl,--gc-sections $(LIBDIRS)
 
 .PHONY : all flash clean debug
-all: $(TARGETARMFIR) $(TARGETARMFIR).bin $(TARGETARMIIR) $(TARGETARMIIR).bin $(TARGETIIR) $(TARGETIIR).bin
+all: $(TARGETARMFIR) $(TARGETARMFIR).bin
+all: $(TARGETARMIIR) $(TARGETARMIIR).bin
+all: $(TARGETIIR) $(TARGETIIR).bin
 
-debug : CFLAGS += -DDEBUG -g -Og
-debug : LDFLAGS += -Wl,-Map,$(TARGET).map
+debug_iir : CFLAGS += -DDEBUG -g -Og
+debug_iir : LDFLAGS += -Wl,-Map,$(TARGETIIR).map
+debug_iir : iir
 
-debug : all
+debug_arm_iir : CFLAGS += -DDEBUG -g -Og
+debug_arm_iir : LDFLAGS += -Wl,-Map,$(TARGETARMIIR).map
+debug_arm_iir : arm_iir
 
+debug_arm_fir : CFLAGS += -DDEBUG -g -Og
+debug_arm_fir : LDFLAGS += -Wl,-Map,$(TARGETARMFIR).map
+debug_arm_fir : arm_fir
 
 $(TARGETIIR): $(OBJSIIR)
 	$(CC)  -o $(TARGETIIR) $(CFLAGS) $(LDFLAGS) $(OBJSIIR) $(LIBS)
