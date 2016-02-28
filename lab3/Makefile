@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 TARGETARMFIR=rt_fir_arm
 OBJSARMFIR=rt_fir_arm.o
 
@@ -6,6 +7,11 @@ OBJSIIR=rt_biquad.o ece486_biquad.o
 
 TARGETARMIIR=rt_biquad_arm
 OBJSARMIIR=rt_biquad_arm.o
+=======
+TARGET=rt_biquad_arm
+
+OBJS  =rt_biquad_arm.o
+>>>>>>> 40ab774c0a0aa70d5c642345173ff9414f817f59
 
 INSTALLDIR = /usr/local/stmdev/
 
