@@ -58,7 +58,6 @@ $(TARGETIIR): $(OBJSIIR)
 $(TARGETIIR).bin: $(TARGETIIR)
 	$(OBJCOPY) -Obinary $(TARGETIIR) $(TARGETIIR).bin
 
-
 $(TARGETARMIIR): $(OBJSARMIIR)
 	$(CC)  -o $(TARGETARMIIR) $(CFLAGS) $(LDFLAGS) $(OBJSARMIIR) $(LIBS)
 
@@ -75,24 +74,15 @@ $(TARGETARMFIR).bin: $(TARGETARMFIR)
 #####################################################################
 ## individual make rules
 iir: $(TARGETIIR) $(TARGETIIR).bin
-$(TARGETIIR): $(OBJSIIR)
 	$(CC)  -o $(TARGETIIR) $(CFLAGS) $(LDFLAGS) $(OBJSIIR) $(LIBS)
-
-$(TARGETIIR).bin: $(TARGETIIR)
 	$(OBJCOPY) -Obinary $(TARGETIIR) $(TARGETIIR).bin
 
 arm_iir: $(TARGETARMIIR) $(TARGETARMIIR).bin
-$(TARGETARMIIR): $(OBJSARMIIR)
 	$(CC)  -o $(TARGETARMIIR) $(CFLAGS) $(LDFLAGS) $(OBJSARMIIR) $(LIBS)
-
-$(TARGETARMIIR).bin: $(TARGETARMIIR)
 	$(OBJCOPY) -Obinary $(TARGETARMIIR) $(TARGETARMIIR).bin
 
 arm_fir: $(TARGETARMFIR) $(TARGETARMFIR).bin
-$(TARGETARMFIR): $(OBJSARMFIR)
 	$(CC)  -o $(TARGETARMFIR) $(CFLAGS) $(LDFLAGS) $(OBJSARMFIR) $(LIBS)
-
-$(TARGETARMFIR).bin: $(TARGETARMFIR)
 	$(OBJCOPY) -Obinary $(TARGETARMFIR) $(TARGETARMFIR).bin
 
 ###################################################################
