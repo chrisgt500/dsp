@@ -23,7 +23,6 @@
  *
  */
 typedef struct{
-  float g; //!< The gain value
   int sections; //!< How many 2nd order filters to cascade
   int blocksize; //!< How many data values are passed at once
   float *u; //!< Holds two values needed to calculate the transposed direct form II
