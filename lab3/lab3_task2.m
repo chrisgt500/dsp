@@ -84,7 +84,6 @@ end
 %% Creates second order sections
 [sos,g] = zp2sos(iir_zeros,iir_poles,k,'up','inf');
 
-
 lab3_task3(sos,g);
 
 

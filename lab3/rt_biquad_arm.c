@@ -39,6 +39,7 @@ int main(void){
 
 	input = (float *)malloc(sizeof(float)*blocksize);
 	output = (float *)malloc(sizeof(float)*blocksize);
+	pState = (float *)malloc(sizeof(float)*2*sections);
 
 	if (input==NULL || output==NULL) {  //error checking
 	  flagerror(MEMORY_ALLOCATION_ERROR);
