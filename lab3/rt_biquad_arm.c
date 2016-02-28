@@ -50,9 +50,9 @@ int main(void){
 
 	while(1){  //waits for ADC to fill, filters data, outputs to DAC
 	  getblock(input);
-	  DIGITAL_IO_RESET();
-	  arm_biquad_cascade_df2T_f32(S,input,output,blocksize);
 	  DIGITAL_IO_SET();
+	  arm_biquad_cascade_df2T_f32(S,input,output,blocksize);
+	  DIGITAL_IO_RESET();
 	  putblock(output);
 	}
 
