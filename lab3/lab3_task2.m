@@ -80,8 +80,10 @@ if(limits)
     plot([.2 .25 .25 .2 .2],[-4 1 -1 -6 -4]);
 end
 
+
 %% Creates second order sections
 [sos,g] = zp2sos(iir_zeros,iir_poles,k,'up','inf');
+
 
 lab3_task3(sos,g);
 
