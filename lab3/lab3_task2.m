@@ -65,8 +65,4 @@ end
 %% Creates second order sections and calls the Task 3 script
 [sos,g] = zp2sos(iir_zeros,iir_poles,k,'up','inf');
 
-
 lab3_task3(sos,g);
-
-
-

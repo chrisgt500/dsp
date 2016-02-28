@@ -1,7 +1,7 @@
 /*!
  * @file
  * @brief ECE 486 Lab 2 FIR  Test
- a*
+ *
  * @author ECE486 Lab Group 9
  * @author Colin Leary, Forrest Smith, Sean Turner
  *
