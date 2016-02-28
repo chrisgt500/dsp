@@ -53,12 +53,12 @@ iir_zeros =[
 
 num = poly(iir_zeros);
 den = poly(iir_poles);
-%hold on;
-%plot(iir_poles, 'x');
-%plot(iir_zeros, 'o');
-%rectangle('Position',[-1 -1 2 2],'Curvature',[1 1]);
-%grid;
-%axis square;
+hold on;
+plot(iir_poles, 'x');
+plot(iir_zeros, 'o');
+rectangle('Position',[-1 -1 2 2],'Curvature',[1 1]);
+grid;
+axis square;
 
 k = 1/(max(abs(polyval(num,z)./polyval(den,z))));
 
@@ -81,9 +81,9 @@ if(limits)
 end
 
 %% Creates second order sections
-%[sos,g] = zp2sos(iir_zeros,iir_poles,k,'up','inf');
+[sos,g] = zp2sos(iir_zeros,iir_poles,k,'up','inf');
 
-%lab3_task3(sos,g);
+lab3_task3(sos,g);
 
 
 
