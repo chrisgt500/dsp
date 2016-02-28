@@ -15,7 +15,7 @@
 
 #include "stm32l4xx_hal.h"
 #include "stm32l476g_discovery.h"
-#include "ece486_fir.h"
+#include "arm_math.h"
 
 #include "ece486.h"
 #include <stdlib.h>
@@ -26,15 +26,16 @@ int main(void)
 {
 	float *input, *output; //initializations
     int blocksize;
-	struct arm_fir_instance_f32 *S;
+	arm_fir_instance_f32 *S = (arm_fir_instance_f32 *)malloc(sizeof(arm_fir_instance_f32));
 	float *pState;
 
-	float h[20] ={2.2044, 1.3420, .8827, -.7646,-1.3219,-.0629,1.2442,.8185,-.7088,-1.2257,
+	/*float h[20] ={2.2044, 1.3420, .8827, -.7646,-1.3219,-.0629,1.2442,.8185,-.7088,-1.2257,
                   -.0585, 1.1535, .759,-.6571,-1.1364,-.0544,1.0695,.7038,-.6091,-1.0537};
-  				/*Not sure if these coefs are correct + ARM might take these backwards*/
-	/*float h[20] ={-1.0537, -.6091, .7038, 1.0695, -.0544, -1.1364, -.6571, .759, 1.1535, -.0585,
+  				Not sure if these coefs are correct + ARM might take these backwards*/
+
+	float h[20] ={-1.0537, -.6091, .7038, 1.0695, -.0544, -1.1364, -.6571, .759, 1.1535, -.0585,
 					-1.2257, -.7088, .8185, 1.2442, -.0629, -1.3219, -.7646, .8827, 1.3420, 2.2044};
-					*/
+
 	int n_coefs = 20;
 
 	initialize(FS_50K, MONO_IN, MONO_OUT);
