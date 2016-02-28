@@ -11,39 +11,17 @@ f = linspace(0,1,N);
 w = 2*pi*f;
 z = exp(j*w);
 
-limits = true;
+limits = true;  %plot with spec given for task 2
 
-
-
-iir_poles =[
-    %{
-    .9 * exp(j*2*pi*.14*[1 -1]), ...
-    .93 * exp(j*2*pi*.15*[1 -1]), ...
-    .615 * exp(j*2*pi*.2*[1 -1]), ...
-    .92 * exp(j*2*pi*.25*[1 -1]), ...
-    .000 * exp(j*2*pi* 0*[1 -1]), ...
-    .000 * exp(j*2*pi* 0 *[1 -1])
-    %}
+iir_poles =[    %values are expressed in polar form and as conjugate pairs
     .972 * exp(j*2*pi*.142*[1 -1]), ...
     .91 * exp(j*2*pi*.157*[1 -1]), ...
     .665 * exp(j*2*pi*.197*[1 -1]), ...
     .94 * exp(j*2*pi*.25*[1 -1]), ...
     .68 * exp(j*2*pi*.225*[1 -1])
-    
-
 ];
 
-iir_zeros =[
-    %{
-   	1, ...
-    -1, ...
-    exp(j*2*pi*.05*[1 -1]), ...
-    exp(j*2*pi*.07*[1 -1]), ...
-    exp(j*2*pi*.1*[1 -1]), ...
-    exp(j*2*pi*.35*[1 -1]), ...
-    exp(j*2*pi*.43*[1 -1])
-%}
-
+iir_zeros =[    %values are expressed in polar form and as conjugate pairs
     exp(j*2*pi*.05*[1 -1]), ...
     exp(j*2*pi*.07*[1 -1]), ...
     exp(j*2*pi*.1*[1 -1]), ...
@@ -51,20 +29,22 @@ iir_zeros =[
     exp(j*2*pi*.43*[1 -1])
 ];
 
-num = poly(iir_zeros);
-den = poly(iir_poles);
+num = poly(iir_zeros);  %creates polynomial with the zeros, which will be the numerator of the filter
+den = poly(iir_poles);  %creates a polynomial with the polars, which will be the denominator of the filter
 hold on;
+%zero-pole zplane plot
 plot(iir_poles, 'x');
 plot(iir_zeros, 'o');
 rectangle('Position',[-1 -1 2 2],'Curvature',[1 1]);
 grid;
 axis square;
 
-k = 1/(max(abs(polyval(num,z)./polyval(den,z))));
+k = 1/(max(abs(polyval(num,z)./polyval(den,z))));   %scaling factor to make max gain 0dB
 
 H = 20*log10(k*abs(polyval(num,z)./polyval(den,z)));
 
 figure;
+%plot of gain versus frequncy
 plot(f,H);
 hold on;
 grid on;
@@ -72,6 +52,7 @@ xlim([0 .5]);
 ylim([-60, 5]);
 
 %% Geometric Limits for Gain
+%Gives the specification for task 2 on the graph
 if(limits)
     plot([0 .1 .1 0 0],[-40 -40 -60 -60 -40]);
     plot([.35 .5 .5 .35 .35],[-50 -50 -60 -60 -50]);
@@ -81,7 +62,7 @@ if(limits)
 end
 
 
-%% Creates second order sections
+%% Creates second order sections and calls the Task 3 script
 [sos,g] = zp2sos(iir_zeros,iir_poles,k,'up','inf');
 
 

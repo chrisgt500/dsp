@@ -1,6 +1,9 @@
 function [] = lab3_task3(sos, g)
-%LAB3_TASK3 Summary of this function goes here
-%   Detailed explanation goes here
+%This script combines an arbitrary collection of poles and zeros and a
+%desired gain constant into second order sections, and provides the
+%coefficients in a suitable form for the filter functions that are
+%implemented in C.
+
 
 fprintf('float g = %f;\n',g);
 fprintf('int sections = %d;\n', size(sos,1));
