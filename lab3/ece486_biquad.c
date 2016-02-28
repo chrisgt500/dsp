@@ -22,15 +22,29 @@ BIQUAD_T * init_biquad(int sections, float g, float *biquad_coefs, int blocksize
 
 	int i; 	//!< Performs struct initialization based on passed parameters, and dynamically
 					//!< allocates required memory
-	BIQUAD_T *s = malloc(sizeof(BIQUAD_T));
+	BIQUAD_T *s = (BIQUAD_T *)malloc(sizeof(BIQUAD_T));
+	if(s == NULL) {
+		printf("Could not allocate BIQUAD_T struct")
+		return -1;
+	}
 	s->sections = sections;
-	s->g = g;
 	s->blocksize = blocksize;
-	s->u = malloc(sizeof(float)*sections);
-	s->v = malloc(sizeof(float)*sections);
+	s->u = (float *)malloc(sizeof(float)*sections);
+	if(s->u == NULL) {
+		printf("Could not allocate float array")
+		return -1;
+	}
+	s->v = (float *)malloc(sizeof(float)*sections);
+	if(s->v == NULL) {
+		printf("Could not allocate float array")
+		return -1;
+	}
 	s->all_coefs = biquad_coefs;
+	for(i = 0; i < 3; i++) {	//adds gain to first filter
+		s->all_coefs[i] *= g;
+	}
 
-	for ( i = 0; i < sections; i++){ //!< Verifies initial conditions are 0
+	for (i = 0; i < sections; i++){ //!< Verifies initial conditions are 0
 		s->u[i] = 0;
 		s->v[i] = 0;
 	}
@@ -42,7 +56,7 @@ void calc_biquad(BIQUAD_T *s, float *x, float *y) {
 	float tmp;
 
 	for (i = 0; i < s->blocksize; i++){ //!< Loops over every element in a block
-		tmp = x[i] * s->g;
+		tmp = x[i];
 		for (j = 0; j < s->sections; j++){ //!< Filters every element in the block, sections number of times
 			tmp = update(s->u,s->v,s->all_coefs,tmp,j); //!< tmp is the ouput of 1 filter, and the input to the next
 		}
@@ -52,6 +66,8 @@ void calc_biquad(BIQUAD_T *s, float *x, float *y) {
 }
 
 void destroy_biquad(BIQUAD_T *s) {
+	s->u = NULL;
+	s->v = NULL;
 	free(s->u);//!< Frees all allocated memory
 	free(s->v);
 	free(s);
