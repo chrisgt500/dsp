@@ -36,20 +36,27 @@ LDFLAGS = -u _printf_float \
           -Wl,--gc-sections $(LIBDIRS)
 
 .PHONY : all flash clean debug
-all: $(TARGETARMFIR) $(TARGETARMFIR).bin $(TARGETARMIIR) $(TARGETARMIIR).bin $(TARGETIIR) $(TARGETIIR).bin
+all: $(TARGETARMFIR) $(TARGETARMFIR).bin
+all: $(TARGETARMIIR) $(TARGETARMIIR).bin
+all: $(TARGETIIR) $(TARGETIIR).bin
 
-debug : CFLAGS += -DDEBUG -g -Og
-debug : LDFLAGS += -Wl,-Map,$(TARGET).map
+debug_iir : CFLAGS += -DDEBUG -g -Og
+debug_iir : LDFLAGS += -Wl,-Map,$(TARGETIIR).map
+debug_iir : iir
 
-debug : all
+debug_arm_iir : CFLAGS += -DDEBUG -g -Og
+debug_arm_iir : LDFLAGS += -Wl,-Map,$(TARGETARMIIR).map
+debug_arm_iir : arm_iir
 
+debug_arm_fir : CFLAGS += -DDEBUG -g -Og
+debug_arm_fir : LDFLAGS += -Wl,-Map,$(TARGETARMFIR).map
+debug_arm_fir : arm_fir
 
 $(TARGETIIR): $(OBJSIIR)
 	$(CC)  -o $(TARGETIIR) $(CFLAGS) $(LDFLAGS) $(OBJSIIR) $(LIBS)
 
 $(TARGETIIR).bin: $(TARGETIIR)
 	$(OBJCOPY) -Obinary $(TARGETIIR) $(TARGETIIR).bin
-
 
 $(TARGETARMIIR): $(OBJSARMIIR)
 	$(CC)  -o $(TARGETARMIIR) $(CFLAGS) $(LDFLAGS) $(OBJSARMIIR) $(LIBS)
@@ -67,24 +74,15 @@ $(TARGETARMFIR).bin: $(TARGETARMFIR)
 #####################################################################
 ## individual make rules
 iir: $(TARGETIIR) $(TARGETIIR).bin
-$(TARGETIIR): $(OBJSIIR)
 	$(CC)  -o $(TARGETIIR) $(CFLAGS) $(LDFLAGS) $(OBJSIIR) $(LIBS)
-
-$(TARGETIIR).bin: $(TARGETIIR)
 	$(OBJCOPY) -Obinary $(TARGETIIR) $(TARGETIIR).bin
 
 arm_iir: $(TARGETARMIIR) $(TARGETARMIIR).bin
-$(TARGETARMIIR): $(OBJSARMIIR)
 	$(CC)  -o $(TARGETARMIIR) $(CFLAGS) $(LDFLAGS) $(OBJSARMIIR) $(LIBS)
-
-$(TARGETARMIIR).bin: $(TARGETARMIIR)
 	$(OBJCOPY) -Obinary $(TARGETARMIIR) $(TARGETARMIIR).bin
 
 arm_fir: $(TARGETARMFIR) $(TARGETARMFIR).bin
-$(TARGETARMFIR): $(OBJSARMFIR)
 	$(CC)  -o $(TARGETARMFIR) $(CFLAGS) $(LDFLAGS) $(OBJSARMFIR) $(LIBS)
-
-$(TARGETARMFIR).bin: $(TARGETARMFIR)
 	$(OBJCOPY) -Obinary $(TARGETARMFIR) $(TARGETARMFIR).bin
 
 ###################################################################
