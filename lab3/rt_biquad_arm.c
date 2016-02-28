@@ -15,6 +15,7 @@
 
 #include "stm32l4xx_hal.h"
 #include "stm32l476g_discovery.h"
+#include "arm_math.h"
 
 #include "ece486.h"
 #include <stdlib.h>
@@ -24,8 +25,7 @@
 int main(void){
 
 	int i,blocksize; //initializations
-	struct arm_biquad_cascade_df2T_f32 *S;
-	float max_error;
+	arm_biquad_cascade_df2T_instance_f32 *S = (arm_biquad_cascade_df2T_instance_f32 *)malloc(sizeof(arm_biquad_cascade_df2T_instance_f32));
 	float *pState;
 	float *input, *output;  //initialization
 
@@ -41,7 +41,7 @@ int main(void){
 	output = (float *)malloc(sizeof(float)*blocksize);
 	pState = (float *)malloc(sizeof(float)*2*sections);
 
-	if (input==NULL || output==NULL) {  //error checking
+	if (input==NULL || output==NULL || S==NULL || pState==NULL) {  //error checking
 	  flagerror(MEMORY_ALLOCATION_ERROR);
 	  while(1);
 	}

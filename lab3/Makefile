@@ -1,6 +1,6 @@
-TARGET=rt_iir
+TARGET=rt_biquad_arm
 
-OBJS  =rt_iir.o ece486_biquad.o
+OBJS  =rt_biquad_arm.o
 
 INSTALLDIR = /usr/local/stmdev/
 
