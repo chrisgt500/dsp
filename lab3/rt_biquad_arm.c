@@ -29,6 +29,8 @@ int main(void){
 	float *pState;
 	float *input, *output;
 
+	//negate a coefficients
+	//check coeffs
 	float coefs[10] = {2.2044, 0.0, 2.2044, -.6088, .9702, 2.9658,-3.4865,2.9658,-.350,-.4250};
 	int sections = 2;
 
@@ -46,6 +48,7 @@ int main(void){
 
 	arm_biquad_cascade_df2T_init_f32(S,sections,coefs,pState);
 
+	//stereo output to check if getting hung up
 	while(1){  //waits for ADC to fill, filters data, outputs to DAC
 	  getblock(input);
 	  DIGITAL_IO_SET();
