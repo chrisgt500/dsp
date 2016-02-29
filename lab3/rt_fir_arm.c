@@ -30,7 +30,6 @@ int main(void)
 	float *pState;
 
 	float h[5] = {.2,.2,.2,.2,.2};
-
 	int n_coefs = 5;
 
 	initialize(FS_50K, MONO_IN, MONO_OUT);
@@ -42,8 +41,8 @@ int main(void)
 	pState = (float *)malloc(sizeof(float)*(n_coefs+blocksize-1));
 
     if (input==NULL || output==NULL) {  //error checking
-  	flagerror(MEMORY_ALLOCATION_ERROR);
-  	while(1);
+  		flagerror(MEMORY_ALLOCATION_ERROR);
+  		while(1);
     }
 
 	arm_fir_init_f32(S,n_coefs,h,pState,blocksize);

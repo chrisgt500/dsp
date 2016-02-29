@@ -24,17 +24,15 @@
 
 int main(void){
 
-	int i,blocksize; //initializations
+	int blocksize; //initializations
 	arm_biquad_cascade_df2T_instance_f32 *S = (arm_biquad_cascade_df2T_instance_f32 *)malloc(sizeof(arm_biquad_cascade_df2T_instance_f32));
 	float *pState;
-	float *input, *output;  //initialization
-
-
-	initialize(FS_50K, MONO_IN, MONO_OUT);
+	float *input, *output;
 
 	float coefs[10] = {2.2044, 0.0, 2.2044, -.6088, .9702, 2.9658,-3.4865,2.9658,-.350,-.4250};
 	int sections = 2;
 
+	initialize(FS_50K, MONO_IN, MONO_OUT);
 	blocksize = getblocksize();
 
 	input = (float *)malloc(sizeof(float)*blocksize);
@@ -55,6 +53,5 @@ int main(void){
 	  DIGITAL_IO_RESET();
 	  putblock(output);
 	}
-
 	return 0;
  }
