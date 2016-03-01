@@ -29,6 +29,7 @@ int main(void){
 	float *pState;
 	float *input, *output;
 
+<<<<<<< HEAD
 	int sections = 5;
 	float coefs[25] = {
 		0.233139, 0.421901, 0.233139, 0.434761, -0.442225,
@@ -37,6 +38,12 @@ int main(void){
 		0.242158, 0.284674, 0.242158, 0.000000, -0.883600,
 		2.569303, -4.157220, 2.569303, 1.220232, -0.944784
 	};
+=======
+	//negate a coefficients
+	//check coeffs
+	float coefs[10] = {2.2044, 0.0, 2.2044, -.6088, .9702, 2.9658,-3.4865,2.9658,-.350,-.4250};
+	int sections = 2;
+>>>>>>> 6c299b8ddf003f3507cf4b982122d3d23d7f37b7
 
 	initialize(FS_50K, MONO_IN, MONO_OUT);
 	blocksize = getblocksize();
@@ -52,6 +59,7 @@ int main(void){
 
 	arm_biquad_cascade_df2T_init_f32(S,sections,coefs,pState);
 
+	//stereo output to check if getting hung up
 	while(1){  //waits for ADC to fill, filters data, outputs to DAC
 	  getblock(input);
 	  DIGITAL_IO_SET();
