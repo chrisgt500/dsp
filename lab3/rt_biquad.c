@@ -27,7 +27,7 @@ int main(void)
 	BIQUAD_T *data;
 
 	initialize(FS_50K, MONO_IN, MONO_OUT);
-	float g = 1;
+	float g = 0.527133;
 	int sections = 5;
 	float coefs[25] = {
 		0.233139, 0.421901, 0.233139, -0.434761, 0.442225,
