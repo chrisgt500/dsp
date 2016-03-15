@@ -1,11 +1,11 @@
 /*!
  * @file
- * @brief ECE 486 Lab 2 IIR Filter
+ * @brief ECE 486 Lab 3 IIR Filter
  *
  * @author ECE486 Lab Group 9
  * @author Colin Leary, Forrest Smith, Sean Turner
  *
- * @date Feb 25 2016
+ * @date Mar 15 2016
  *
  * This file contains the functions needed to perform a discrete time convolution.
  * Init biquad initializes any needed information, and calc_biquad calculates the transposed

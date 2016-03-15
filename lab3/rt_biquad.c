@@ -1,13 +1,16 @@
 /*!
  * @file
- * @brief ECE 486 Lab 2 Real Time IIR implementation
+ * @brief ECE 486 Lab 3 Real Time Biquad implementation
  *
  * @author ECE486 Lab Group 9
  * @author Colin Leary, Forrest Smith, Sean Turner
  *
- * @date Feb 9 2016
+ * @date Mar 15 2016
  *
- *
+ * The program is the same as the Lab 2 biquad program, except with different
+ * coefficients. The coefficients come from two MATLAB scripts (lab3_task2.m and lab3_task3.m),
+ * and are the corresponding second order structure for the hand placed poles. The program uses the
+ * direct form II transposed filter structure to keep track of intermediate terms.
  *
  */
 
@@ -27,6 +30,7 @@ int main(void)
 	BIQUAD_T *data;
 
 	initialize(FS_50K, MONO_IN, MONO_OUT);
+	/* These all came from Lab 3 Task 3 Matlab output for the desired poles and zeroes */
 	float g = 0.527133;
 	int sections = 5;
 	float coefs[25] = {
@@ -36,6 +40,7 @@ int main(void)
 		0.242158, 0.284674, 0.242158, -0.000000, 0.883600,
 		2.569303, -4.157220, 2.569303, -1.220232, 0.944784
 	};
+
 	blocksize = getblocksize();
 
 	input = (float *)malloc(sizeof(float)*blocksize);
