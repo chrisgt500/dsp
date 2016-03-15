@@ -25,7 +25,7 @@
 int main(void)
 {
 	float *input, *output; //initializations
-    int blocksize;
+  int blocksize;
 	arm_fir_instance_f32 *S = (arm_fir_instance_f32 *)malloc(sizeof(arm_fir_instance_f32));
 	float *pState;
 
@@ -33,11 +33,11 @@ int main(void)
 	int n_coefs = 5;
 
 	initialize(FS_50K, MONO_IN, MONO_OUT);
-    blocksize = getblocksize();
+  blocksize = getblocksize();
 
 
-    input = (float *)malloc(sizeof(float)*blocksize);
-    output = (float *)malloc(sizeof(float)*blocksize);
+  input = (float *)malloc(sizeof(float)*blocksize);
+  output = (float *)malloc(sizeof(float)*blocksize);
 	pState = (float *)malloc(sizeof(float)*(n_coefs+blocksize-1));
 
     if (input==NULL || output==NULL) {  //error checking
