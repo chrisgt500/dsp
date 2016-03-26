@@ -76,7 +76,8 @@
 
 typedef struct{
   float f0; //!<
-  float theta; //!<
+  float theta_temp; //!<
+  float theta_const; //!
 }NCO_T;
 
 /*!
