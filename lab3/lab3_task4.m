@@ -32,6 +32,7 @@ iir_zeros =[
 num = poly(iir_zeros);
 den = poly(iir_poles);
 
+figure(1);
 plot(iir_poles, 'x');
 hold on;
 plot(iir_zeros, 'o');
@@ -43,21 +44,14 @@ k = 1/(max(abs(polyval(num,z)./polyval(den,z))));
 
 H = 20*log10(k*abs(polyval(num,z)./polyval(den,z)));
 
-figure;
+figure(2);
 plot(f,H);
 hold on;
 grid on;
 xlim([0 .5]);
 ylim([-60, 5]);
 
-%% Geometric Limits for Gain
-if(limits)
-    plot([0 .1 .1 0 0],[-40 -40 -60 -60 -40]);
-    plot([.35 .5 .5 .35 .35],[-50 -50 -60 -60 -50]);
 
-    plot([.15 .2 .2 .15 .15],[1 -4 -6 -1 1]);
-    plot([.2 .25 .25 .2 .2],[-4 1 -1 -6 -4]);
-end
 %% Actual Filter Data
 
 data = csvread('DSP_Lab3_Task4.csv',1,0);
@@ -68,3 +62,12 @@ filter_gain = data(:,3);
 plot(freq/Fs,filter_gain,'--');
 
 legend('Calculated','Actual');
+
+%% Geometric Limits for Gain
+if(limits)
+    plot([0 .1 .1 0 0],[-40 -40 -60 -60 -40]);
+    plot([.35 .5 .5 .35 .35],[-50 -50 -60 -60 -50]);
+
+    plot([.15 .2 .2 .15 .15],[1 -4 -6 -1 1]);
+    plot([.2 .25 .25 .2 .2],[-4 1 -1 -6 -4]);
+end

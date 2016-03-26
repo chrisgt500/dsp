@@ -1,9 +1,9 @@
-TARGETFIRRT=rt_fir
-TARGETIIRRT=rt_iir
+TARGET=rt_fir
 
 
-OBJSFIRRT=rt_fir.o ece486_fir.o
-OBJSIIRRT=rt_iir.o ece_486_iir.o 
+
+OBJS=rt_fir.o ece486_fir.o
+
 
 INSTALLDIR = /usr/local/stmdev/
 
