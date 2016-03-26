@@ -3,7 +3,7 @@
 
 
 NCO_T *init_nco(float f0, float theta){
-	NCO_T *s = malloc(sizeof(NCO_T));
+	NCO_T *s = (NCO_T *)malloc(sizeof(NCO_T));
 	s->f0 = f0;
 	s->theta_const = theta;
 	s->theta_temp = 0.0;
@@ -11,27 +11,27 @@ NCO_T *init_nco(float f0, float theta){
 }
 
 void nco_get_samples(NCO_T *s, float *y, int n_samples){
-	float index;
+	float index = 0;
 	int i;
 
-	for ( i = 0; i < n_samples; i ++){
+	for (i = 0; i < n_samples; i ++){
 		s->theta_temp = s->theta_temp + 2*pi*(s->f0);
-		index = [(s->theta_temp)+(s->theta_const)]*[512/(2*pi)];
-		index = rint(index)%512;
+		index = ()(s->theta_temp)+(s->theta_const))*[512/(2*pi)];
+		index = (int)rint(index)%512;
 		y[i] = cosine_lookup(index);
 	}
 }
 
 void nco_set_frequency(NCO_T *s, float f_new){
-    s->f0 = f_new;
+	s->f0 = f_new;
 }
 
 void nco_set_phase(NCO_T *s, float theta){
-    s->theta = theta;
+  s->theta = theta;
 }
 
 void destroy_nco(NCO_T *s){
-    free(s);
+  free(s);
 	s = NULL;
 }
 
