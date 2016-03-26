@@ -1,6 +1,7 @@
 #include "ece486_nco.h"
 #include <math.h>
 #include <stdio.h>
+#include <stdlib.h>
 
 
 NCO_T * init_nco(float f0, float theta){
