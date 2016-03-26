@@ -7,8 +7,8 @@
 NCO_T * init_nco(float f0, float theta){
 	NCO_T *s = (NCO_T *)malloc(sizeof(NCO_T));
 	if(s == NULL) {
-	printf("Could not allocate NCO_T struct");
-	return -1;
+		printf("Could not allocate NCO_T struct");
+		exit(0);
 	}
 	s->f0 = f0;
 	s->theta_const = theta;
