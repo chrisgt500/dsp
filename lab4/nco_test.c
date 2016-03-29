@@ -11,17 +11,24 @@
 void main(void){
 
 	int i, blocksize;
-	float *s, *c;
+	float fs;
+	
+	NCO_T *s = (NCO_T *)malloc(sizeof(NCO_T));
+	NCO_T *c = (NCO_T *)malloc(sizeof(NCO_T));
+
 	float *output1, *output2;
 
-	initialize(FS_50k, MONO_IN, STEREO_OUT)
+	initialize(FS_50K, MONO_IN, STEREO_OUT);
 
 	fs = getsamplingfrequency();
 	blocksize = getblocksize();
 
+	output1 = (float *)malloc(sizeof(float)*blocksize);
+	output2 = (float *)malloc(sizeof(float)*blocksize);
+
 	while(1){
 		c = init_nco(.1, 0.0);
-		s = init_nco(.1,-PI/2);
+		s = init_nco(.1,-M_PI/2);
 
 		nco_get_samples(s,output1,blocksize);
 		nco_get_samples(c,output2,blocksize);
