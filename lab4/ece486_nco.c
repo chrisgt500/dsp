@@ -1,7 +1,10 @@
-#include "ece486_nco.h"
+
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <limits.h>
+
+#include "ece486_nco.h"
 
 
 
@@ -20,12 +23,10 @@ NCO_T * init_nco(float f0, float theta){
 void nco_get_samples(NCO_T *s, float *y, int n_samples){
 	float index = 0.0;
 	int i;
-
 	for (i = 0; i < n_samples; i ++){
 		s->theta_temp = s->theta_temp + 2*M_PI*(s->f0);
 		index = ((s->theta_temp)+(s->theta_const))*(512/(2*M_PI));
-		index = fmodf(index,512.0);
-		index = round(index);
+		index = ((int)index)%512;
 		y[i] = cosine_lookup(index);
 	}
 }

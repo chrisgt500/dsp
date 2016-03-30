@@ -24,7 +24,7 @@ CFLAGS = -mcpu=cortex-m4 -mthumb -O3 -Wall  \
          -fomit-frame-pointer -fno-strict-aliasing -fdata-sections \
          -include stm32l4xx_hal_conf.h -DARM_MATH_CM4 -D$(ARCH) \
          -mfpu=fpv4-sp-d16 -mfloat-abi=softfp $(INCDIRS) \
-         -fsingle-precision-constant -ffunction-sections -lm
+         -fsingle-precision-constant -ffunction-sections
 
 LDFLAGS = -u _printf_float \
 	  -Wl,-T$(LINKSCRIPT) \
