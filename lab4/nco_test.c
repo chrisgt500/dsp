@@ -23,33 +23,25 @@ int main(void){
 	blocksize = getblocksize();//
 
 
-	//blocksize = 100;
+	blocksize = 100;
 
 	output2 = (float *)malloc(sizeof(float)*blocksize);
 	output1 = (float *)malloc(sizeof(float)*blocksize);
 	input = (float *)malloc(sizeof(float)*blocksize);
 
 	c = init_nco(.01, 0);
-	s = init_nco(.01, M_PI);
+	s = init_nco(.1, M_PI);
 
-	/*nco_get_samples(c,output,blocksize);
+	//nco_get_samples(c,output1,blocksize);
 
-	for ( i = 0; i < blocksize ; i++){
-		printf("cos(%f) = %f \n",fmodf(c->theta_const + 2 * M_PI * c->f0 * (i+1),(2*M_PI)),output[i]);
-	}
+	/*for ( i = 0; i < blocksize ; i++){
+		printf("cos(%f) = %f \n",fmodf(c->theta_const + 2 * M_PI * c->f0 * (i+1),(2*M_PI)),output1[i]);
+	}*/
 
-	nco_get_samples(c,output,blocksize);
-
-	for ( i = 0; i < blocksize ; i++){
-		printf("cos(%f) = %f \n",fmodf(c->theta_const + 2 * M_PI * c->f0 * (i+1),(2*M_PI)),output[i]);
-	}
-	*/
 
 	while(1){
 		getblock(input);  //FUN FACT: YOU NEED TO CALL GETBLOCK EVEN IF YOU DONT NEED IT
-
 		nco_get_samples(c,output1,blocksize);
-
 		nco_get_samples(s,output2,blocksize);
 		putblockstereo(output1,output2);
 	}
