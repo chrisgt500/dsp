@@ -5,8 +5,6 @@
 
 #include "ece486_nco.h"
 
-#define PI 3.14159265359
-
 
 NCO_T * init_nco(float f0, float theta){
 	NCO_T *s = (NCO_T *)malloc(sizeof(NCO_T));
