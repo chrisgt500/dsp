@@ -48,8 +48,6 @@ int main(void){
 	while(1){
 		getblock(input);  //FUN FACT: YOU NEED TO CALL GETBLOCK EVEN IF YOU DONT NEED IT
 
-		mod = fmodf(mod + .02, .1);
-		nco_set_frequency(c,mod);
 		nco_get_samples(c,output1,blocksize);
 
 		nco_get_samples(s,output2,blocksize);
