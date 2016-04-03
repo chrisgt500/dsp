@@ -39,11 +39,11 @@ void nco_set_frequency(NCO_T *s, float f_new){
 }
 
 void nco_set_phase(NCO_T *s, float theta){
-  s->theta_const = theta;
+ 	s->theta_const = theta;
 }
 
 void destroy_nco(NCO_T *s){
-  free(s);
+ 	free(s);
 	s = NULL;
 }
 
