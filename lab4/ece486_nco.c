@@ -1,11 +1,11 @@
 
-#include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <limits.h>
 
 #include "ece486_nco.h"
 
+#define PI 3.14159265359
 
 
 NCO_T * init_nco(float f0, float theta){
@@ -26,10 +26,10 @@ void nco_get_samples(NCO_T *s, float *y, int n_samples){
 	int i;
 	for (i = 0; i < n_samples; i ++){
 
-		s->theta_temp = s->theta_temp + 2*M_PI*(s->f0);
+		s->theta_temp += 2*PI*(s->f0);
 		index = (s->theta_temp)+(s->theta_const);
-		index = index*(512/(2*M_PI));
-		round_index = lroundf(index);
+		index = index*(512/(2*PI));
+		round_index = (int)(index);
 		round_index = round_index%512;
 		y[i] = cosine_lookup(round_index);
 	}
@@ -117,5 +117,5 @@ float cosine_lookup(int index){
 	0.995185, 0.996313, 0.997290, 0.998118, 0.998795, 0.999322, 0.999699, 0.999925
 	};
 
-	return lookup[index];
+	return .99*lookup[index];
 }

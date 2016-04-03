@@ -41,7 +41,7 @@ debug : LDFLAGS += -Wl,-Map,$(TARGET).map
 debug : all
 
 $(TARGET): $(OBJS)
-	$(CC)  -o $(TARGET) $(CFLAGS) $(LDFLAGS) $(OBJS) -lm $(LIBS)
+	$(CC)  -o $(TARGET) $(CFLAGS) $(LDFLAGS) $(OBJS) $(LIBS)
 
 $(TARGET).bin: $(TARGET)
 	$(OBJCOPY) -Obinary $(TARGET) $(TARGET).bin
