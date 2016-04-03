@@ -5,6 +5,9 @@
 #ifndef ECE486_MIXER_H
 #define ECE486_MIXER_H
 
+#ifndef PI
+#define PI 3.14159265359
+#endif
 
 
 typedef struct{

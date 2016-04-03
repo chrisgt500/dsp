@@ -76,9 +76,9 @@
 #ifndef ECE486_NCO
 #define ECE486_NCO
 
-
+#ifndef PI
 #define PI 3.14159265359
-
+#endif
 
 typedef struct{
   float f0; //!<
