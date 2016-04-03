@@ -76,6 +76,10 @@
 #ifndef ECE486_NCO
 #define ECE486_NCO
 
+
+#define PI 3.14159265359
+
+
 typedef struct{
   float f0; //!<
   float theta_temp; //!<
