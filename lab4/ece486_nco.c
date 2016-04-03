@@ -25,7 +25,7 @@ void nco_get_samples(NCO_T *s, float *y, int n_samples){
 
 
 	for (i = 0; i < n_samples; i ++){
-		s->theta_temp += 2*M_PI*(s->f0);
+		s->theta_temp += 2*PI*(s->f0);
 		index = (s->theta_temp)+(s->theta_const);
 		index = index*(512/(2*PI));
 		round_index = (int)(index);

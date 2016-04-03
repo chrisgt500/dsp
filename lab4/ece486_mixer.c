@@ -1,6 +1,6 @@
 #include "ece486_nco.h"
-#include "ece486_mixer.h"
 #include "ece486_biquad.h"
+#include "ece486_mixer.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -9,7 +9,7 @@ void decimate(FSK_T *s, float *input){
 	int i;
 
 	for (i = 0; i < s->blocksize/5; i++){
-		s->data = input[i*5];
+		s->data[i] = input[i*5];
 	}
 }
 
@@ -30,22 +30,27 @@ FSK_T * init_mixer(int bs, float Fs, int center_freq, float theta, int decimatio
 		printf("Could not allocate an FSK_T struct");
 		exit(0);
 	}
-	mixer->data = (float *)malloc(sizeof(float)*bs/5);
+	mixer->data = (float *)malloc(sizeof(float)*bs/decimation);
 	if(mixer->data == NULL) {
-		printf("Could not allocate an data array");
+		printf("Could not allocate a data array");
 		exit(0);
 	}
 	mixer->blocksize = bs;
 	mixer->Fs = Fs;
 	mixer->nco_data = init_nco(center_freq/(Fs/decimation),theta);
-	mixer->decimation;
-	mixer->z[] = {0.0, 0.0};
+	mixer->decimation = decimation;
+	mixer->z = (float *)malloc(sizeof(float) * 2);
+	if(mixer->z == NULL) {
+		printf("Could not allocate a z array");
+		exit(0);
+	}
 
 	return mixer;
 }
 
 void destroy_mixer(FSK_T *mixer){
 	destroy_nco(mixer->nco_data);
+	free(mixer->z);
 	mixer->z = NULL;
 	free(mixer->data);
 	mixer->data = NULL;
@@ -60,11 +65,10 @@ float * differentiator(FSK_T *mixer1, FSK_T *mixer2){
 	for (i = 0 ; i < (mixer1->blocksize/mixer1->decimation); i++) {
 		if (i < 2) output[i] = (mixer1->data[i] - mixer1->z[i]) * mixer2->data[i];
 		else output[i] = (mixer1->data[i] - mixer1->data[i-2]) * mixer2->data[i];
-		}
 	}
 
-	mixer1->z[0] = mixer1->data[i-2];
-	mixer1->z[1] = mixer1->data[i-1];
+	(mixer1->z)[0] = mixer1->data[i-2];
+	(mixer1->z)[1] = mixer1->data[i-1];
 
 	return output;
 }
@@ -127,14 +131,13 @@ float * demod(float *input, FSK_T *real, FSK_T *imaginary, BIQUAD_T *filter1, BI
 	sq_data = data_squared(real,imaginary);
 
 	//Add real and imaginary signals and divide by sq data and apply gain
-	return output_stage(output1,output2,sq_data,bs_nco,gain_calc(real->fs));
+	return output_stage(output1,output2,sq_data,bs_nco,gain_calc(real->Fs));
 }
 
 float * antidecimate(float *demod_data, int blocksize, int decimation){
 	int i;
 	float output[blocksize];
 
-	
 
 	for (i = 0; i < blocksize; i++){
 		output[i] = demod_data[i/decimation];

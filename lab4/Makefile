@@ -1,6 +1,6 @@
-TARGET=nco_test
+TARGET=fsk_rt
 
-OBJS=nco_test.o ece486_nco.o
+OBJS=fsk_rt.o ece486_nco.o ece486_biquad.o ece486_mixer.o
 
 
 INSTALLDIR = /usr/local/stmdev/

@@ -1,16 +1,27 @@
-
-#define D1 5
+#include "ece486_nco.h"
+#include "ece486_biquad.h"
+#include "ece486_mixer.h"
+#include "ece486.h"
+#include "stm32l4xx_hal.h"
+#include "stm32l476g_discovery.h"
+#include <stdlib.h>
+#include <stdio.h>
 
 int main(void){
 
-	int i;
-
 	float *input, *output1, *output2;
+	int blocksize, i;
+	int decimation = 5;
+	float fs;
 
-	initialize(FS_50k, MONO_IN, STEREO_OUT)
+	initialize(FS_50K, MONO_IN, STEREO_OUT);
 
 	fs = getsamplingfrequency();
 	blocksize = getblocksize();
+
+	gain = 1;
+
+	sections1 = 7;
 
 	float lpf1[35] = {
 	1.000000, -1.818543, 1.000000, -1.819877, 0.999565,
@@ -22,6 +33,8 @@ int main(void){
 	1.000000, 1.000000, 0.000000, -0.916116, 0.000000
 	};
 
+	sections2 = 6;
+
 	float lpf2[30] = {
 	1.000000, 1.093320, 1.000000, 1.069351, 0.997195,
 	1.000000, 1.110386, 1.000000, 1.048001, 0.987411,
@@ -31,31 +44,34 @@ int main(void){
 	1.000000, 1.000000, 0.000000, -0.461086, 0.000000
 	};
 
+	filter1 = init_biquad(sections1, gain, lpf1, blocksize);
+	filter2 = init_biquad(sections2, gain, lpf2, blocksize);
+
 	while(1){
-		getblock(input);
 
-		//STAGE 1 processing with sample at fs
-		//array size blocksize
+		bs_nco = real->blocksize / real->decimation ;
 
-		//Decimation:
-		for(i = 0; i < blocksize/D1; i++)
-		stage2_input[i] = stage1_output[i*D1];
+		// First LP filter
+		calc_biquad(filter1, input, output1);
 
+		//"Decimating" the data
+		decimate(real, output1);
+		decimate(imaginary, output1);
 
-		//Stage 2 processing with sample fs/D1
-		//array size blocksize/D1
+		//Separating real and imaginary signals
+		sinusoidal_mult(real);
+		sinusoidal_mult(imaginary);
 
+		//Filter each signal separately
+		calc_biquad(filter2, real->data, real->data);
+		calc_biquad(filter2, imaginary->data, imaginary->data);
 
-		//output values to the dac (Might need other stuff)
-		for (i=0; i<MY_NSAMP/D1; i++) {
-			// Every stage-3 output should be written to D1 output samples!
-			for (j=0; j<D1; j++) {
-  				output1[i*D1+j] = stage2_output_re[i];
-  				output2[i*D1+j] = stage2_output_im[i];
-			}
-  		}
+		//Differentation of the signals
+		output1 = differentiator(real, imaginary);
+		output2 = differentiator(imaginary, real);
 
-		putblockstereo(output1, output2);
+		//antidecimation();
+		//putblockstereo
 
 	}
 

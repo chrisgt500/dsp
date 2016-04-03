@@ -1,7 +1,3 @@
-
-
-
-
 #ifndef ECE486_MIXER_H
 #define ECE486_MIXER_H
 
@@ -15,6 +11,8 @@ typedef struct{
 	int blocksize;
 	int Fs;
 	NCO_T *nco_data;
+	int decimation;
+	float *z;
 } FSK_T;
 
 void decimate(
@@ -31,11 +29,10 @@ FSK_T * init_mixer(
 	float Fs,
 	int center_freq,
 	float theta,
-	int decimation,
-	float *z
+	int decimation
 );
 
-void * destroy_mixer(
+void destroy_mixer(
 	FSK_T *mixer
 );
 
