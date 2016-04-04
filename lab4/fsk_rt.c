@@ -1,30 +1,31 @@
 #include "ece486_nco.h"
 #include "ece486_biquad.h"
 #include "ece486_mixer.h"
-//#include "ece486.h"
-//#include "stm32l4xx_hal.h"
-//#include "stm32l476g_discovery.h"
+#include "ece486.h"
+#include "stm32l4xx_hal.h"
+#include "stm32l476g_discovery.h"
 #include <stdlib.h>
 #include <stdio.h>
 
 int main(void){
 
-	float *input, *output1, *output2;
-	BIQUAD_T *filter1;
-	BIQUAD_T *filter2;
-	int blocksize, i;
+	float *input, *output;
+	BIQUAD_T *filter1, *filter2;
+	FSK_T *real, *imaginary;
+	int blocksize;
 	int decimation = 5;
 	int sections1 = 7;
 	int sections2 = 6;
 	float gain = 1;
 	float fs;
+	int center_freq = 1700;
 
-	//initialize(FS_50K, MONO_IN, STEREO_OUT);
+	initialize(FS_50K, MONO_IN, STEREO_OUT);
 
-	//fs = getsamplingfrequency();
-	//blocksize = getblocksize();
+	fs = getsamplingfrequency();
+	blocksize = getblocksize();
 
-	float lpf2[35] = {
+	float lpf1[35] = {
 	1.000000, -1.817556, 1.000000, -1.819743, 0.999390,
 	1.000000, -1.815710, 1.000000, -1.819609, 0.997400,
 	1.000000, -1.809520, 1.000000, -1.820264, 0.992202,
@@ -43,15 +44,18 @@ int main(void){
 	1.000000, 1.090314, 1.000000, 1.069894, 0.997867
 	};
 
-	blocksize = 100;
+	input = (float *)malloc(sizeof(float)*blocksize);
+	output = (float *)malloc(sizeof(float)*blocksize);
 
 	filter1 = init_biquad(sections1, gain, lpf1, blocksize);
 	filter2 = init_biquad(sections2, gain, lpf2, blocksize);
 
+	real = init_mixer(blocksize, fs, center_freq, 0.0, decimation);
+	imaginary = init_mixer(blocksize, fs, center_freq, PI/2, decimation);
+
 	while(1){
-
-
+		getblock(input);
+		demod(input, real, imaginary, filter1, filter2, output);
+		putblock(output);
 	}
-
-
 }

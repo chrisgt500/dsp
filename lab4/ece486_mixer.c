@@ -97,6 +97,7 @@ void demod(float *input, FSK_T *real, FSK_T *imaginary, BIQUAD_T *filter1, BIQUA
 	float sq_data[bs_nco];
 	float output1[bs_nco];
 	float output2[bs_nco];
+	float output3[bs_nco];
 
 	// First LP filter
 	calc_biquad(filter1, input, output1);
@@ -121,12 +122,14 @@ void demod(float *input, FSK_T *real, FSK_T *imaginary, BIQUAD_T *filter1, BIQUA
 	data_squared(real,imaginary,sq_data);
 
 	//Add real and imaginary signals and divide by sq data and apply gain
-	output_stage(output1,output2,sq_data,bs_nco,gain_calc(real->Fs),demod_output);
+	output_stage(output1,output2,sq_data,bs_nco,gain_calc(real->Fs),output3);
+
+	//Antidecimates the signal in prep to go to the DAC
+	antidecimate(output3, real->blocksize, real->decimation, demod_output);
 }
 
 void antidecimate(float *demod_data, int blocksize, int decimation, float *output){
 	int i;
-	//float output[blocksize];
 
 	for (i = 0; i < blocksize; i++){
 		output[i] = demod_data[i/decimation];
