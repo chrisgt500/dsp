@@ -1,27 +1,28 @@
 #include "ece486_nco.h"
 #include "ece486_biquad.h"
 #include "ece486_mixer.h"
-#include "ece486.h"
-#include "stm32l4xx_hal.h"
-#include "stm32l476g_discovery.h"
+//#include "ece486.h"
+//#include "stm32l4xx_hal.h"
+//#include "stm32l476g_discovery.h"
 #include <stdlib.h>
 #include <stdio.h>
 
 int main(void){
 
 	float *input, *output1, *output2;
+	BIQUAD_T *filter1;
+	BIQUAD_T *filter2;
 	int blocksize, i;
 	int decimation = 5;
+	int sections1 = 7;
+	int sections2 = 6;
+	float gain = 1;
 	float fs;
 
-	initialize(FS_50K, MONO_IN, STEREO_OUT);
-
-	fs = getsamplingfrequency();
-	blocksize = getblocksize();
-
-	gain = 1;
-
-	sections1 = 7;
+	//initialize(FS_50K, MONO_IN, STEREO_OUT);
+	blocksize = 100;
+	//fs = getsamplingfrequency();
+	//blocksize = getblocksize();
 
 	float lpf1[35] = {
 	1.000000, -1.818543, 1.000000, -1.819877, 0.999565,
@@ -32,8 +33,6 @@ int main(void){
 	1.000000, -1.404771, 1.000000, -1.828775, 0.882739,
 	1.000000, 1.000000, 0.000000, -0.916116, 0.000000
 	};
-
-	sections2 = 6;
 
 	float lpf2[30] = {
 	1.000000, 1.093320, 1.000000, 1.069351, 0.997195,
@@ -49,29 +48,8 @@ int main(void){
 
 	while(1){
 
-		bs_nco = real->blocksize / real->decimation ;
 
-		// First LP filter
-		calc_biquad(filter1, input, output1);
 
-		//"Decimating" the data
-		decimate(real, output1);
-		decimate(imaginary, output1);
-
-		//Separating real and imaginary signals
-		sinusoidal_mult(real);
-		sinusoidal_mult(imaginary);
-
-		//Filter each signal separately
-		calc_biquad(filter2, real->data, real->data);
-		calc_biquad(filter2, imaginary->data, imaginary->data);
-
-		//Differentation of the signals
-		output1 = differentiator(real, imaginary);
-		output2 = differentiator(imaginary, real);
-
-		//antidecimation();
-		//putblockstereo
 
 	}
 

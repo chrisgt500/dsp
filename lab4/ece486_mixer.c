@@ -58,9 +58,8 @@ void destroy_mixer(FSK_T *mixer){
 	mixer = NULL;
 }
 
-float * differentiator(FSK_T *mixer1, FSK_T *mixer2){
+void differentiator(FSK_T *mixer1, FSK_T *mixer2, float *output){
 	int i;
-	float output[mixer1->blocksize/mixer1->decimation];
 
 	for (i = 0 ; i < (mixer1->blocksize/mixer1->decimation); i++) {
 		if (i < 2) output[i] = (mixer1->data[i] - mixer1->z[i]) * mixer2->data[i];
@@ -69,44 +68,35 @@ float * differentiator(FSK_T *mixer1, FSK_T *mixer2){
 
 	(mixer1->z)[0] = mixer1->data[i-2];
 	(mixer1->z)[1] = mixer1->data[i-1];
-
-	return output;
 }
 
-float * data_squared(FSK_T *mixer1, FSK_T *mixer2){
+void data_squared(FSK_T *mixer1, FSK_T *mixer2, float *output){
 	int i;
-	float output[mixer1->blocksize/mixer1->decimation];
 
 	for (i = 0 ; i < (mixer1->blocksize/mixer1->decimation); i++) {
 		output[i] = mixer1->data[i] * mixer1->data[i] +
 					mixer2->data[i] * mixer2->data[i];
 	}
-
-	return output;
 }
 
-float * output_stage(float *re, float *im, float *data_sq, int bs_nco, float gain){
+void output_stage(float *re, float *im, float *data_sq, int bs_nco, float gain, float *output_stage_output){
 	int i;
-	float output[bs_nco];
 
 	for (i = 0; i < bs_nco ; i++){
-		output[i] = (im[i] - re[i]) / data_sq[i];
-		output[i] *= gain;
+		output_stage_output[i] = (im[i] - re[i]) / data_sq[i];
+		output_stage_output[i] *= gain;
 		}
-
-	return output;
 }
 
 float gain_calc(float fs){
 	return (fs/(4*PI*1000));
 }
 
-float * demod(float *input, FSK_T *real, FSK_T *imaginary, BIQUAD_T *filter1, BIQUAD_T *filter2){
-	float *output1, *output2;
-	float *sq_data;
-	float bs_nco;
-
-	bs_nco = real->blocksize / real->decimation ;
+void demod(float *input, FSK_T *real, FSK_T *imaginary, BIQUAD_T *filter1, BIQUAD_T *filter2, float *demod_output){
+	int bs_nco = real->blocksize / real->decimation ;
+	float sq_data[bs_nco];
+	float output1[bs_nco];
+	float output2[bs_nco];
 
 	// First LP filter
 	calc_biquad(filter1, input, output1);
@@ -124,23 +114,21 @@ float * demod(float *input, FSK_T *real, FSK_T *imaginary, BIQUAD_T *filter1, BI
 	calc_biquad(filter2, imaginary->data, imaginary->data);
 
 	//Differentation of the signals
-	output1 = differentiator(real, imaginary);
-	output2 = differentiator(imaginary, real);
+	differentiator(real, imaginary, output1);
+	differentiator(imaginary, real, output2);
 
 	//Square the data
-	sq_data = data_squared(real,imaginary);
+	data_squared(real,imaginary,sq_data);
 
 	//Add real and imaginary signals and divide by sq data and apply gain
-	return output_stage(output1,output2,sq_data,bs_nco,gain_calc(real->Fs));
+	output_stage(output1,output2,sq_data,bs_nco,gain_calc(real->Fs),demod_output);
 }
 
-float * antidecimate(float *demod_data, int blocksize, int decimation){
+void antidecimate(float *demod_data, int blocksize, int decimation, float *output){
 	int i;
-	float output[blocksize];
-
+	//float output[blocksize];
 
 	for (i = 0; i < blocksize; i++){
 		output[i] = demod_data[i/decimation];
 	}
-	return output;
 }

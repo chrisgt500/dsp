@@ -36,40 +36,45 @@ void destroy_mixer(
 	FSK_T *mixer
 );
 
-float * differential(
+void differential(
 	FSK_T *re_mix,
-	FSK_T *im_mix
+	FSK_T *im_mix,
+	float *output
 );
 
-float * data_squared(
+void data_squared(
 	FSK_T *mixer1,
-	FSK_T *mixer2
+	FSK_T *mixer2,
+	float *output
 );
 
-float * output_stage(
+void output_stage(
 	float *real,
 	float *im,
 	float *data_sq,
 	int bs_nco,
-	float gain
+	float gain,
+	float *output_stage_output
 );
 
 float gain_calc(
 	float fs
 );
 
-float * demod(
+void demod(
 	float *input,
 	FSK_T *real,
 	FSK_T *imag,
 	BIQUAD_T *filter1,
-	BIQUAD_T *filter2
+	BIQUAD_T *filter2,
+	float *demod_output
 );
 
-float * antidecimate(
+void antidecimate(
 	float *demod_data,
 	int decimation,
-	int blocksize
+	int blocksize,
+	float *output
 );
 
 #endif
