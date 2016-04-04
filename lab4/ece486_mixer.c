@@ -3,6 +3,9 @@
 #include "ece486_mixer.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include "ece486.h"
+#include "stm32l4xx_hal.h"
+#include "stm32l476g_discovery.h"
 
 
 void decimate(FSK_T *s, float *input){

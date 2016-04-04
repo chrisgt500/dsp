@@ -55,7 +55,8 @@ int main(void){
 
 	while(1){
 		getblock(input);
-		demod(input, real, imaginary, filter1, filter2, output);
+		//demod(input, real, imaginary, filter1, filter2, output);
+		calc_biquad(filter1, input, output1);
 		putblock(output);
 	}
 }
