@@ -107,6 +107,7 @@ void demod(float *input, FSK_T *real, FSK_T *imaginary, BIQUAD_T *filter1, BIQUA
 
 	//"Decimating" the data
 	decimate(real, output1);
+	putblock(output1);
 	decimate(imaginary, output1);
 
 	//Separating real and imaginary signals
