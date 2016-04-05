@@ -9,7 +9,7 @@
 
 int main(void){
 
-	float *input, *output;
+	float *input, *output1, *output2;
 	BIQUAD_T *filter1, *filter2;
 	FSK_T *real, *imaginary;
 	int blocksize;
@@ -21,7 +21,7 @@ int main(void){
 	float fs;
 	int center_freq = 1700;
 
-	initialize(FS_50K, MONO_IN, MONO_OUT);
+	initialize(FS_50K, MONO_IN, STEREO_OUT);
 
 	//new coefficients for filter one after talking with hummels
 	float lpf1[35] = {
@@ -50,9 +50,10 @@ int main(void){
 	blocksize = getblocksize();
 
 	input = (float *)malloc(sizeof(float)*blocksize);
-	output = (float *)malloc(sizeof(float)*blocksize);
+	output1 = (float *)malloc(sizeof(float)*blocksize);
+	output2 = (float *)malloc(sizeof(float)*blocksize);
 
-	if (input==NULL || output==NULL) {  //error checking
+	if (input==NULL || output1==NULL || output2==NULL) {  //error checking
     	flagerror(MEMORY_ALLOCATION_ERROR);
 		while(1);
 	}
@@ -65,7 +66,24 @@ int main(void){
 
 	while(1){
 		getblock(input);
-		demod(input, real, imaginary, filter1, filter2, output);
-		putblock(output);
+		DIGITAL_IO_SET();
+		//demod(input, real, imaginary, filter1, filter2, output);
+		calc_biquad(filter1,input,output1);
+		DIGITAL_IO_RESET();
+		
+		decimate(real, output1);
+		decimate(imaginary, output1);
+
+		sinusoidal_mult(real);
+		sinusoidal_mult(imaginary);
+
+		calc_biquad(filter2, real->data, real->data);
+		calc_biquad(filter2, imaginary->data, imaginary->data);
+
+		antidecimate(real->data,blocksize,decimation,output1);
+		antidecimate(imaginary->data,blocksize,decimation,output2);
+
+
+		putblockstereo(output1,output2);
 	}
 }
