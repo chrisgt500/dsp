@@ -14,10 +14,10 @@ int main(void){
 	FSK_T *real, *imaginary;
 	int blocksize;
 	int decimation = 5;
-	int sections1 = 5;
-	int sections2 = 4;
+	int sections1 = 7;
+	int sections2 = 6;
 	float gain1 = 0.000790;
-	float gain2 = 1;
+	float gain2 = 0.061373;
 	float fs;
 	int center_freq = 1700;
 
@@ -34,11 +34,16 @@ int main(void){
 		1.000000, 1.000000, 0.000000, -0.900799, 0.000000
 	};
 
+	//new coefs for filter two, unsure if the right passband is used
+	//filter is for an fs of 10k with a passband of 3.4k and a stop band of
+	//3.45k
 	float lpf2[30] = {
-		1.000000, 1.272696, 1.000000, 1.048769, 0.972109,
-		1.000000, 1.408362, 1.000000, 0.834758, 0.873649,
-		1.000000, 1.736140, 1.000000, 0.122820, 0.586595,
-		1.000000, 1.000000, 0.000000, -0.436084, 0.000000
+		1.000000, 1.127121, 1.000000, 1.067634, 0.993139,
+		1.000000, 1.156270, 1.000000, 1.028751, 0.972359,
+		1.000000, 1.240268, 1.000000, 0.917511, 0.922710,
+		1.000000, 1.436222, 1.000000, 0.617678, 0.792323,
+		1.000000, 1.775232, 1.000000, -0.104616, 0.479355,
+		1.000000, 1.000000, 0.000000, -0.410847, 0.000000
 	};
 
 	fs = getsamplingfrequency();
