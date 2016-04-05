@@ -9,7 +9,7 @@
 
 int main(void){
 
-	float *input, *output1, *output2;
+	float *input, *output1, *output2, *output3, *sq_data;
 	BIQUAD_T *filter1, *filter2;
 	FSK_T *real, *imaginary;
 	int blocksize;
@@ -52,6 +52,8 @@ int main(void){
 	input = (float *)malloc(sizeof(float)*blocksize);
 	output1 = (float *)malloc(sizeof(float)*blocksize);
 	output2 = (float *)malloc(sizeof(float)*blocksize);
+	output3 = (float *)malloc(sizeof(float)*blocksize);
+	sq_data = (float *)malloc(sizeof(float)*blocksize/decimation);
 
 	if (input==NULL || output1==NULL || output2==NULL) {  //error checking
     	flagerror(MEMORY_ALLOCATION_ERROR);
@@ -66,10 +68,8 @@ int main(void){
 
 	while(1){
 		getblock(input);
-		DIGITAL_IO_SET();
 		//demod(input, real, imaginary, filter1, filter2, output);
 		calc_biquad(filter1,input,output1);
-		DIGITAL_IO_RESET();
 
 		decimate(real, output1);
 		decimate(imaginary, output1);
@@ -80,10 +80,15 @@ int main(void){
 		calc_biquad(filter2, real->data, real->data);
 		calc_biquad(filter2, imaginary->data, imaginary->data);
 
-		antidecimate(real->data,blocksize,decimation,output1);
-		antidecimate(imaginary->data,blocksize,decimation,output2);
+		differentiator(real, imaginary, output1);
+		differentiator(imaginary, real, output2);
 
+		data_squared(real,imaginary,sq_data);
 
-		putblockstereo(output1,output2);
+		output_stage(output1,output2,sq_data,blocksize/decimation,gain_calc((real->Fs)/5),output3);
+
+		antidecimate(output3,blocksize,decimation,output1);
+
+		putblock(output1);
 	}
 }
