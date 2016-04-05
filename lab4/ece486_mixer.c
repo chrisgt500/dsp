@@ -18,11 +18,11 @@ void decimate(FSK_T *s, float *input){
 
 void sinusoidal_mult(FSK_T *s){
 	int i;
-	float y[s->blocksize/5];
+	float y[s->blocksize/decimation];
 
-	nco_get_samples(s->nco_data, y, s->blocksize/5);
+	nco_get_samples(s->nco_data, y, s->blocksize/s->decimation);
 
-	for(i = 0; i < s->blocksize/5; i++){
+	for(i = 0; i < s->blocksize/decimation; i++){
 		s->data[i] = s->data[i] * y[i];
 	}
 }
@@ -69,7 +69,7 @@ void differentiator(FSK_T *mixer1, FSK_T *mixer2, float *output){
 		else output[i] = (mixer1->data[i] - mixer1->data[i-2]) * mixer2->data[i];
 	}
 
-	(mixer1->z)[0] = mixer1->data[i-2];
+	(mixer1->z)[0] = mixer1->data[i-2]; //possibly change this...
 	(mixer1->z)[1] = mixer1->data[i-1];
 }
 
@@ -77,8 +77,8 @@ void data_squared(FSK_T *mixer1, FSK_T *mixer2, float *output){
 	int i;
 
 	for (i = 0 ; i < (mixer1->blocksize/mixer1->decimation); i++) {
-		output[i] = mixer1->data[i] * mixer1->data[i] +
-					mixer2->data[i] * mixer2->data[i];
+		output[i] = (mixer1->data[i] * mixer1->data[i]) +
+					(mixer2->data[i] * mixer2->data[i]);
 	}
 }
 
@@ -125,7 +125,7 @@ void demod(float *input, FSK_T *real, FSK_T *imaginary, BIQUAD_T *filter1, BIQUA
 	data_squared(real,imaginary,sq_data);
 
 	//Add real and imaginary signals and divide by sq data and apply gain
-	output_stage(output1,output2,sq_data,bs_nco,gain_calc(real->Fs),output3);
+	output_stage(output1,output2,sq_data,bs_nco,gain_calc(real->Fs/real->decimation),output3);
 
 	//Antidecimates the signal in prep to go to the DAC
 	antidecimate(output3, real->blocksize, real->decimation, demod_output);

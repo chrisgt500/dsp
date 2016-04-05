@@ -85,7 +85,7 @@ int main(void){
 
 		data_squared(real,imaginary,sq_data);
 
-		output_stage(output1,output2,sq_data,blocksize/decimation,gain_calc((real->Fs)/5),output3);
+		output_stage(output1,output2,sq_data,blocksize/decimation,gain_calc(real->Fs/real->decimation),output3);
 
 		antidecimate(output3,blocksize,decimation,output1);
 
