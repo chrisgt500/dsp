@@ -58,7 +58,7 @@ int main(void){
 	}
 
 	filter1 = init_biquad(sections1, gain1, lpf1, blocksize);
-	filter2 = init_biquad(sections2, gain2, lpf2, blocksize);
+	filter2 = init_biquad(sections2, gain2, lpf2, blocksize/decimation);
 
 	real = init_mixer(blocksize, fs, center_freq, 0.0, decimation);
 	imaginary = init_mixer(blocksize, fs, center_freq, PI/2, decimation);
