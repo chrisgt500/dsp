@@ -16,18 +16,22 @@ int main(void){
 	int decimation = 5;
 	int sections1 = 5;
 	int sections2 = 4;
-	float gain = 1;
+	float gain1 = 0.000790;
+	float gain2 = 1;
 	float fs;
 	int center_freq = 1700;
 
 	initialize(FS_50K, MONO_IN, MONO_OUT);
 
-	float lpf1[25] = {
-		1.000000, -1.802793, 1.000000, -1.816862, 0.995651,
-		1.000000, -1.787718, 1.000000, -1.815504, 0.981259,
-		1.000000, -1.726035, 1.000000, -1.818170, 0.946206,
-		1.000000, -1.383865, 1.000000, -1.824551, 0.880614,
-		1.000000, 1.000000, 0.000000, -0.914493, 0.000000
+	//new coefficients for filter one after talking with hummels
+	float lpf1[35] = {
+		1.000000, -1.816640, 1.000000, -1.819345, 0.999023,
+		1.000000, -1.814388, 1.000000, -1.818497, 0.995954,
+		1.000000, -1.807075, 1.000000, -1.817614, 0.988390,
+		1.000000, -1.784669, 1.000000, -1.815796, 0.968977,
+		1.000000, -1.707077, 1.000000, -1.811806, 0.924865,
+		1.000000, -1.305013, 1.000000, -1.805433, 0.854065,
+		1.000000, 1.000000, 0.000000, -0.900799, 0.000000
 	};
 
 	float lpf2[30] = {
@@ -48,8 +52,8 @@ int main(void){
 		while(1);
 	}
 
-	filter1 = init_biquad(sections1, gain, lpf1, blocksize);
-	filter2 = init_biquad(sections2, gain, lpf2, blocksize);
+	filter1 = init_biquad(sections1, gain1, lpf1, blocksize);
+	filter2 = init_biquad(sections2, gain2, lpf2, blocksize);
 
 	real = init_mixer(blocksize, fs, center_freq, 0.0, decimation);
 	imaginary = init_mixer(blocksize, fs, center_freq, PI/2, decimation);
