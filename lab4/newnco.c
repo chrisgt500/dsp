@@ -24,7 +24,7 @@ NCO_T * init_nco(float freq, float theta){
 	}
 	s->f0 = i32*freq;
 	s->theta_const = i32*theta/(2*PI);
-	s->theta_temp = 0;
+	s->theta_temp = ~i32*freq+1;
 	return s;
 }
 

@@ -16,7 +16,7 @@ int main(void){
 	int decimation = 5;
 	int sections1 = 7;
 	int sections2 = 5;
-	float gain1 = 0.000488;
+	float gain1 = 0.000485;
 	float gain2 = 0.000871;
 	float fs;
 	int center_freq = 1700;
@@ -72,6 +72,27 @@ int main(void){
 		getblock(input);
 		//demod(input, real, imaginary, filter1, filter2, output1);
 		calc_biquad(filter1, input, output1);
+
+
+		decimate(real, output1);
+		decimate(imaginary, output1);
+
+
+		sinusoidal_mult(real);
+		sinusoidal_mult(imaginary);
+
+		calc_biquad(filter2, real->data, real->data);
+		calc_biquad(filter2, imaginary->data, imaginary->data);
+
+
+		differentiator(real, imaginary, output4);
+		differentiator(imaginary, real, output5);
+
+		data_squared(real,imaginary,sq_data);
+
+		output_stage(output4,output5,sq_data,blocksize/decimation,gain_calc(real->Fs/real->decimation),output6);
+
+		antidecimate(output6, real->blocksize, real->decimation, output1);
 
 		putblock(output1);
 	}

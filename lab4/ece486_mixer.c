@@ -65,8 +65,8 @@ void differentiator(FSK_T *mixer1, FSK_T *mixer2, float *output){
 	int i;
 
 	for (i = 0 ; i < (mixer1->blocksize/mixer1->decimation); i++) {
-		if (i < 2) output[i] = (mixer1->data[i] - mixer1->z[i]) * mixer2->data[i];
-		else output[i] = (mixer1->data[i] - mixer1->data[i-2]) * mixer2->data[i];
+		if (i < 2) output[i] = (mixer1->data[i] - mixer1->z[i]);// * mixer2->data[i];
+		else output[i] = (mixer1->data[i] - mixer1->data[i-2]);// * mixer2->data[i];
 	}
 
 	(mixer1->z)[0] = mixer1->data[i-2];

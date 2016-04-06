@@ -116,5 +116,5 @@ float cosine_lookup(int index){
 	0.995185, 0.996313, 0.997290, 0.998118, 0.998795, 0.999322, 0.999699, 0.999925
 	};
 
-	return .99*lookup[index];
+	return lookup[index];
 }
