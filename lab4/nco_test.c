@@ -1,11 +1,12 @@
-#include "stm32l4xx_hal.h"
-#include "stm32l476g_discovery.h"
-#include "ece486.h"
+//#include "stm32l4xx_hal.h"
+//#include "stm32l476g_discovery.h"
+//#include "ece486.h"
 
-#include "ece486_nco.h"
+#include <stdint.h>
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include "newnco.h"
 
 
 int main(void){
@@ -18,9 +19,9 @@ int main(void){
 	NCO_T *s;
 
 	float *input, *output1, *output2;
-	initialize(FS_50K, MONO_IN, STEREO_OUT);//
-	fs = getsamplingfrequency();//
-	blocksize = getblocksize();//
+	//initialize(FS_50K, MONO_IN, STEREO_OUT);//
+	//fs = getsamplingfrequency();//
+	//blocksize = getblocksize();//
 
 
 	blocksize = 100;
@@ -29,20 +30,22 @@ int main(void){
 	output1 = (float *)malloc(sizeof(float)*blocksize);
 	input = (float *)malloc(sizeof(float)*blocksize);
 
-	c = init_nco(.01, 0);
+	c = init_nco(.1, 0);
 	s = init_nco(.1, M_PI);
 
-	//nco_get_samples(c,output1,blocksize);
+	nco_get_samples(c,output1,blocksize);
 
-	/*for ( i = 0; i < blocksize ; i++){
-		printf("cos(%f) = %f \n",fmodf(c->theta_const + 2 * M_PI * c->f0 * (i+1),(2*M_PI)),output1[i]);
-	}*/
+	for ( i = 0; i < blocksize ; i++){
+		printf("cos(%f) = %f \n",fmodf(0 + 2 * M_PI * .01 * (i+1),(2*M_PI)),output1[i]);
+	}
 
-
+/*
 	while(1){
 		getblock(input);  //FUN FACT: YOU NEED TO CALL GETBLOCK EVEN IF YOU DONT NEED IT
 		nco_get_samples(c,output1,blocksize);
 		nco_get_samples(s,output2,blocksize);
 		putblockstereo(output1,output2);
 	}
+	*/
+	return 0; 
 }
