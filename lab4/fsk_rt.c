@@ -35,8 +35,8 @@ int main(void){
 	};
 
 	//new coefs for filter two, unsure if the right passband is used
-	//filter is for an fs of 10k with a passband of 3.4k and a stop band of
-	//3.4
+	//filter is for an fs of 10k with a passband of 2.6k and a stop band of
+	//2.65k
 	float lpf2[30] = {
 		1.000000, 0.188985, 1.000000, 0.123364, 0.994580,
 		1.000000, 0.226666, 1.000000, 0.087047, 0.977808,
