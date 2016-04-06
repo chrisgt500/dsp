@@ -9,7 +9,7 @@
 
 int main(void){
 
-	float *input, *output1, *output2, *output3, *sq_data;
+	float *input, *output1, *output2, *output3, *output4, *output5, *output6, *sq_data;
 	BIQUAD_T *filter1, *filter2;
 	FSK_T *real, *imaginary;
 	int blocksize;
@@ -53,6 +53,9 @@ int main(void){
 	output1 = (float *)malloc(sizeof(float)*blocksize);
 	output2 = (float *)malloc(sizeof(float)*blocksize);
 	output3 = (float *)malloc(sizeof(float)*blocksize);
+	output4 = (float *)malloc(sizeof(float)*blocksize/decimation);
+	output5 = (float *)malloc(sizeof(float)*blocksize/decimation);
+	output6 = (float *)malloc(sizeof(float)*blocksize/decimation);
 	sq_data = (float *)malloc(sizeof(float)*blocksize/decimation);
 
 	if (input==NULL || output1==NULL || output2==NULL) {  //error checking
@@ -68,26 +71,8 @@ int main(void){
 
 	while(1){
 		getblock(input);
-		//demod(input, real, imaginary, filter1, filter2, output);
-		calc_biquad(filter1,input,output1);
-
-		decimate(real, output1);
-		decimate(imaginary, output1);
-
-		sinusoidal_mult(real);
-		sinusoidal_mult(imaginary);
-
-		calc_biquad(filter2, real->data, real->data);
-		calc_biquad(filter2, imaginary->data, imaginary->data);
-
-		differentiator(real, imaginary, output1);
-		differentiator(imaginary, real, output2);
-
-		data_squared(real,imaginary,sq_data);
-
-		output_stage(output1,output2,sq_data,blocksize/decimation,gain_calc(real->Fs/real->decimation),output3);
-
-		antidecimate(output3,blocksize,decimation,output1);
+		//demod(input, real, imaginary, filter1, filter2, output1);
+		calc_biquad(filter1, input, output1);
 
 		putblock(output1);
 	}

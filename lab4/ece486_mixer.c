@@ -11,18 +11,18 @@
 void decimate(FSK_T *s, float *input){
 	int i;
 
-	for (i = 0; i < s->blocksize/5; i++){
+	for (i = 0; i < s->blocksize/s->decimation; i++){
 		s->data[i] = input[i*5];
 	}
 }
 
 void sinusoidal_mult(FSK_T *s){
 	int i;
-	float y[s->blocksize/decimation];
+	float y[s->blocksize/s->decimation];
 
 	nco_get_samples(s->nco_data, y, s->blocksize/s->decimation);
 
-	for(i = 0; i < s->blocksize/decimation; i++){
+	for(i = 0; i < s->blocksize/s->decimation; i++){
 		s->data[i] = s->data[i] * y[i];
 	}
 }
@@ -69,7 +69,7 @@ void differentiator(FSK_T *mixer1, FSK_T *mixer2, float *output){
 		else output[i] = (mixer1->data[i] - mixer1->data[i-2]) * mixer2->data[i];
 	}
 
-	(mixer1->z)[0] = mixer1->data[i-2]; //possibly change this...
+	(mixer1->z)[0] = mixer1->data[i-2];
 	(mixer1->z)[1] = mixer1->data[i-1];
 }
 
