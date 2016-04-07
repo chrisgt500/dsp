@@ -70,12 +70,9 @@ int main(void){
 		//demod(input, real, imaginary, filter1, filter2, filter3, output1);
 
 		calc_biquad(filter1, input, output1);
-		calc_biquad(filter4, output1, output2);
 
-
-		decimate(real, output2);
-		decimate(imaginary, output2);
-
+		decimate(real, output1);
+		decimate(imaginary, output1);
 
 		sinusoidal_mult(real);
 		sinusoidal_mult(imaginary);
