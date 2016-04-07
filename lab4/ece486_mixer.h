@@ -67,6 +67,7 @@ void demod(
 	FSK_T *imag,
 	BIQUAD_T *filter1,
 	BIQUAD_T *filter2,
+	BIQUAD_T *filter3,
 	float *demod_output
 );
 

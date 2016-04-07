@@ -90,7 +90,6 @@ int main(void){
 		output_stage(output4,sq_data,blocksize/decimation,gain_calc(real->Fs/real->decimation),output6);
 
 		antidecimate(output6, real->blocksize, real->decimation, output1);
-		antidecimate(imaginary->data, real->blocksize, real->decimation, output2);
 
 		putblock(output1);
 	}
