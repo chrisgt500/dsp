@@ -133,7 +133,7 @@ float gain_calc(float fs){
 	return (fs/(4*PI*1000));
 }
 
-void demod(float *input, FSK_T *real, FSK_T *imaginary, BIQUAD_T *filter1, BIQUAD_T *filter2, float *demod_output){
+void demod(float *input, FSK_T *real, FSK_T *imaginary, BIQUAD_T *filter1, BIQUAD_T *filter2, BIQUAD_T *filter3, float *demod_output){
 	int bs_nco = real->blocksize / real->decimation ;
 	float sq_data[bs_nco];
 	float output1[bs_nco];
@@ -153,7 +153,7 @@ void demod(float *input, FSK_T *real, FSK_T *imaginary, BIQUAD_T *filter1, BIQUA
 
 	//Filter each signal separately
 	calc_biquad(filter2, real->data, real->data);
-	calc_biquad(filter2, imaginary->data, imaginary->data);
+	calc_biquad(filter3, imaginary->data, imaginary->data);
 
 	//Differentation of the signals
 	differentiator(real, imaginary, output1, sq_data);
