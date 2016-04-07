@@ -17,7 +17,7 @@ int main(void){
 	int decimation = 5;
 	int sections1 = 7;
 	int sections2 = 4;
-	int section3 = 4;
+	int sections3 = 4;
 	float gain1 = 0.000485;
 	float gain2 = 0.000392;
 	float gain3 = 0.950157;
@@ -81,10 +81,10 @@ int main(void){
 
 	while(1){
 		getblock(input);
-		demod(input, real, imaginary, filter1, filter2, filter3, output1);
-		/*
+		//demod(input, real, imaginary, filter1, filter2, filter3, output1);
+
 		calc_biquad(filter1, input, output1);
-		calc_biquard(fitler4, output1, output2)
+		calc_biquad(filter4, output1, output2);
 
 
 		decimate(real, output2);
@@ -102,7 +102,7 @@ int main(void){
 		output_stage(output4,sq_data,blocksize/decimation,gain_calc(real->Fs/real->decimation),output6);
 
 		antidecimate(output6, real->blocksize, real->decimation, output1);
-		*/
+
 
 		putblock(output1);
 	}
