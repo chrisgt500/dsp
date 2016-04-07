@@ -101,7 +101,7 @@ void differentiator(FSK_T *real, FSK_T *imaginary, float *output, float *sq_data
 	(real->z)[0] = real->data[i-2];
 	(real->z)[1] = real->data[i-1];
 	(imaginary->z)[0] = imaginary->data[i-2];
-	(imaginary->z)[1] = imaginary->data[i-2];
+	(imaginary->z)[1] = imaginary->data[i-1];
 
 	//testing
 	//for ( i = 0; i < ((real->blocksize)/(real->decimation)); i++){
