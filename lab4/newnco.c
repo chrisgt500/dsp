@@ -8,11 +8,10 @@ void nco_get_samples(NCO_T *s, float *y, int n_samples){
 	uint32_t index = 0;
 	int i;
 
-
 	for (i = 0; i < n_samples; i ++){
 		s->theta_temp += s->f0;
 		index = (s->theta_temp)+(s->theta_const);
-		y[i] = cosine_lookup(index>>24);
+		y[i] = cosine_lookup(index>>23);
 	}
 }
 
@@ -111,5 +110,5 @@ float cosine_lookup(uint32_t index){
 	0.995185, 0.996313, 0.997290, 0.998118, 0.998795, 0.999322, 0.999699, 0.999925
 	};
 
-	return lookup[index];
+	return .99*lookup[index];
 }

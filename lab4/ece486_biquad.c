@@ -11,11 +11,11 @@
  * Form 2 filter. Free_Biquad frees any memory allocated. Update is a helper function of Calc_Biquad
  * used to filter one data point at a time
  */
-
+#include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include "ece486_biquad.h"
-#include <string.h>
+
 
 
 BIQUAD_T * init_biquad(int sections, float g, float *biquad_coefs, int blocksize) {
@@ -39,7 +39,15 @@ BIQUAD_T * init_biquad(int sections, float g, float *biquad_coefs, int blocksize
 		printf("Could not allocate float array");
 		exit(0);
 	}
-	s->all_coefs = biquad_coefs;
+	s->all_coefs = (float *)malloc(sizeof(float)*sections*5);
+	if(s->all_coefs == NULL) {
+		printf("Could not allocate float array");
+		exit(0);
+	}
+	for ( i = 0; i < sections * 5; i ++){
+		s->all_coefs[i] = biquad_coefs[i];
+	}
+
 	for(i = 0; i < 3; i++) {	//adds gain to first filter
 		s->all_coefs[i] *= g;
 	}
@@ -68,8 +76,10 @@ void calc_biquad(BIQUAD_T *s, float *x, float *y) {
 void destroy_biquad(BIQUAD_T *s) {
 	free(s->u);//!< Frees all allocated memory
 	free(s->v);
+	free(s->all_coefs);
 	s->u = NULL;
 	s->v = NULL;
+	s->all_coefs = NULL;
 	free(s);
 	s = NULL;
 }

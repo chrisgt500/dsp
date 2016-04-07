@@ -1,3 +1,4 @@
+#include <string.h>
 #include "ece486_nco.h"
 #include "ece486_biquad.h"
 #include "ece486_mixer.h"
@@ -10,7 +11,7 @@
 int main(void){
 
 	float *input, *output1, *output2, *output3, *output4, *output5, *output6, *sq_data;
-	BIQUAD_T *filter1, *filter2;
+	BIQUAD_T *filter1, *filter2, *filter3;
 	FSK_T *real, *imaginary;
 	int blocksize;
 	int decimation = 5;
@@ -64,6 +65,7 @@ int main(void){
 
 	filter1 = init_biquad(sections1, gain1, lpf1, blocksize);
 	filter2 = init_biquad(sections2, gain2, lpf2, blocksize/decimation);
+	filter3 = init_biquad(sections2, gain2, lpf2, blocksize/decimation);
 
 	real = init_mixer(blocksize, fs, center_freq, 0.0, decimation);
 	imaginary = init_mixer(blocksize, fs, center_freq, PI/2, decimation);
@@ -82,17 +84,14 @@ int main(void){
 		sinusoidal_mult(imaginary);
 
 		calc_biquad(filter2, real->data, real->data);
-		calc_biquad(filter2, imaginary->data, imaginary->data);
+		calc_biquad(filter3, imaginary->data, imaginary->data);
 
+		differentiator(real, imaginary, output4, sq_data);
 
-		differentiator(real, imaginary, output4);
-		differentiator(imaginary, real, output5);
-
-		data_squared(real,imaginary,sq_data);
-
-		output_stage(output4,output5,sq_data,blocksize/decimation,gain_calc(real->Fs/real->decimation),output6);
+		output_stage(output4,sq_data,blocksize/decimation,gain_calc(real->Fs/real->decimation),output6);
 
 		antidecimate(output6, real->blocksize, real->decimation, output1);
+		antidecimate(imaginary->data, real->blocksize, real->decimation, output2);
 
 		putblock(output1);
 	}

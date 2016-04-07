@@ -1,7 +1,7 @@
-#TARGET=fsk_rt
-TARGET=nco_test
-#OBJS=fsk_rt.o ece486_nco.o ece486_biquad.o ece486_mixer.o
-OBJS=nco_test.o newnco.o
+TARGET=fsk_rt
+#TARGET=nco_test
+OBJS=fsk_rt.o ece486_nco.o ece486_biquad.o ece486_mixer.o
+#OBJS=nco_test.o newnco.o
 
 
 INSTALLDIR = /usr/local/stmdev/

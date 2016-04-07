@@ -32,13 +32,13 @@ int main(void){
 
 	c = init_nco(.1, 0);
 	s = init_nco(.1, M_PI);
+	/*
+	nco_get_samples(c,output1,blocksize);
 
-	//nco_get_samples(c,output1,blocksize);
-
-	/*for ( i = 0; i < blocksize ; i++){
+	for ( i = 0; i < blocksize ; i++){
 		printf("Value of %d: [%f]\n",i,output1[i]);
-	}*/
-
+	}
+	*/
 
 	while(1){
 		getblock(input);  //FUN FACT: YOU NEED TO CALL GETBLOCK EVEN IF YOU DONT NEED IT

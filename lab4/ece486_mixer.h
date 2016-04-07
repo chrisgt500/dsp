@@ -41,17 +41,17 @@ void differential(
 	FSK_T *im_mix,
 	float *output
 );
-
+/*
 void data_squared(
 	FSK_T *mixer1,
 	FSK_T *mixer2,
 	float *output
 );
+*/
 
 void output_stage(
-	float *real,
-	float *im,
-	float *data_sq,
+	float *x,
+	float *y,
 	int bs_nco,
 	float gain,
 	float *output_stage_output
