@@ -47,6 +47,8 @@ FSK_T * init_mixer(int bs, float Fs, int center_freq, float theta, int decimatio
 		printf("Could not allocate a z array");
 		exit(0);
 	}
+	(mixer->z)[0] = 0;
+	(mixer->z)[1] = 0;
 
 
 	return mixer;
