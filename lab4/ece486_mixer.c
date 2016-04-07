@@ -75,8 +75,17 @@ void differentiator(FSK_T *real, FSK_T *imaginary, float *output, float *sq_data
 	(mixer1->z)[0] = mixer1->data[i-2];
 	(mixer1->z)[1] = mixer1->data[i-1];
 	*/
-	for ( i = 0; i < ((real->blocksize)/(real->decimation)); i++){
 
+	output[0] = ((imaginary->data[0] - imaginary->z[0]) * real->z[1]) -
+				((real->data[0] - real->z[0]) * imaginary->z[1]);
+	sq_data[0] = (real->z[1] * real->z[1]) + (imaginary->z[1]* imaginary->z[1]);
+
+	output[1] = ((imaginary->data[1] - imaginary->z[1]) * real->data[0]) -
+				((real->data[i] - real->z[1]) * imaginary->data[0]);
+	sq_data[1] = (real->data[0] * real->data[0]) + (imaginary->data[0] * imaginary->data[0]);
+
+	for ( i = 2; i < ((real->blocksize)/(real->decimation)); i++){
+		/*
 		if( i == 0){
 			output[i] = ((imaginary->data[i] - imaginary->z[0]) * real->z[1]) -
 						((real->data[i] - real->z[0]) * imaginary->z[1]);
@@ -84,18 +93,19 @@ void differentiator(FSK_T *real, FSK_T *imaginary, float *output, float *sq_data
 
 		}
 
+
 		else if(i == 1){
 			output[i] = ((imaginary->data[i] - imaginary->z[1]) * real->data[i-1]) -
 						((real->data[i] - real->z[1]) * imaginary->data[i-1]);
 			sq_data[i] = (real->data[i-1] * real->data[i-1]) + (imaginary->data[i-1] * imaginary->data[i-1]);
 
 		}
+		*/
 
-		else{
 			output[i] = ((imaginary->data[i] - imaginary->data[i-2]) * real->data[i-1]) -
 						((real->data[i] - real->data[i-2]) * imaginary->data[i-1]);
 			sq_data[i] = (real->data[i-1] * real->data[i-1]) + (imaginary->data[i-1] * imaginary->data[i-1]);
-		}
+
 	}
 
 	(real->z)[0] = real->data[i-2];
