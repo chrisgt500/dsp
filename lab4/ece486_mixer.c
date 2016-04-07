@@ -138,7 +138,7 @@ float gain_calc(float fs){
 void demod(float *input, FSK_T *real, FSK_T *imaginary, BIQUAD_T *filter1, BIQUAD_T *filter2, BIQUAD_T *filter3, float *demod_output){
 	int bs_nco = real->blocksize / real->decimation ;
 	float sq_data[bs_nco];
-	float output1[bs_nco];
+	float output1[real->blocksize];
 	float output2[bs_nco];
 	float output3[bs_nco];
 
@@ -158,10 +158,10 @@ void demod(float *input, FSK_T *real, FSK_T *imaginary, BIQUAD_T *filter1, BIQUA
 	calc_biquad(filter3, imaginary->data, imaginary->data);
 
 	//Differentation of the signals
-	differentiator(real, imaginary, output1, sq_data);
+	differentiator(real, imaginary, output2, sq_data);
 
 	//Add real and imaginary signals and divide by sq data and apply gain
-	output_stage(output1,sq_data,bs_nco,gain_calc(real->Fs/real->decimation),output3);
+	output_stage(output2,sq_data,bs_nco,gain_calc(real->Fs/real->decimation),output3);
 
 	//Antidecimates the signal in prep to go to the DAC
 	antidecimate(output3, real->blocksize, real->decimation, demod_output);
