@@ -11,14 +11,16 @@
 int main(void){
 
 	float *input, *output1, *output2, *output3, *output4, *output5, *output6, *sq_data;
-	BIQUAD_T *filter1, *filter2, *filter3;
+	BIQUAD_T *filter1, *filter2, *filter3, *filter4;
 	FSK_T *real, *imaginary;
 	int blocksize;
 	int decimation = 5;
 	int sections1 = 7;
 	int sections2 = 4;
+	int section3 = 4;
 	float gain1 = 0.000485;
 	float gain2 = 0.000392;
+	float gain3 = 0.950157;
 	float fs;
 	int center_freq = 1700;
 
@@ -45,6 +47,13 @@ int main(void){
 		1.000000, 1.000000, 0.000000, -0.922037, 0.000000
 	};
 
+	float hpf1[20] = {
+		1.000000, -1.999797, 1.000000, -1.998558, 0.998914,
+		1.000000, -1.999851, 1.000000, -1.994465, 0.994934,
+		1.000000, -1.999945, 1.000000, -1.975994, 0.977074,
+		1.000000, -1.000000, 0.000000, -0.929009, 0.000000
+	};
+
 	fs = getsamplingfrequency();
 	blocksize = getblocksize();
 
@@ -65,6 +74,7 @@ int main(void){
 	filter1 = init_biquad(sections1, gain1, lpf1, blocksize);
 	filter2 = init_biquad(sections2, gain2, lpf2, blocksize/decimation);
 	filter3 = init_biquad(sections2, gain2, lpf2, blocksize/decimation);
+	filter4 = init_biquad(sections3, gain3, hpf1, blocksize);
 
 	real = init_mixer(blocksize, fs, center_freq, 0.0, decimation);
 	imaginary = init_mixer(blocksize, fs, center_freq, PI/2, decimation);
@@ -73,10 +83,11 @@ int main(void){
 		getblock(input);
 		//demod(input, real, imaginary, filter1, filter2, output1);
 		calc_biquad(filter1, input, output1);
+		calc_biquard(fitler4, output1, output2)
 
 
-		decimate(real, output1);
-		decimate(imaginary, output1);
+		decimate(real, output2);
+		decimate(imaginary, output2);
 
 
 		sinusoidal_mult(real);
