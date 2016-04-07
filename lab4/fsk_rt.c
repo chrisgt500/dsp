@@ -16,9 +16,9 @@ int main(void){
 	int blocksize;
 	int decimation = 5;
 	int sections1 = 7;
-	int sections2 = 5;
+	int sections2 = 4;
 	float gain1 = 0.000485;
-	float gain2 = 0.000871;
+	float gain2 = 0.000392;
 	float fs;
 	int center_freq = 1700;
 
@@ -36,14 +36,13 @@ int main(void){
 	};
 
 	//new coefs for filter two, unsure if the right passband is used
-	//filter is for an fs of 10k with a passband of 2.6k and a stop band of
-	//2.65k
-	float lpf2[25] = {
-		1.000000, -1.596764, 1.000000, -1.656496, 0.979752,
-		1.000000, -1.518915, 1.000000, -1.679156, 0.946765,
-		1.000000, -1.222427, 1.000000, -1.726089, 0.883297,
-		1.000000, 0.466767, 1.000000, -1.779152, 0.812358,
-		1.000000, -1.619154, 1.000000, -1.650958, 0.994932
+	//filter is for an fs of 10k with a passband of 500hz and a stop band of
+	//700hz
+	float lpf2[20] = {
+		1.000000, -1.831739, 1.000000, -1.885690, 0.982398,
+		1.000000, -1.774479, 1.000000, -1.866369, 0.938575,
+		1.000000, -1.443015, 1.000000, -1.851256, 0.881705,
+		1.000000, 1.000000, 0.000000, -0.922037, 0.000000
 	};
 
 	fs = getsamplingfrequency();
