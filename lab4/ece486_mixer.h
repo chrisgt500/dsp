@@ -101,10 +101,18 @@ void output_stage(
 	float *output_stage_output
 );
 
-float gain_calc(
-	float fs
-);
+/*!
+ *@Brief A function for calculating the gain.
+ *
+ * The function takes a sample rate and divides by 4*pi*10^3 in order to produce
+ * a change of 1.0 for every 1kHz deviation.
+ *
+ *@returns On return, the calculated gain is returned..
+ */
 
+float gain_calc(
+	float fs   //!< [in] sampling frequency used for gain calculation
+);
 
 
 /*!
