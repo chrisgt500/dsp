@@ -63,6 +63,14 @@ void decimate(
 	float *input   //!< [in] input data stream to be decimated
 );
 
+/*!
+ *@Brief A function for multiplying decimated data by e^(j*2*pi*f0*n).
+ *
+ * This function takes an FSK_T pointer.  It then takes the
+ *
+ *@returns On return, the decimated data is stored in the FSK_T structure.
+ */
+
 void sinusoidal_mult(
 	FSK_T *mixer
 );
@@ -85,13 +93,7 @@ void differentiator(
 	float *output,
   float *sq_data
 );
-/*
-void data_squared(
-	FSK_T *mixer1,
-	FSK_T *mixer2,
-	float *output
-);
-*/
+
 
 void output_stage(
 	float *x,
