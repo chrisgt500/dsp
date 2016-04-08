@@ -34,7 +34,7 @@ void nco_get_samples(NCO_T *s, float *y, int n_samples) {
 	}										//of index
 }
 
-NCO_T * init_nco(float freq, float thet) {
+NCO_T * init_nco(float freq, float theta) {
 	NCO_T *s = (NCO_T *)malloc(sizeof(NCO_T));	//
 	if(s == NULL) {
 		printf("Could not allocate NCO_T struct");
