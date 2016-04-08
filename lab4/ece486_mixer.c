@@ -1,4 +1,4 @@
-#include "newnco.h"
+#include "ece486_nco.h"
 #include "ece486_biquad.h"
 #include "ece486_mixer.h"
 #include <stdio.h>
