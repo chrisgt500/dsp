@@ -115,11 +115,22 @@ void demod(
 	float *demod_output
 );
 
+/*!
+ *@Brief A function for antidecimating data.
+ *
+ * This function takes a float pointer to the demodulated data, two integers for blocksize
+ * and decimation, and a float point to the output. It then takes the demodulated data and
+ * antidecimates it by the decimation factor. The decimated data is then stored in the
+ * output array.
+ *
+ *@returns On return, the antidecimated data is stored in the in the output array.
+ */
+
 void antidecimate(
-	float *demod_data,
-	int decimation,
-	int blocksize,
-	float *output
+	float *demod_data, //!< [in] point to demodulated data 
+	int decimation,  //!< [in] decimation factor
+	int blocksize,   //!< [in] blocksize before decimation
+	float *output  //!< [out] pointer to float array for antidecimated data
 );
 
 #endif
