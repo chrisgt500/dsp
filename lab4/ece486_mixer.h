@@ -105,15 +105,7 @@ float gain_calc(
 	float fs
 );
 
-void demod(
-	float *input,
-	FSK_T *real,
-	FSK_T *imag,
-	BIQUAD_T *filter1,
-	BIQUAD_T *filter2,
-	BIQUAD_T *filter3,
-	float *demod_output
-);
+
 
 /*!
  *@Brief A function for antidecimating data.
@@ -127,7 +119,7 @@ void demod(
  */
 
 void antidecimate(
-	float *demod_data, //!< [in] point to demodulated data 
+	float *demod_data, //!< [in] point to demodulated data
 	int decimation,  //!< [in] decimation factor
 	int blocksize,   //!< [in] blocksize before decimation
 	float *output  //!< [out] pointer to float array for antidecimated data
