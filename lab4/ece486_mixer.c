@@ -138,7 +138,7 @@ void output_stage(float *x, float *y, int bs_nco, float gain, float *output_stag
 	for (i = 0; i < bs_nco ; i++){
 		output_stage_output[i] = x[i]/y[i];
 		output_stage_output[i] *= gain;
-		}
+	}
 }
 
 float gain_calc(float fs){

@@ -28,22 +28,39 @@
 #define ECE486_MIXER_H
 
 #ifndef PI
-#define PI 3.14159265359
+#define PI 3.14159265359  //!< PI
 #endif
 
+/*!
+ * @brief A structure for holding FSK_T components
+ *
+ * The FSK_T structure is used to hold all of the values needed to execute
+ * the sinusoidal_mult and FM demodulation.
+ *
+ */
 
 typedef struct{
-	float *data;
-	int blocksize;
-	int Fs;
-	NCO_T *nco_data;
-	int decimation;
-	float *z;
+	float *data;   //!< data arrays for real and imaginary decimated data
+	int blocksize;   //!< blocksize of the data
+	int Fs;   //!< sampling frequncy
+	NCO_T *nco_data;   //!< NCO_T structure
+	int decimation;  //!< rate of decimation
+	float *z;  //!< array to store previous two values
 } FSK_T;
 
+/*!
+ *@Brief A function for decimating data.
+ *
+ * This function takes an FSK_T pointer and a pointer to a float array.  It then
+ * takes the in the float array and decimates it by the factor stored in the FSK_T
+ * structure.  The decimated data is then stored in the FSK_T structure.
+ *
+ *@returns On return, the decimated data is stored in the FSK_T structure.
+ */
+
 void decimate(
-	FSK_T *mixer,
-	float *input
+	FSK_T *mixer,   //!< [in,out] pointer to FSK_T
+	float *input   //!< [in] input data stream to be decimated
 );
 
 void sinusoidal_mult(
