@@ -1,38 +1,32 @@
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <limits.h>
+#include <stdint.h>
+#include "newnco.h"
 
-#include "ece486_nco.h"
+void nco_get_samples(NCO_T *s, float *y, int n_samples){
+	uint32_t index = 0;
+	int i;
 
+	for (i = 0; i < n_samples; i ++){
+		s->theta_temp += s->f0;
+		index = (s->theta_temp)+(s->theta_const);
+		y[i] = cosine_lookup(index>>23);
+	}
+}
 
-NCO_T * init_nco(float f0, float theta){
+NCO_T * init_nco(float freq, float theta){
 	NCO_T *s = (NCO_T *)malloc(sizeof(NCO_T));
 	if(s == NULL) {
 		printf("Could not allocate NCO_T struct");
 		exit(0);
 	}
-	s->f0 = f0;
-	s->theta_const = theta;
-	s->theta_temp = 0.0;
+	s->f0 = i32*freq;
+	s->theta_const = i32*theta/(2*PI);
+	s->theta_temp = ~i32*freq+1;
 	return s;
 }
 
-void nco_get_samples(NCO_T *s, float *y, int n_samples){
-	float index = 0.0;
-	int round_index = 0;
-	int i;
-
-
-	for (i = 0; i < n_samples; i ++){
-		s->theta_temp += 2*PI*(s->f0);
-		index = (s->theta_temp)+(s->theta_const);
-		index = index*(512/(2*PI));
-		round_index = (int)(index);
-		round_index = round_index%512;
-		y[i] = cosine_lookup(round_index);
-	}
-}
 
 void nco_set_frequency(NCO_T *s, float f_new){
 	s->f0 = f_new;
@@ -47,7 +41,7 @@ void destroy_nco(NCO_T *s){
 	s = NULL;
 }
 
-float cosine_lookup(int index){
+float cosine_lookup(uint32_t index){
 	static const float lookup[512] =
 	{
 	1.000000, 0.999925, 0.999699, 0.999322, 0.998795, 0.998118, 0.997290, 0.996313,
@@ -116,5 +110,5 @@ float cosine_lookup(int index){
 	0.995185, 0.996313, 0.997290, 0.998118, 0.998795, 0.999322, 0.999699, 0.999925
 	};
 
-	return lookup[index];
+	return .99*lookup[index];
 }
