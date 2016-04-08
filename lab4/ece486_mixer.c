@@ -92,15 +92,6 @@ void destroy_mixer(FSK_T *mixer){
 void differentiator(FSK_T *real, FSK_T *imaginary, float *output, float *sq_data){
 	int i;
 
-	/*for (i = 0 ; i < (mixer1->blocksize/mixer1->decimation); i++) {
-		if (i < 2) output[i] = (mixer1->data[i] - mixer1->z[i]);// * mixer2->data[i];
-		else output[i] = (mixer1->data[i] - mixer1->data[i-2]);// * mixer2->data[i];
-	}
-
-	(mixer1->z)[0] = mixer1->data[i-2];
-	(mixer1->z)[1] = mixer1->data[i-1];
-	*/
-
 	output[0] = ((imaginary->data[0] - imaginary->z[0]) * real->z[1]) -
 				((real->data[0] - real->z[0]) * imaginary->z[1]);
 	sq_data[0] = (real->z[1] * real->z[1]) + (imaginary->z[1]* imaginary->z[1]);
@@ -110,22 +101,6 @@ void differentiator(FSK_T *real, FSK_T *imaginary, float *output, float *sq_data
 	sq_data[1] = (real->data[0] * real->data[0]) + (imaginary->data[0] * imaginary->data[0]);
 
 	for ( i = 2; i < ((real->blocksize)/(real->decimation)); i++){
-		/*
-		if( i == 0){
-			output[i] = ((imaginary->data[i] - imaginary->z[0]) * real->z[1]) -
-						((real->data[i] - real->z[0]) * imaginary->z[1]);
-			sq_data[i] = (real->z[1] * real->z[1]) + (imaginary->z[1]* imaginary->z[1]);
-
-		}
-
-
-		else if(i == 1){
-			output[i] = ((imaginary->data[i] - imaginary->z[1]) * real->data[i-1]) -
-						((real->data[i] - real->z[1]) * imaginary->data[i-1]);
-			sq_data[i] = (real->data[i-1] * real->data[i-1]) + (imaginary->data[i-1] * imaginary->data[i-1]);
-
-		}
-		*/
 
 			output[i] = ((imaginary->data[i] - imaginary->data[i-2]) * real->data[i-1]) -
 						((real->data[i] - real->data[i-2]) * imaginary->data[i-1]);
@@ -138,24 +113,9 @@ void differentiator(FSK_T *real, FSK_T *imaginary, float *output, float *sq_data
 	(imaginary->z)[0] = imaginary->data[i-2];
 	(imaginary->z)[1] = imaginary->data[i-1];
 
-	//testing
-	//for ( i = 0; i < ((real->blocksize)/(real->decimation)); i++){
-	//	output[i] = output[i]/sq_data[i];
-	//}
-
 }
 
-/*
-void data_squared(FSK_T *mixer1, FSK_T *mixer2, float *output){
-	int i;
 
-
-	for (i = 0 ; i < (mixer1->blocksize/mixer1->decimation); i++) {
-		output[i] = (mixer1->data[i] * mixer1->data[i]) +
-					(mixer2->data[i] * mixer2->data[i]);
-	}
-}
-*/
 
 void output_stage(float *x, float *y, int bs_nco, float gain, float *output_stage_output){
 	int i;
