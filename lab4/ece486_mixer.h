@@ -128,13 +128,23 @@ void differentiator(
   float *sq_data	//!< [in,out] a pointer to the array where the real data is stored
 );
 
+/*!
+ *@Brief A function that calculates the output data to pass to antidecimate.
+ *
+ * The function takes the input arrays x and y and divides them.  It stores them in
+ * the array output_stage_output, and then applies the overall gain of the system to each
+ * element.
+ *
+ *@returns On return, the demodulated data is stored in output_stage_output.
+ */
 
 void output_stage(
-	float *x,
-	float *y,
-	int bs_nco,
-	float gain,
-	float *output_stage_output
+	float *x,		//!< [in] a pointer to the subtraction of the differentiated data
+	float *y,		//!< [in] a pointer to the squared data
+	int bs_nco,		//!< [in] the size of the array to iterate over
+	float gain,		//!< [in] the gain term to apply to each element
+	float *output_stage_output		//!< [in,out] a pointer to the demondulated data
+																//!< which will be passed to antidecimate
 );
 
 /*!
