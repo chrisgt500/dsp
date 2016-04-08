@@ -6,7 +6,7 @@
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include "newnco.h"
+#include "ece486_nco.h"
 
 
 int main(void){
