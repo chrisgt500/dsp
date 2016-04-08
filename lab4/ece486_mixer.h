@@ -96,8 +96,16 @@ FSK_T * init_mixer(
 	int decimation	//!< [in] rate of decimation
 );
 
+/*!
+ *@Brief A function to destroy an FSK_T structure.
+ *
+ * This function frees the memory allocated to the FSK_T structure by the
+ * init_mixer function and sets all associated pointers to NULL.
+ *
+ *@returns Any resources associated with the FSK_T structure are released.
+ */
 void destroy_mixer(
-	FSK_T *mixer
+	FSK_T *mixer	//!< [in,out] pointer to an FSK_T structure
 );
 
 void differentiator(
