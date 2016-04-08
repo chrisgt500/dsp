@@ -108,11 +108,24 @@ void destroy_mixer(
 	FSK_T *mixer	//!< [in,out] pointer to an FSK_T structure
 );
 
+/*!
+ *@Brief A function for diffentiating and squaring data.
+ *
+ * The function takes pointers to two FSK_T structures; it then takes the structures
+ * and calculates the derivative for each one and subtracts the derivative of the imaginary
+ * data from the derivative of the real data.  In addition, it calculates the the addition of
+ * the last sample's real data, squared, with the last sample's imaginary data, squared. This
+ * yields the array called sq_data.
+ *
+ *@returns On return, the squared data is strored in sq_data, and the subtraction of
+ *the differentiated data is stored in output.
+ */
+
 void differentiator(
-	FSK_T *real,
-	FSK_T *imaginary,
-	float *output,
-  float *sq_data
+	FSK_T *real,	//!< [in] a pointer to an FSK_T structure holding the real data
+	FSK_T *imaginary,		//!< [in] a pointer to an FSK_T structure holding the imaginary data
+	float *output,	//!< [in, out] a pointer to the array where derivative subtraction is stored
+  float *sq_data	//!< [in,out] a pointer to the array where the real data is stored
 );
 
 
