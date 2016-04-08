@@ -15,7 +15,7 @@
  * needed and places them within a typedeffed FSK_T struct. The init_mixer function sets the
  * initial values of of the struct.  Decimate and antidecimate reduce the sample rate by five
  * and increase the sample rate by five, respectively.  sinusoidal_mult takes a decimated signal
- * and multiplies it by e^(-j2*pi*f0*n).  The differentior function 
+ * and multiplies it by e^(-j2*pi*f0*n).  The differentior function
  *
  */
 
@@ -58,10 +58,11 @@ void destroy_mixer(
 	FSK_T *mixer
 );
 
-void differential(
-	FSK_T *re_mix,
-	FSK_T *im_mix,
-	float *output
+void differentiator(
+	FSK_T *real,
+	FSK_T *imaginary,
+	float *output,
+  float *sq_data
 );
 /*
 void data_squared(
