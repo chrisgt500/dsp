@@ -1,3 +1,28 @@
+/*!
+ * @file ece486_mixer.c
+ *
+ * @brief Gives function declarations for ece486_mixer.c
+ *
+ * @author ECE486 Lab Group 9
+ * @author Colin Leary
+ * @author Forrest Smith
+ * @author Sean Turner
+ *
+ * @date April 7, 2016
+ *
+ * This file contains the functions needed to implement several filters, a decimator,
+ * an antidecimator, and an FM demodulator. The struct definition declares the values
+ * needed and places them within a typedeffed FSK_T struct. The init_mixer function sets the
+ * initial values of of the struct.  Decimate and antidecimate reduce the sample rate by five
+ * and increase the sample rate by five, respectively.  sinusoidal_mult takes a decimated signal
+ * and multiplies it by e^(-j2*pi*f0*n).  The differentior function takes the derivative of the
+ * inputs, and also produces squared data of the last values (n-1) of the inputs.  gain_calc
+ * calculates the gain of the system.  The output_stage calculates the division of the imaginary
+ * derivative minus the real derivative over the squared data, and then applies the gain.
+ * destroy_mixer destroys the structure and cleans up the memory.
+ *
+ */
+
 #include "ece486_nco.h"
 #include "ece486_biquad.h"
 #include "ece486_mixer.h"
