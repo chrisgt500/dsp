@@ -59,28 +59,41 @@ typedef struct{
  */
 
 void decimate(
-	FSK_T *mixer,   //!< [in,out] pointer to FSK_T
+	FSK_T *mixer,   //!< [in,out] pointer to an FSK_T structure
 	float *input   //!< [in] input data stream to be decimated
 );
 
 /*!
  *@Brief A function for multiplying decimated data by e^(j*2*pi*f0*n).
  *
- * This function takes an FSK_T pointer.  It then takes the
+ * This function takes an FSK_T pointer.  It then creates a local array that is
+ * the size of the decimated data; the NCO_T data is then passed to nco_get_samples.
+ * and get samples is stored in y.  The mixer->data array is then multiplied by the
+ * data that was retrieved from the NCO.
  *
- *@returns On return, the decimated data is stored in the FSK_T structure.
+ *@returns On return, the modified decimated data is stored in the FSK_T structure.
  */
 
 void sinusoidal_mult(
-	FSK_T *mixer
+	FSK_T *mixer	//! [in,out] pointer to an FSK_T structure
 );
 
+/*!
+ *@Brief A function for initializing FSK_T structures.
+ *
+ * This function dynamically allocates the memory need for FSK_T structures. It then
+ * assigns the passed paramters to the proper structure elements.
+ *
+ *@returns On return, an allocated FSK_T structure is returned according to the parameters
+ *that the function was passed.
+ */
+
 FSK_T * init_mixer(
-	int bs,
-	float Fs,
-	int center_freq,
-	float theta,
-	int decimation
+	int bs,		//!< [in] blocksize
+	float Fs,	//!< [in] sample rate
+	int center_freq,	//!< [in] center frequency for the NCO
+	float theta,	//!< [in] initial phase of the output samples
+	int decimation	//!< [in] rate of decimation
 );
 
 void destroy_mixer(
