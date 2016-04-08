@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <limits.h>
 #include <stdint.h>
-#include "newnco.h"
+#include "ece486_nco.h"
 
 void nco_get_samples(NCO_T *s, float *y, int n_samples){
 	uint32_t index = 0;
