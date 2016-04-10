@@ -96,6 +96,8 @@ int main(void) {
 		//get input
 		getblock(input);
 
+		DIGITAL_IO_SET();
+
 		//filter inputs
 		calc_biquad(filter1, input, output1);
 
@@ -120,11 +122,13 @@ int main(void) {
 		//extend the signal to match the input signal size
 		antidecimate(output3, real->blocksize, real->decimation, output1);
 
+		DIGITAL_IO_RESET();
+
 		//output to the DAC
 		putblock(output1);
 	}
 
-	//cleanup 
+	//cleanup
 	destroy_mixer(real);
 	destroy_mixer(imaginary);
 	real = NULL;
