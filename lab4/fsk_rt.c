@@ -1,18 +1,37 @@
+/*!
+ * @file fsk_rt.c
+ *
+ * @brief Tests the operation of ece486_mixer
+ *
+ * @author ECE486 Lab Group 9
+ * @author Colin Leary
+ * @author Forrest Smith
+ * @author Sean Turner
+ *
+ * @date April 7, 2016
+ *
+ * This code sets up the filters, NCO and FSK. It then reads from the ADC on then
+ * STM board,then performs the FM demodulation and outputs the results to the
+ * DAC on the STM board.
+ */
+
 #include <string.h>
-#include "ece486_nco.h"
-#include "ece486_biquad.h"
-#include "ece486_mixer.h"
+#include <stdlib.h>
+#include <stdio.h>
 #include "ece486.h"
 #include "stm32l4xx_hal.h"
 #include "stm32l476g_discovery.h"
-#include <stdlib.h>
-#include <stdio.h>
+#include "ece486_nco.h"
+#include "ece486_biquad.h"
+#include "ece486_mixer.h"
 
-int main(void){
 
-	float *input, *output1, *output2, *output3, *output4, *output5, *output6, *sq_data;
+int main(void) {
+
+	float *input, *output1, *output2, *output3, *sq_data;
 	BIQUAD_T *filter1, *filter2, *filter3;
 	FSK_T *real, *imaginary;
+
 	int blocksize;
 	int decimation = 5;
 	int sections1 = 3;
@@ -41,52 +60,89 @@ int main(void){
 		1.000000, 1.000000, 0.000000, -0.800463, 0.000000
 	};
 
+	//read in sampling frequency and blocksize
 	fs = getsamplingfrequency();
 	blocksize = getblocksize();
 
+	//allocate memory for needed arrays
 	input = (float *)malloc(sizeof(float)*blocksize);
 	output1 = (float *)malloc(sizeof(float)*blocksize);
-	output2 = (float *)malloc(sizeof(float)*blocksize);
-	output3 = (float *)malloc(sizeof(float)*blocksize);
-	output4 = (float *)malloc(sizeof(float)*blocksize/decimation);
-	output5 = (float *)malloc(sizeof(float)*blocksize/decimation);
-	output6 = (float *)malloc(sizeof(float)*blocksize/decimation);
+	output2 = (float *)malloc(sizeof(float)*blocksize/decimation);
+	output3 = (float *)malloc(sizeof(float)*blocksize/decimation);
 	sq_data = (float *)malloc(sizeof(float)*blocksize/decimation);
 
-	if (input==NULL || output1==NULL || output2==NULL) {  //error checking
+
+	//error check
+	if (input==NULL || output1==NULL || output2==NULL || output3 == NULL) {
     	flagerror(MEMORY_ALLOCATION_ERROR);
 		while(1);
 	}
 
+	if (sq_data == NULL) {
+    	flagerror(MEMORY_ALLOCATION_ERROR);
+		while(1);
+	}
+
+	//initialize filters
 	filter1 = init_biquad(sections1, gain1, lpf1, blocksize);
 	filter2 = init_biquad(sections2, gain2, lpf2, blocksize/decimation);
 	filter3 = init_biquad(sections2, gain2, lpf2, blocksize/decimation);
 
+	//initialize FSK_T
 	real = init_mixer(blocksize, fs, center_freq, 0.0, decimation);
 	imaginary = init_mixer(blocksize, fs, center_freq, PI/2, decimation);
 
 	while(1){
+		//get input
 		getblock(input);
-		//demod(input, real, imaginary, filter1, filter2, filter3, output1);
 
+		//filter inputs
 		calc_biquad(filter1, input, output1);
 
+		//decimate and separate
 		decimate(real, output1);
 		decimate(imaginary, output1);
 
+		//multiply with sin/cos
 		sinusoidal_mult(real);
 		sinusoidal_mult(imaginary);
 
+		//filter real and imaginary components
 		calc_biquad(filter2, real->data, real->data);
 		calc_biquad(filter3, imaginary->data, imaginary->data);
 
-		differentiator(real, imaginary, output4, sq_data);
+		//differentiate the signals
+		differentiator(real, imaginary, output2, sq_data);
 
-		output_stage(output4,sq_data,blocksize/decimation,gain_calc(real->Fs/real->decimation),output6);
+		//calculare the output of the FM demodulator
+		output_stage(output2,sq_data,blocksize/decimation,gain_calc(real->Fs/real->decimation),output3);
 
-		antidecimate(output6, real->blocksize, real->decimation, output1);
+		//extend the signal to match the input signal size
+		antidecimate(output3, real->blocksize, real->decimation, output1);
 
-
+		//output to the DAC
 		putblock(output1);
 	}
+
+	//cleanup 
+	destroy_mixer(real);
+	destroy_mixer(imaginary);
+	real = NULL;
+	imaginary = NULL;
+
+	free(input);
+	free(output1);
+	free(output2);
+	free(output3);
+	free(sq_data);
+
+	input = NULL;
+	output1 = NULL;
+	output2 = NULL;
+	output3 = NULL;
+	sq_data = NULL;
+
+	destroy_biquad(filter1);
+	destroy_biquad(filter2);
+	destroy_biquad(filter3);
 }

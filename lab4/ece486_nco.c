@@ -1,49 +1,68 @@
+/*!
+ * @brief ECE 486 Lab 4 ece486_nco.c
+ *
+ * @author ECE486 Lab Group 9
+ * @author Colin Leary
+ * @author Forrest Smith
+ * @author Sean Turner
+ *
+ * @date April 7, 2016
+ *
+ * This file contains the functions needed to implement a numerically controlled
+ * oscillator. The struct definition declares the values needed and places them
+ * within a typedeffed struct. The init_nco function sets the initial values of
+ * of the struct. nco_get_samples will calculate and return the values of the
+ * NCO. The nco_set_frequency and nco_set_phase functions alter the value for
+ * the frequency and phase, respectively, on subsequent calls to nco_get_samples
+ * destroy_nco destroys the structure and cleans up pointers.
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <limits.h>
 #include <stdint.h>
 #include "ece486_nco.h"
 
-void nco_get_samples(NCO_T *s, float *y, int n_samples){
-	uint32_t index = 0;
+void nco_get_samples(NCO_T *s, float *y, int n_samples) {
+	uint32_t index = 0;		// Holds the index into the lookup table
 	int i;
 
-	for (i = 0; i < n_samples; i ++){
-		s->theta_temp += s->f0;
+	for (i = 0; i < n_samples; i ++) {	//for each sample
+		s->theta_temp += s->f0;		//calculate new value of theta_temp
 		index = (s->theta_temp)+(s->theta_const);
-		y[i] = cosine_lookup(index>>23);
-	}
+		y[i] = cosine_lookup(index>>23);	//use only most significant m bits
+	}										//of index
 }
 
-NCO_T * init_nco(float freq, float theta){
-	NCO_T *s = (NCO_T *)malloc(sizeof(NCO_T));
+NCO_T * init_nco(float freq, float theta) {
+	NCO_T *s = (NCO_T *)malloc(sizeof(NCO_T));	//allocate memory for struct
 	if(s == NULL) {
 		printf("Could not allocate NCO_T struct");
 		exit(0);
 	}
-	s->f0 = i32*freq;
-	s->theta_const = i32*theta/(2*PI);
-	s->theta_temp = ~i32*freq+1;
-	return s;
+	s->f0 = i32*freq;	//assign frequency of signal
+	s->theta_const = i32*theta/(2*PI);	//normalize theta const
+	s->theta_temp = ~i32*freq+1;	//assign initial value of theta_temp such
+	return s;						//such that theta_temp + f0 == 0
 }
 
 
 void nco_set_frequency(NCO_T *s, float f_new){
-	s->f0 = f_new;
+	s->f0 = f_new;		//reassign f0
 }
 
 void nco_set_phase(NCO_T *s, float theta){
- 	s->theta_const = theta;
+ 	s->theta_const = theta;		//reassign theta
 }
 
 void destroy_nco(NCO_T *s){
- 	free(s);
-	s = NULL;
+ 	free(s);		//free memory
+	s = NULL;		//remove dangling pointer
 }
 
 float cosine_lookup(uint32_t index){
-	static const float lookup[512] =
-	{
+	static const float lookup[512] =	//delcare as statiic so as not to
+	{									//re-declare each time
 	1.000000, 0.999925, 0.999699, 0.999322, 0.998795, 0.998118, 0.997290, 0.996313,
 	0.995185, 0.993907, 0.992480, 0.990903, 0.989177, 0.987301, 0.985278, 0.983105,
 	0.980785, 0.978317, 0.975702, 0.972940, 0.970031, 0.966976, 0.963776, 0.960431,
@@ -110,5 +129,5 @@ float cosine_lookup(uint32_t index){
 	0.995185, 0.996313, 0.997290, 0.998118, 0.998795, 0.999322, 0.999699, 0.999925
 	};
 
-	return .99*lookup[index];
+	return .99*lookup[index];	//scale to prevent DAC rolling over
 }
