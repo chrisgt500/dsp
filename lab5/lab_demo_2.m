@@ -27,7 +27,7 @@ plot(f2,abs(X2));
 
 figure(3); clf;
 w = kaiser(512, 8)';
-H = height(w);
+H = sum(w);
 X3 = fft(x.*w,N2);
 plot(f2, 20*log10(abs(X3)));
 
