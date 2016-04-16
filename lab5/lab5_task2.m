@@ -30,6 +30,11 @@ gain = 10^(10.1/20);
 sos = zp2sos(z, p, gain*k);
 
 fvtool(b,a,sos);
+gd = grpdelay(sos,512);
+[h1,w1] = freqz(sos, 512);
+
+figure(7);
+plot(w1/pi , gd);
 
 %% Chebyshev Type I and Type II
 
@@ -98,6 +103,16 @@ wp3 = [12000/48000 15000/48000];
 ftype3 = 'bandpass';
 gain3 = 10^(10/20);
 
+figure(8);
 [b3,a3] = butter(n3, wp3, ftype3);
 freqz(gain3*b3, a3);
+
+[z3,p3,k3] = butter(n3,wp3,ftype3);
+sos3 = zp2sos(z3,p3,k3*gain3);
+
+figure(9);
+gd1 = grpdelay(sos3,512);
+[h2,w2] = freqz(sos3, 512);
+
+plot(w2/pi , gd1);
 
