@@ -18,7 +18,7 @@
 % same with the poles in the denominator.  The entire expression is then
 % scaled by k.
 
-n = 20;
+n = 7;
 rp = .2;
 rs = 70.2;
 wp = [12000/48000 15000/48000];
@@ -29,7 +29,7 @@ gain = 10^(10.1/20);
 [z,p,k] = ellip(n, rp, rs, wp, ftype);
 sos = zp2sos(z, p, gain*k);
 
-fvtool(b,a,sos);
+fvtool(gain*b,a,sos);
 gd = grpdelay(sos,512);
 [h1,w1] = freqz(sos, 512);
 
@@ -98,21 +98,22 @@ ftype2 = 'bandpass';
 % ftype options - 'low' 'bandpass' 'high' 'stop'(notch)
 % gain - passband gain in dB
 
+
 n3 = 10;
 wp3 = [12000/48000 15000/48000];
 ftype3 = 'bandpass';
 gain3 = 10^(10/20);
 
-figure(8);
+%figure(8);
 [b3,a3] = butter(n3, wp3, ftype3);
-freqz(gain3*b3, a3);
+%freqz(gain3*b3, a3);
 
 [z3,p3,k3] = butter(n3,wp3,ftype3);
 sos3 = zp2sos(z3,p3,k3*gain3);
 
-figure(9);
+%figure(9);
 gd1 = grpdelay(sos3,512);
-[h2,w2] = freqz(sos3, 512);
+%[h2,w2] = freqz(sos3, 512);
 
-plot(w2/pi , gd1);
+%plot(w2/pi , gd1);
 
