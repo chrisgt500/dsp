@@ -96,7 +96,7 @@ ftype2 = 'bandpass';
 n3 = 10;
 wp3 = [12000/48000 15000/48000];
 ftype3 = 'bandpass';
-gain3 = 10^(10.1/20);
+gain3 = 10^(10/20);
 
 [b3,a3] = butter(n3, wp3, ftype3);
 freqz(gain3*b3, a3);
