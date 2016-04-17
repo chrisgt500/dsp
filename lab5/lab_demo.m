@@ -75,14 +75,14 @@ plot(f1, 20*log10(abs(fft(h1,N1))));
 % Passband specs
 maxripple = .1;     %maximum stopband ripple [dB]
 startgain = 0;      %gain at beginning of stopband [dB]
-endgain = 0;        %gain at end of stopband [dB]
+endgain = 10;        %gain at end of stopband [dB]
 passlow = 0;        %passband beginning frequency [normalized]
 passhigh = 0.07;    %passband ending frequency [normalized]
 
 % Stopband specs
 minreject = -80;    %minimum rejection in stopband [dB}
-stoplow = 0.11;     %frequency stopband begins [normalized]
-stophigh = 0.5;     %frequency stopband ends [normalized]
+stopbegin = 0.11;     %frequency stopband begins [normalized]
+stopend = 0.5;     %frequency stopband ends [normalized]
 
 % Other junk to specify
 N = 8 * 1024;       %number of samples
@@ -100,7 +100,7 @@ f(N/2+1+1:end) = f(N/2+1+1:end)-1; %keep track of negative frequencies
 figure(1); clf; hold on;
 winlow = minreject-10;
 winhigh = 20;
-axis([0 .5 winlow winhigh]);    %set window size
+axis([-.5 .5 winlow winhigh]);    %set window size
 
 %plot passband
 patch([passlow passhigh passhigh passlow], ...
@@ -109,15 +109,15 @@ patch([passlow passhigh passhigh passlow], ...
           .9*[1 1 1]); 
 
 if (passlow == 0) || (passhigh == .5)  %check type of filter
-    patch([stoplow stophigh stophigh stoplow], ...
+    patch([stopbegin stopend stopend stopbegin], ...
           [minreject minreject winlow winlow], ...
           .9*[1 1 1]);
       
 else
-    patch([0 stophigh stophigh 0], ...
+    patch([0 stopend stopend 0], ...
           [minreject minreject winlow winlow], ...
           .9*[1 1 1]);
-    patch([stoplow .5 .5 stoplow], ...
+    patch([stopbegin .5 .5 stopbegin], ...
           [minreject minreject winlow winlow], ...
           .9*[1 1 1]);
 end
