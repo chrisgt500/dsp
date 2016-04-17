@@ -73,16 +73,16 @@ plot(f1, 20*log10(abs(fft(h1,N1))));
 %       more than 80dB rejection in stopband, .11 < |f| < 0.5
 
 % Passband specs
-maxripple = 1;     %maximum stopband ripple [dB]
-startgain = 10;      %gain at beginning of stopband [dB]
+maxripple = .1;     %maximum stopband ripple [dB]
+startgain = 0;      %gain at beginning of stopband [dB]
 endgain = 0;        %gain at end of stopband [dB]
-passlow = .15;        %passband beginning frequency [normalized]
-passhigh = 0.3;    %passband ending frequency [normalized]
+passlow = 0;        %passband beginning frequency [normalized]
+passhigh = 0.07;    %passband ending frequency [normalized]
 
 % Stopband specs
-minreject = -70;    %minimum rejection in stopband [dB}
-stoplow = 0.35;     %frequency stopband begins [normalized]
-stophigh = 0.1;     %frequency stopband ends [normalized]
+minreject = -80;    %minimum rejection in stopband [dB}
+stoplow = 0.11;     %frequency stopband begins [normalized]
+stophigh = 0.5;     %frequency stopband ends [normalized]
 
 % Other junk to specify
 N = 8 * 1024;       %number of samples
@@ -123,9 +123,11 @@ else
 end
 
 %% Calculate real and desired transfer functions
-Hr = (abs(f) > (passlow-hrspec) & abs(f) < (passhigh+hrspec)) ...
-    .*(10 .^ ((-abs(f) + passlow) * .5/passlow * (abs(startgain - endgain) ~= 0))); 
 
+m = (endgain-startgain)/(passhigh-passlow);
+
+Hr =  ((abs(f) > (passlow-hrspec)) & (abs(f) < (passhigh+hrspec))) .* ...
+        10 .^ (((abs(f) .* m) - (m*passlow) + startgain)/20);
 
 plot(f, 20*log10(abs(Hr)));
 
