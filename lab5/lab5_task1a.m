@@ -95,7 +95,7 @@ hrspec = .017;       %how far Hr should extend beyond spec
 f = (0:N-1)/N;      %specify normalized frequencies
 f(N/2+1+1:end) = f(N/2+1+1:end)-1; %keep track of negative frequencies
 
-stem = 0;
+stem_logical = 1;
 
 %% Plot filter response
 % Generate stop and pass bands
@@ -135,12 +135,7 @@ plot(f, 20*log10(abs(Hr)));
 
 Hd = Hr.*exp(-j*2*pi*f*(M-1)/2); %%desired tranfer
 
-if(stem)
-    figure(2); clf;
-    stem(0:N-1 , hd, '.');
-    hold on;
-    stem(0:M-1,h,'.'); %%transfer function of 
-end
+
 
 
 hd = ifft(Hd);  %%desired impulse response from desired transfer function
@@ -148,4 +143,11 @@ h = hd(1:M).*kaiser(M, beta)'; %%windowed impulse
 
 figure(1);
 plot(f, 20*log10(abs(fft(h,N))));
+
+if(stem_logical)
+    figure(2); clf;
+    stem(0:N-1 , hd, '.');
+    hold on;
+    stem(0:M-1,h,'.'); %%transfer function of 
+end
 %}
