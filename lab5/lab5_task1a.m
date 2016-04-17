@@ -67,7 +67,7 @@ plot(f1, 20*log10(abs(fft(h1,N1))));
 %}
 
 %e{
-%% Colin's Attempt
+%% Colin's (and Sean's) Attempt
 
 % Specs: less than .1dB ripple in passband, 0 > |f| > 0.07
 %       more than 80dB rejection in stopband, .11 < |f| < 0.5
@@ -75,7 +75,7 @@ plot(f1, 20*log10(abs(fft(h1,N1))));
 % Passband specs
 maxripple = .1;     %maximum stopband ripple [dB]
 startgain = 0;      %gain at beginning of stopband [dB]
-endgain = 10;        %gain at end of stopband [dB]
+endgain = 0;        %gain at end of stopband [dB]
 passlow = 0;        %passband beginning frequency [normalized]
 passhigh = 0.07;    %passband ending frequency [normalized]
 
@@ -86,21 +86,23 @@ stopend = 0.5;     %frequency stopband ends [normalized]
 
 % Other junk to specify
 N = 8 * 1024;       %number of samples
-M = 80;             %number of coefficients in filter
+M = 121;             %number of coefficients in filter
 beta = 8;           %adjustable window parameter
-hrspec = .015;       %how far Hr should extend beyond spec
+hrspec = .017;       %how far Hr should extend beyond spec
 
 
 % Important junk to calculate from above info
 f = (0:N-1)/N;      %specify normalized frequencies
 f(N/2+1+1:end) = f(N/2+1+1:end)-1; %keep track of negative frequencies
 
+stem = 0;
+
 %% Plot filter response
 % Generate stop and pass bands
 figure(1); clf; hold on;
 winlow = minreject-10;
 winhigh = 20;
-axis([-.5 .5 winlow winhigh]);    %set window size
+axis([0 .5 winlow winhigh]);    %set window size
 
 %plot passband
 patch([passlow passhigh passhigh passlow], ...
@@ -131,6 +133,19 @@ Hr =  ((abs(f) > (passlow-hrspec)) & (abs(f) < (passhigh+hrspec))) .* ...
 
 plot(f, 20*log10(abs(Hr)));
 
-
 Hd = Hr.*exp(-j*2*pi*f*(M-1)/2); %%desired tranfer
+
+if(stem)
+    figure(2); clf;
+    stem(0:N-1 , hd, '.');
+    hold on;
+    stem(0:M-1,h,'.'); %%transfer function of 
+end
+
+
+hd = ifft(Hd);  %%desired impulse response from desired transfer function
+h = hd(1:M).*kaiser(M, beta)'; %%windowed impulse
+
+figure(1);
+plot(f, 20*log10(abs(fft(h,N))));
 %}
