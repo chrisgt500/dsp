@@ -72,12 +72,14 @@ plot(f, 20*log10(abs(Hr)));
 %From the real transfer function, obtain the complete desired transfer function
 Hd = Hr.*exp(-j*2*pi*f*(M-1)/2);
 
+%% Calculate impulse responses and window
 %Perform inverse FFT to obtain impulse response
 hd = ifft(Hd);
 
 %window impulse response to obtain filter response
 h = hd(1:M).*kaiser(M, beta)';
 
+%% Plot results
 %plot FFT of resulting, windowed filter response
 plot(f, 20*log10(abs(fft(h,N))));
 
