@@ -73,29 +73,29 @@ plot(f1, 20*log10(abs(fft(h1,N1))));
 %       more than 80dB rejection in stopband, .11 < |f| < 0.5
 
 % Passband specs
-maxripple = .1;     %maximum stopband ripple [dB]
+maxripple = .2;     %maximum stopband ripple [dB]
 startgain = 0;      %gain at beginning of stopband [dB]
-endgain = 0;        %gain at end of stopband [dB]
+endgain = 10;        %gain at end of stopband [dB]
 passlow = 0;        %passband beginning frequency [normalized]
-passhigh = 0.07;    %passband ending frequency [normalized]
+passhigh = 0.13;    %passband ending frequency [normalized]
 
 % Stopband specs
-minreject = -80;    %minimum rejection in stopband [dB}
-stopbegin = 0.11;     %frequency stopband begins [normalized]
+minreject = -70;    %minimum rejection in stopband [dB}
+stopbegin = 0.24;     %frequency stopband begins [normalized]
 stopend = 0.5;     %frequency stopband ends [normalized]
 
 % Other junk to specify
 N = 8 * 1024;       %number of samples
-M = 121;             %number of coefficients in filter
-beta = 8;           %adjustable window parameter
-hrspec = .017;       %how far Hr should extend beyond spec
+M = 251;             %number of coefficients in filter
+beta = 7;           %adjustable window parameter
+hrspec = .01;       %how far Hr should extend beyond spec
 
 
 % Important junk to calculate from above info
 f = (0:N-1)/N;      %specify normalized frequencies
 f(N/2+1+1:end) = f(N/2+1+1:end)-1; %keep track of negative frequencies
 
-stem_logical = 1;
+stem_logical = 0;
 
 %% Plot filter response
 % Generate stop and pass bands
@@ -125,7 +125,7 @@ else
 end
 
 %% Calculate real and desired transfer functions
-
+%{
 m = (endgain-startgain)/(passhigh-passlow);
 
 Hr =  ((abs(f) > (passlow-hrspec)) & (abs(f) < (passhigh+hrspec))) .* ...
@@ -150,4 +150,35 @@ if(stem_logical)
     hold on;
     stem(0:M-1,h,'.'); %%transfer function of 
 end
+
 %}
+
+%}
+
+% n - filter order
+% rp - peak to peak passband ripple in dB
+% rs - stopband attenuation in dB
+% wp - passband edge frequency
+% ftype options - 'low' 'bandpass' 'high' 'stop'(notch)
+% gain - passband gain in dB
+
+% [b,a] = ellip() returns coefficients in the form B(z)/A(z) where B(z) =
+% b(1) + b(2)z^-1 + b(3)z^-2 + ... b(n+1)z^-n. A(z) follows the same format
+% Using the [b,a] format can cause numerical problems due to rounding errors
+
+% [z,p,k] = ellip() returns coefficients in the form
+% (1-z(1)z^-1)(1-z(2)z^-1)...*(1-z(n)z^-1) for the numerator and does the
+% same with the poles in the denominator.  The entire expression is then
+% scaled by k.
+
+n = 10;
+rp = .2;
+rs = 70;
+wp = (.13);
+ftype = 'low';
+gain = (1);
+
+[b,a] = ellip(n, rp, rs, wp, ftype);
+freqz(b,a);
+[z,p,k] = ellip(n, rp, rs, wp, ftype);
+sos = zp2sos(z, p, k*gain);

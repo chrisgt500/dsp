@@ -1,4 +1,4 @@
-numSamples = 512; %% samples of x
+numSamples = 1024; %% samples of x
 
 %% Phase and Magnitude Initializations
 A0 = 25.3;
@@ -10,7 +10,8 @@ f1 = 0.33;
 theta1 = .5678;
 
 n = 0:numSamples-1;
-x = A0*cos(2*pi*f0*n+theta0) + A1*cos(2*pi*f1*n+theta1);
+%x = A0*cos(2*pi*f0*n+theta0) + A1*cos(2*pi*f1*n+theta1);
+x = data;
 %% FFT
 
 N = 64*numSamples*2; %zero padding much much larger than numSamples
