@@ -57,6 +57,7 @@ int main(int argc, char *argv[])
 		if (KeyPressed) {
 			BSP_LED_Toggle(LED5);
 			KeyPressed = RESET;
+			BSP_LCD_GLASS_DisplayString("Fuck");
 		}
 
 	}
