@@ -1,12 +1,16 @@
 #ifndef ECE486_FFT_H
 #define ECE486_FFT_H
 
+#ifndef FFTSAMPLES
+#define FFTSAMPLES 512
+#endif
+
 //probably could take just a struct to make this better
-int peak_detect(float *data, int size, float thresh, int *peaks, int farthest_peak_index);
+int peak_detect(float *data, float thresh, int *peaks, int farthest_peak_index);
 
-void fft(float *input_real, float *input_complex, int fftsize, int peak_index);
+void fft(float *input_real, float *input_complex, float thresh, int peak_index);
 
-void window(void *input, int length);
+void window(float *input);
 
 
 #endif
