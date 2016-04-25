@@ -48,6 +48,7 @@ $(TARGET).bin: $(TARGET)
 	$(OBJCOPY) -Obinary $(TARGET) $(TARGET).bin
 
 flash: $(TARGET).bin
+	$(MAKE) all
 	cp $(TARGET).bin /Volumes/DIS_L476VG
 
 clean:
