@@ -77,8 +77,8 @@ int main(int argc, char *argv[])
 		//decimate(blocksizelpf, decimation, input1, input_decimated_1);
 		//decimate(blocksizelpf, decimation, input2, input_decimated_2);
 
-		for(j = 0; j < (FFTSAMPLES/blocksizelpf/decimation); j++)
-		{
+		for( j = 0; j < (FFTSAMPLES/blocksizelpf/decimation); j++){
+
 			calc_biquad(filter1, input1, input1);
 			calc_biquad(filter2, input2, input2);
 
@@ -96,7 +96,8 @@ int main(int argc, char *argv[])
 
 
 		}
-		fft(input1, input2, 0, peak_index);
+		
+		fft(buffer, 0, peak_index);
 		BSP_LED_On(LED4);
 
 		//sprintf(lcd_str, "%.2f  ", 10.0);

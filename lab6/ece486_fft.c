@@ -43,26 +43,15 @@ void peak_detect(float *data, float thresh, float *farthest_peak_index)
 }
 
 
-void fft(float *input_real, float *input_complex, float thresh, float *peak_index)
+void fft(float *buffer, float thresh, float *peak_index)
 {
 	int i;
-	static float tmp[FFTSAMPLES*2] = {0};
 	static float output[FFTSAMPLES] = {0};
 	int ifftFlag = 0;
 	int doBitReverse = 1;
 
-
-	for(i = 0; i < FFTSAMPLES; i++){
-		tmp[i] = input_real[i];
-	}
-
-	for(i = 0; i < FFTSAMPLES; i++){
-		tmp[i + FFTSAMPLES] = input_complex[i];
-	}
-
-
 	//set up for a 512 blocksize and fft of 512
-	arm_cfft_f32(&arm_cfft_sR_f32_len1024, tmp, ifftFlag, doBitReverse);
+	arm_cfft_f32(&arm_cfft_sR_f32_len1024, buffer, ifftFlag, doBitReverse);
 	arm_cmplx_mag_f32(tmp, output, FFTSAMPLES*2);
 	peak_detect(output, thresh, peak_index);
 
