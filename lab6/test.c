@@ -12,6 +12,7 @@
  *
  */
 
+#include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include "ece486.h"
@@ -19,28 +20,18 @@
 #include "stm32l476g_discovery.h"
 #include "ece486_fft.h"
 
+
 extern FlagStatus KeyPressed;
 
 int main(int argc, char *argv[])
 {
-	/*float data[] = {1.,2.,3.,4.,5.,6.,7.,8.,9.,10.,9.,8.,9.,6.,5.,4.,3.,2.,4.,5.,6.,7.,6.,5.,4.};
-	int size = 25;
-	float thresh = 3.;
-	int max_peak;
-	int peaks[] = {0,0,0,0,0,0,0,0,0,0};
-
-	int ret;
-	ret = peak_detect(data, size, thresh, peaks, max_peak);
-
-	printf("%d peaks found.\n", ret);
-	printf("Peaks found at: ");
-	for (ret = 0; ret < 10; ret++) {
-		if (peaks[ret]) printf("%d\n", peaks[ret]);
-	}*/
 	float *input1, *input2;
+	char lcd_str[8];
+	int *peak_index;
+
 
 	setblocksize(FFTSAMPLES); //FUN FACT, THIS NEEDS TO BE CALLED BEFORE initialize
-	initialize(FS_50K, STEREO_IN, MONO_OUT);
+	initialize(FS_48K, STEREO_IN, MONO_OUT);
 
 
 	input1 = (float *)malloc(sizeof(float)*FFTSAMPLES);
@@ -54,17 +45,15 @@ int main(int argc, char *argv[])
 	while(1){
 		getblockstereo(input1,input2);
 
-		if (KeyPressed) {
-			BSP_LED_Toggle(LED5);
-			KeyPressed = RESET;
-			BSP_LCD_GLASS_DisplayString("Fuck");
-		}
+		fft(input1, input2, 1, peak_index);
+
+		sprintf(lcd_str, "%f  ", peak_index);
+
+		BSP_LCD_GLASS_DisplayString((uint8_t *)lcd_str);
+
+		putblock(input1);
 
 	}
-
-
-
-
 
 
 	return 0;

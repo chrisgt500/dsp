@@ -8,7 +8,7 @@
 //probably could take just a struct to make this better
 int peak_detect(float *data, float thresh, int *peaks, int farthest_peak_index);
 
-void fft(float *input_real, float *input_complex, float thresh, int peak_index);
+void fft(float *input_real, float *input_complex, float thresh, int *peak_index);
 
 void window(float *input);
 

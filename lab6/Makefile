@@ -1,6 +1,6 @@
 TARGET=test
 #TARGET=nco_test
-OBJS=ece486_fft.o test.o arm_bitreversal2.o arm_common_tables.o arm_const_structs.o
+OBJS=test.o ece486_fft.o arm_bitreversal2.o arm_common_tables.o arm_const_structs.o
 #OBJS=nco_test.o ece486_nco.o
 
 
@@ -42,7 +42,7 @@ debug : LDFLAGS += -Wl,-Map,$(TARGET).map
 debug : all
 
 $(TARGET): $(OBJS)
-	$(CC)  -o $(TARGET) $(CFLAGS) $(LDFLAGS) $(OBJS) $(LIBS)
+	$(CC)  -o $(TARGET) $(CFLAGS) $(LDFLAGS) $(OBJS) $(LIBS) -lm
 
 $(TARGET).bin: $(TARGET)
 	$(OBJCOPY) -Obinary $(TARGET) $(TARGET).bin
