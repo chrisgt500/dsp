@@ -51,6 +51,7 @@ void fft(float *buffer, float thresh, float *peak_index)
 
 	//set up for a 512 blocksize and fft of 512
 	arm_cfft_f32(&arm_cfft_sR_f32_len1024, buffer, ifftFlag, doBitReverse);
+	//clear_screen();
 	arm_cmplx_mag_f32(buffer, output, FFTSAMPLES*2);
 	peak_detect(output, thresh, peak_index);
 
@@ -177,10 +178,11 @@ void velocity_conversion_display(float *peak_index)
 	char lcd_str[8] = {0};
 	float scale = 1241.379;
 	float normalized_freq = (*peak_index)/(FFTSAMPLES*2);
-	clear_screen();
+	//clear_screen();
 	sprintf(lcd_str, "%.2f   ", normalized_freq * scale);
-	//sprintf(lcd_str, "%.1f", *peak_index);
+
 	BSP_LCD_GLASS_DisplayString((uint8_t *)lcd_str);
+
 }
 
 void clear_screen(void)

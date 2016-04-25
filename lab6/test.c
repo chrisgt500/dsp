@@ -53,6 +53,7 @@ int main(int argc, char *argv[])
 	input_decimated_1 = (float *)malloc(sizeof(float)*(blocksizelpf/decimation));
 	input_decimated_2 = (float *)malloc(sizeof(float)*(blocksizelpf/decimation));
 
+
 	if (input1==NULL || input2==NULL) {
 		flagerror(MEMORY_ALLOCATION_ERROR);
 		while(1);
@@ -62,9 +63,10 @@ int main(int argc, char *argv[])
 	filter2 = init_biquad(sections1, gain1, lpf1, blocksizelpf);
 
 	while(1){
-		getblockstereo(input1,input2);
+
 
 		for( j = 0; j < (FFTSAMPLES/blocksizelpf/decimation); j++){
+			getblockstereo(input1,input2);
 
 			calc_biquad(filter1, input1, input1);
 			calc_biquad(filter2, input2, input2);
@@ -82,14 +84,13 @@ int main(int argc, char *argv[])
 		}
 
 		fft(buffer, 0, peak_index);
+
+
+		//velocity_conversion_display(peak_index);
+		BSP_LCD_GLASS_DisplayString("poop   ");
+		sleep(5);
 		BSP_LED_On(LED4);
 
-		//sprintf(lcd_str, "%.2f  ", 10.0);
-		velocity_conversion_display(peak_index);
-		//BSP_LED_On(LED4);
-		//BSP_LCD_GLASS_DisplayString("FUCK");
-
-		//putblock(input1);
 	}
 
 	return 0;
