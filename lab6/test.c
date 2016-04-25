@@ -50,7 +50,7 @@ int main(int argc, char *argv[])
 	initialize(FS_48K, STEREO_IN, MONO_OUT);
 
 
-	input1 = (float *)malloc(sizeof(float)*FFTSAMPLES);
+	input1 = (float *)malloc(sizeof(float)*FFTSAMPLES); //should be blocksizelpf long
 	input2 = (float *)malloc(sizeof(float)*FFTSAMPLES);
 	input_decimated_1 = (float *)malloc(sizeof(float)*(blocksizelpf/decimation));
 	input_decimated_2 = (float *)malloc(sizeof(float)*(blocksizelpf/decimation));
@@ -80,9 +80,9 @@ int main(int argc, char *argv[])
 		BSP_LED_On(LED4);
 
 		//sprintf(lcd_str, "%.2f  ", 10.0);
-		//velocity_conversion_display(peak_index);
+		velocity_conversion_display(peak_index);
 		//BSP_LED_On(LED4);
-		BSP_LCD_GLASS_DisplayString("FUCK");
+		//BSP_LCD_GLASS_DisplayString("FUCK");
 
 
 		//putblock(input1);

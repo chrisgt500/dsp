@@ -62,7 +62,7 @@ void fft(float *input_real, float *input_complex, float thresh, float *peak_inde
 
 
 	//set up for a 512 blocksize and fft of 512
-	arm_cfft_f32(&arm_cfft_sR_f32_len512, tmp, ifftFlag, doBitReverse);
+	arm_cfft_f32(&arm_cfft_sR_f32_len1024, tmp, ifftFlag, doBitReverse);
 	arm_cmplx_mag_f32(tmp, output, FFTSAMPLES*2);
 	peak_detect(output, thresh, peak_index);
 
@@ -136,11 +136,15 @@ void velocity_conversion_display(float *peak_index)
 	char lcd_str[8] = {0};
 	float scale = 1241.379;
 	float normalized_freq = (*peak_index)/(FFTSAMPLES*2);
-	//sprintf(lcd_str, "%.1f", normalized_freq * scale);
-	sprintf(lcd_str, "%.1f", *peak_index);
+	clear_screen();
+	sprintf(lcd_str, "%.2f   ", normalized_freq * scale);
+	//sprintf(lcd_str, "%.1f", *peak_index);
 	BSP_LCD_GLASS_DisplayString((uint8_t *)lcd_str);
+}
 
-
+void clear_screen(void)
+{
+	BSP_LCD_GLASS_DisplayString("        ");
 }
 
 void decimate(int blocksize, int decimation, float *input, float *output)
@@ -148,6 +152,6 @@ void decimate(int blocksize, int decimation, float *input, float *output)
 	int i;
 
 	for (i = 0; i < blocksize/decimation; i++){  //Only keep every fifth sample
-		output[i] = input[i*5];
+		output[i] = input[i*decimation];
 	}
 }

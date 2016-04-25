@@ -2,7 +2,7 @@
 #define ECE486_FFT_H
 
 #ifndef FFTSAMPLES
-#define FFTSAMPLES 512
+#define FFTSAMPLES 1024
 #endif
 
 //probably could take just a struct to make this better
@@ -13,6 +13,8 @@ void fft(float *input_real, float *input_complex, float thresh, float *peak_inde
 void window(float *input);
 
 void velocity_conversion_display(float *peak_index);
+
+void clear_screen(void);
 
 /*!
  *@Brief A function for decimating data.
