@@ -52,7 +52,8 @@ int main(int argc, char *argv[])
 
 		//sprintf(lcd_str, "%.2f  ", 10.0);
 		velocity_conversion_display(peak_index);
-		sleep(1);
+		BSP_LED_On(LED5);
+		//sleep(1);
 
 		//BSP_LCD_GLASS_DisplayString((uint8_t *)lcd_str);
 
