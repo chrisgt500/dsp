@@ -22,7 +22,7 @@ void peak_detect(float *data, float thresh, float *farthest_peak_index)
 	int i;
 	float index;
 	int count = 0;
-	float peaks[10] = {0};//detects 10 peaks
+	float peaks[FFTSAMPLES/2] = {0};//detects 10 peaks
 
 
 	for (i = 1; i < FFTSAMPLES-1; i++) {
@@ -32,8 +32,8 @@ void peak_detect(float *data, float thresh, float *farthest_peak_index)
 
 	}
 
-	for(i = 1; i < count; i++){
-		if( peaks[i] > index) index = peaks[i];
+	for (i = 0; i < count; i++){
+		if (peaks[i] > index) index = peaks[i];
 	}
 
 	*farthest_peak_index = index;
