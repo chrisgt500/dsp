@@ -27,7 +27,7 @@ extern FlagStatus KeyPressed;
 
 int main(int argc, char *argv[])
 {
-	BIQUAD_T *filter1;
+	BIQUAD_T *filter1, *filter2;
 	int sections1, blocksizelpf, decimation;
 	float *input1, *input2, *input_decimated_1, *input_decimated_2, gain1;
 	char lcd_str[8] = {0};
@@ -61,9 +61,13 @@ int main(int argc, char *argv[])
 	}
 
 	filter1 = init_biquad(sections1, gain1, lpf1, blocksizelpf);
+	filter2 = init_biquad(sections1, gain1, lpf1, blocksizelpf);
 
 	while(1){
 		getblockstereo(input1,input2);
+
+		//calc_biquad(filter1, input1, input1);
+		//calc_biquad(filter2, input2, input2);
 
 		//decimate(blocksizelpf, decimation, input1, input_decimated_1);
 		//decimate(blocksizelpf, decimation, input2, input_decimated_2);
