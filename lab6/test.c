@@ -28,14 +28,15 @@ extern FlagStatus KeyPressed;
 int main(int argc, char *argv[])
 {
 	BIQUAD_T *filter1;
-	int sections1, blocksizelpf;
-	float *input1, *input2, gain1;
+	int sections1, blocksizelpf, decimation;
+	float *input1, *input2, *input_decimated_1, *input_decimated_2, gain1;
 	char lcd_str[8] = {0};
 	float *peak_index;
 	peak_index = malloc(sizeof(float));
 	*peak_index = 0;
 	sections1 = 3;
 	blocksizelpf = 96;
+	decimation = 6;
 	gain1 = .000436;
 
 
@@ -45,12 +46,14 @@ int main(int argc, char *argv[])
 		1.000000, 1.000000, 0.000000, -0.921111, 0.000000
 	};
 
-	setblocksize(FFTSAMPLES); //FUN FACT, THIS NEEDS TO BE CALLED BEFORE initialize
+	setblocksize(blocksizelpf); //FUN FACT, THIS NEEDS TO BE CALLED BEFORE initialize
 	initialize(FS_48K, STEREO_IN, MONO_OUT);
 
 
 	input1 = (float *)malloc(sizeof(float)*FFTSAMPLES);
 	input2 = (float *)malloc(sizeof(float)*FFTSAMPLES);
+	input_decimated_1 = (float *)malloc(sizeof(float)*(blocksizelpf/decimation));
+	input_decimated_2 = (float *)malloc(sizeof(float)*(blocksizelpf/decimation));
 
 	if (input1==NULL || input2==NULL) {
 		flagerror(MEMORY_ALLOCATION_ERROR);
@@ -61,6 +64,10 @@ int main(int argc, char *argv[])
 
 	while(1){
 		getblockstereo(input1,input2);
+
+		//decimate(blocksizelpf, decimation, input1, input_decimated_1);
+		//decimate(blocksizelpf, decimation, input2, input_decimated_2);
+
 
 		fft(input1, input2, 0, peak_index);
 
