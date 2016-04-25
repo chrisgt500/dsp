@@ -39,11 +39,11 @@ void peak_detect(float *data, float thresh, int farthest_peak_index)
 }
 
 
-void fft(float *input_real, float *input_complex, float thresh, int *peak_index)
+void fft(float *input_real, float *input_complex, float thresh, float *peak_index)
 {
 	int i;
-	static float tmp[FFTSAMPLES*2];
-	static float output[FFTSAMPLES];
+	static float tmp[FFTSAMPLES*2] = {0};
+	static float output[FFTSAMPLES] = {0};
 	int ifftFlag = 0;
 	int doBitReverse = 1;
 
@@ -129,13 +129,12 @@ void window(float *input)
 	}
 }
 
-void velocity_conversion_display(int peak_index)
+void velocity_conversion_display(float *peak_index)
 {
-	char lcd_str[8];
+	char lcd_str[8] = {0};
 	float scale = 1241.379;
-	float normalized_freq = peak_index/(FFTSAMPLES*2);
-
-	sprintf(lcd_str, "%.3f", scale * normalized_freq);
+	float normalized_freq = (*peak_index)/(FFTSAMPLES*2);
+	sprintf(lcd_str, "%.1f", normalized_freq * scale);
 	BSP_LCD_GLASS_DisplayString((uint8_t *)lcd_str);
 
 

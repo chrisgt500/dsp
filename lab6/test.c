@@ -14,6 +14,7 @@
 
 #include <math.h>
 #include <stdio.h>
+#include <unistd.h>
 #include <stdlib.h>
 #include "ece486.h"
 #include "stm32l4xx_hal.h"
@@ -27,7 +28,9 @@ int main(int argc, char *argv[])
 {
 	float *input1, *input2;
 	char lcd_str[8];
-	int *peak_index;
+	float *peak_index;
+	peak_index = malloc(sizeof(float));
+	*peak_index = 200;
 
 
 	setblocksize(FFTSAMPLES); //FUN FACT, THIS NEEDS TO BE CALLED BEFORE initialize
@@ -45,12 +48,13 @@ int main(int argc, char *argv[])
 	while(1){
 		getblockstereo(input1,input2);
 
-		//fft(input1, input2, 1, peak_index);
+		fft(input1, input2, 1, peak_index);
 
-		//sprintf(lcd_str, "%d  ", 10);
-		//velocity_conversion_display(200);
+		//sprintf(lcd_str, "%.2f  ", 10.0);
+		velocity_conversion_display(peak_index);
+		sleep(1);
 
-		BSP_LCD_GLASS_DisplayString((uint8_t *)lcd_str);
+		//BSP_LCD_GLASS_DisplayString((uint8_t *)lcd_str);
 
 		//putblock(input1);
 
