@@ -17,28 +17,25 @@
 #include "ece486_fft.h"
 #include "ece486.h"
 
-int peak_detect(float *data, float thresh, int *peaks, int farthest_peak_index)
+void peak_detect(float *data, float thresh, int farthest_peak_index)
 {
-	int i, index = 0;
+	int i, index;
 	int count = 0;
+	int peaks[10] = {0};//detects 10 peaks
 
 
 	for (i = 1; i < FFTSAMPLES-1; i++) {
 		if ((data[i] >= thresh) && (data[i-1] < data[i]) && (data[i+1] < data[i])){
-		peaks[count++] = i+1;
+			peaks[count++] = i+1; //can probably simplify this
 		}
 
 	}
 
-
 	for(i = 1; i < count; i++){
-		if( peaks[i] > index) peaks[i] = index;
+		if( peaks[i] > index) index = peaks[i];
 	}
 
 	farthest_peak_index = index;
-
-	return count;
-
 }
 
 
@@ -47,10 +44,8 @@ void fft(float *input_real, float *input_complex, float thresh, int *peak_index)
 	int i;
 	static float tmp[FFTSAMPLES*2];
 	static float output[FFTSAMPLES];
-	static int peaks[10];//detects 10 peaks
 	int ifftFlag = 0;
 	int doBitReverse = 1;
-	int count;
 
 
 	for(i = 0; i < FFTSAMPLES; i++){
@@ -65,7 +60,7 @@ void fft(float *input_real, float *input_complex, float thresh, int *peak_index)
 	//set up for a 512 blocksize and fft of 1024
 	arm_cfft_f32(&arm_cfft_sR_f32_len1024, tmp, ifftFlag, doBitReverse);
 	arm_cmplx_mag_f32(tmp, output, FFTSAMPLES*2);
-	count = peak_detect(output, thresh, peaks, *peak_index);
+	peak_detect(output, thresh, *peak_index);
 
 
 
@@ -140,7 +135,7 @@ void velocity_conversion_display(int peak_index)
 	float scale = 1241.379;
 	float normalized_freq = peak_index/(FFTSAMPLES*2);
 
-	sprintf(lcd_str, "%.1f", scale * normalized_freq);
+	sprintf(lcd_str, "%.3f", scale * normalized_freq);
 	BSP_LCD_GLASS_DisplayString((uint8_t *)lcd_str);
 
 

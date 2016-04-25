@@ -45,13 +45,14 @@ int main(int argc, char *argv[])
 	while(1){
 		getblockstereo(input1,input2);
 
-		fft(input1, input2, 1, peak_index);
+		//fft(input1, input2, 1, peak_index);
 
-		sprintf(lcd_str, "%f  ", peak_index);
+		//sprintf(lcd_str, "%d  ", 10);
+		//velocity_conversion_display(200);
 
 		BSP_LCD_GLASS_DisplayString((uint8_t *)lcd_str);
 
-		putblock(input1);
+		//putblock(input1);
 
 	}
 
