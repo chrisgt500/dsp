@@ -11,6 +11,7 @@
  * @date April 23, 2016
  *
  */
+#include <stdfloat.h>
 #include <math.h>
 #include "arm_math.h"
 #include "arm_const_structs.h"
@@ -43,8 +44,8 @@ void peak_detect(float *data, float thresh, float *farthest_peak_index)
 void fft(float *input_real, float *input_complex, float thresh, float *peak_index)
 {
 	int i;
-	static float tmp[FFTSAMPLES*2] = {0};
-	static float output[FFTSAMPLES] = {0};
+	float32_t tmp[FFTSAMPLES*2] = {0};
+	float32_t output[FFTSAMPLES] = {0};
 	int ifftFlag = 0;
 	int doBitReverse = 1;
 
@@ -59,12 +60,13 @@ void fft(float *input_real, float *input_complex, float thresh, float *peak_inde
 
 
 	//set up for a 512 blocksize and fft of 1024
-	arm_cfft_f32(&arm_cfft_sR_f32_len1024, tmp, ifftFlag, doBitReverse);
-	arm_cmplx_mag_f32(tmp, output, FFTSAMPLES*2);
+	arm_cfft_f32(&arm_cfft_sR_f32_len1024, &tmp, ifftFlag, doBitReverse);
+	arm_cmplx_mag_f32(tmp, &output, FFTSAMPLES*2);
 
 
 	peak_detect(output, thresh, peak_index);
 
+	*peak_index = 10;
 
 
 }
@@ -137,7 +139,8 @@ void velocity_conversion_display(float *peak_index)
 	char lcd_str[8] = {0};
 	float scale = 1241.379;
 	float normalized_freq = (*peak_index)/(FFTSAMPLES*2);
-	sprintf(lcd_str, "%.1f", normalized_freq * scale);
+	//sprintf(lcd_str, "%.1f", normalized_freq * scale);
+	sprintf(lcd_str, "%.1f", *peak_index);
 	BSP_LCD_GLASS_DisplayString((uint8_t *)lcd_str);
 
 

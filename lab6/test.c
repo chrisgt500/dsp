@@ -76,10 +76,9 @@ int main(int argc, char *argv[])
 		fft(input1, input2, 0, peak_index);
 
 
-
 		//sprintf(lcd_str, "%.2f  ", 10.0);
-		velocity_conversion_display(peak_index);
-		BSP_LED_On(LED4);
+		//velocity_conversion_display(peak_index);
+		//BSP_LED_On(LED4);
 
 
 		//putblock(input1);
