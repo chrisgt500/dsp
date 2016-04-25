@@ -142,3 +142,12 @@ void velocity_conversion_display(float *peak_index)
 
 
 }
+
+void decimate(int blocksize, int decimation, float *input, float *output)
+{
+	int i;
+
+	for (i = 0; i < blocksize/decimation; i++){  //Only keep every fifth sample
+		output[i] = input[i*5];
+	}
+}
