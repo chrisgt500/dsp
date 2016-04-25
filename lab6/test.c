@@ -64,14 +64,12 @@ int main(int argc, char *argv[])
 
 		fft(input1, input2, 0, peak_index);
 
-		sprintf(lcd_str, "%f", *peak_index);
-		BSP_LCD_GLASS_DisplayString((uint8_t *)lcd_str);
-		//BSP_LED_On(LED4);
+
+
 		//sprintf(lcd_str, "%.2f  ", 10.0);
 		velocity_conversion_display(peak_index);
+		BSP_LED_On(LED4);
 
-
-		//BSP_LCD_GLASS_DisplayString((uint8_t *)lcd_str);
 
 		//putblock(input1);
 

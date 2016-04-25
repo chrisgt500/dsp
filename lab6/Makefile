@@ -1,6 +1,6 @@
 TARGET=test
 #TARGET=nco_test
-OBJS=test.o ece486_fft.o arm_bitreversal2.o arm_common_tables.o arm_const_structs.o
+OBJS=test.o ece486_fft.o arm_bitreversal2.o arm_common_tables.o arm_const_structs.o ece486_biquad.o
 #OBJS=nco_test.o ece486_nco.o
 
 
@@ -48,7 +48,7 @@ $(TARGET).bin: $(TARGET)
 	$(OBJCOPY) -Obinary $(TARGET) $(TARGET).bin
 
 flash: $(TARGET).bin
-	st-flash write $(TARGET).bin 0x08000000
+	cp $(TARGET).bin /Volumes/DIS_L476VG
 
 clean:
 	rm -f $(OBJS) $(TARGET).bin $(TARGET).map $(TARGET)
