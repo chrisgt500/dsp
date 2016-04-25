@@ -27,11 +27,10 @@ extern FlagStatus KeyPressed;
 int main(int argc, char *argv[])
 {
 	float *input1, *input2;
-	char lcd_str[8];
+	char lcd_str[8] = {0};
 	float *peak_index;
 	peak_index = malloc(sizeof(float));
-	*peak_index = 200;
-
+	*peak_index = 0;
 
 	setblocksize(FFTSAMPLES); //FUN FACT, THIS NEEDS TO BE CALLED BEFORE initialize
 	initialize(FS_48K, STEREO_IN, MONO_OUT);
@@ -48,12 +47,14 @@ int main(int argc, char *argv[])
 	while(1){
 		getblockstereo(input1,input2);
 
-		fft(input1, input2, 1, peak_index);
+		fft(input1, input2, 0, peak_index);
 
+		sprintf(lcd_str, "%f", *peak_index);
+		BSP_LCD_GLASS_DisplayString((uint8_t *)lcd_str);
+		//BSP_LED_On(LED4);
 		//sprintf(lcd_str, "%.2f  ", 10.0);
 		velocity_conversion_display(peak_index);
-		BSP_LED_On(LED5);
-		//sleep(1);
+
 
 		//BSP_LCD_GLASS_DisplayString((uint8_t *)lcd_str);
 

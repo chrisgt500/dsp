@@ -17,11 +17,12 @@
 #include "ece486_fft.h"
 #include "ece486.h"
 
-void peak_detect(float *data, float thresh, int farthest_peak_index)
+void peak_detect(float *data, float thresh, float *farthest_peak_index)
 {
-	int i, index;
+	int i;
+	float index;
 	int count = 0;
-	int peaks[10] = {0};//detects 10 peaks
+	float peaks[10] = {0};//detects 10 peaks
 
 
 	for (i = 1; i < FFTSAMPLES-1; i++) {
@@ -35,7 +36,7 @@ void peak_detect(float *data, float thresh, int farthest_peak_index)
 		if( peaks[i] > index) index = peaks[i];
 	}
 
-	farthest_peak_index = index;
+	*farthest_peak_index = index;
 }
 
 
@@ -60,7 +61,9 @@ void fft(float *input_real, float *input_complex, float thresh, float *peak_inde
 	//set up for a 512 blocksize and fft of 1024
 	arm_cfft_f32(&arm_cfft_sR_f32_len1024, tmp, ifftFlag, doBitReverse);
 	arm_cmplx_mag_f32(tmp, output, FFTSAMPLES*2);
-	peak_detect(output, thresh, *peak_index);
+
+
+	peak_detect(output, thresh, peak_index);
 
 
 
