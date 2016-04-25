@@ -29,8 +29,8 @@ int main(int argc, char *argv[])
 {
 	BIQUAD_T *filter1, *filter2;
 	int sections1, blocksizelpf, decimation, j, i;
-	float *input1, *input2, *input_decimated_1, *input_decimated_2, *buffer, gain1;
-	char lcd_str[8] = {0};
+	float *input1, *input2, *input_decimated_1, *input_decimated_2, gain1;
+	static float buffer[2048] = {0};
 	float *peak_index;
 	peak_index = malloc(sizeof(float));
 	*peak_index = 0;
@@ -38,7 +38,6 @@ int main(int argc, char *argv[])
 	blocksizelpf = 96;
 	decimation = 6;
 	gain1 = .000436;
-
 
 	float lpf1[15] = {
 		1.000000, -1.711824, 1.000000, -1.894179, 0.960442,
@@ -49,33 +48,21 @@ int main(int argc, char *argv[])
 	setblocksize(blocksizelpf); //FUN FACT, THIS NEEDS TO BE CALLED BEFORE initialize
 	initialize(FS_48K, STEREO_IN, MONO_OUT);
 
-
 	input1 = (float *)malloc(sizeof(float)*blocksizelpf); //should be blocksizelpf long
 	input2 = (float *)malloc(sizeof(float)*blocksizelpf);
 	input_decimated_1 = (float *)malloc(sizeof(float)*(blocksizelpf/decimation));
 	input_decimated_2 = (float *)malloc(sizeof(float)*(blocksizelpf/decimation));
-	buffer = (float *)malloc(sizeof(float)*FFTSAMPLES*2)
 
 	if (input1==NULL || input2==NULL) {
 		flagerror(MEMORY_ALLOCATION_ERROR);
 		while(1);
 	}
 
-	/*
 	filter1 = init_biquad(sections1, gain1, lpf1, blocksizelpf);
 	filter2 = init_biquad(sections1, gain1, lpf1, blocksizelpf);
-	*/
 
 	while(1){
 		getblockstereo(input1,input2);
-
-
-
-		//calc_biquad(filter1, input1, input1);
-		//calc_biquad(filter2, input2, input2);
-
-		//decimate(blocksizelpf, decimation, input1, input_decimated_1);
-		//decimate(blocksizelpf, decimation, input2, input_decimated_2);
 
 		for( j = 0; j < (FFTSAMPLES/blocksizelpf/decimation); j++){
 
@@ -85,18 +72,15 @@ int main(int argc, char *argv[])
 			decimate(blocksizelpf, decimation, input1, input_decimated_1);
 			decimate(blocksizelpf, decimation, input2, input_decimated_2);
 
+			for(i = 0; i < blocksizelpf/decimation; i+=2){
+				buffer[i+j*(blocksizelpf/decimation)] = input_decimated_1[i];
+			}
 
-				for(i = 0; i < blocksizelpf/decimation; i+=2){
-					buffer[i+j*(blocksizelpf/decimation)] = input_decimated_1[i];
-				}
-
-				for(i = 1; i < blocksizelpf/decimation; i+=2){
-					buffer[i+j*(blocksizelpf/decimation)] = input_decimated_2[i];
-				}
-
-
+			for(i = 1; i < blocksizelpf/decimation; i+=2){
+				buffer[i+j*(blocksizelpf/decimation)] = input_decimated_2[i];
+			}
 		}
-		
+
 		fft(buffer, 0, peak_index);
 		BSP_LED_On(LED4);
 
@@ -105,14 +89,9 @@ int main(int argc, char *argv[])
 		//BSP_LED_On(LED4);
 		//BSP_LCD_GLASS_DisplayString("FUCK");
 
-
 		//putblock(input1);
-
 	}
 
-
 	return 0;
-
-
 
 }
