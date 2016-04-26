@@ -184,7 +184,6 @@ void velocity_conversion_display(float *peak_index)
 	float scale = 1241.379;
 	float normalized_freq = (*peak_index)/(FFTSAMPLES*2);
 	sprintf(lcd_str, "%.2f   ", normalized_freq * scale);
-
 	BSP_LCD_GLASS_DisplayString((uint8_t *)lcd_str);
 
 }

@@ -34,7 +34,7 @@ int main(int argc, char *argv[])
 	static float buffer[FFTSAMPLES] = {0};
 	float *peak_index;
 	peak_index = malloc(sizeof(float));
-	int button_flag = -1;
+	int button_flag = 1;
 	*peak_index = 0;
 	sections1 = 3;
 	blocksizelpf = 192;
@@ -65,7 +65,7 @@ int main(int argc, char *argv[])
 	filter1 = init_biquad(sections1, gain1, lpf1, blocksizelpf);
 	filter2 = init_biquad(sections1, gain1, lpf1, blocksizelpf);
 
-	while(1){
+	do{
 		if (KeyPressed) {
       		KeyPressed = RESET;
 			button_flag *= -1;
@@ -91,9 +91,9 @@ int main(int argc, char *argv[])
 
 		velocity_conversion_display(peak_index);
 		BSP_LED_On(LED4);
-	
 
-	}
+
+	}while(0);
 
 	return 0;
 
