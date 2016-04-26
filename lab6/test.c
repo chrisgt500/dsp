@@ -21,6 +21,8 @@
 #include "stm32l476g_discovery.h"
 #include "ece486_fft.h"
 #include "ece486_biquad.h"
+#include "arm_math.h"
+#include "arm_const_structs.h"
 
 
 extern FlagStatus KeyPressed;
@@ -28,11 +30,11 @@ extern FlagStatus KeyPressed;
 int main(int argc, char *argv[])
 {
 	BIQUAD_T *filter1, *filter2;
-	int sections1, blocksizelpf, decimation, j;
-	volatile int i;
+	int sections1, blocksizelpf, decimation, j,i, numtaps;
 	float *input1, *input2, *input_decimated_1, *input_decimated_2, gain1;
 	static float buffer[FFTSAMPLES] = {0};
 	float *peak_index;
+	//arm_fir_decimate_instance_f32 *s;
 	peak_index = malloc(sizeof(float));
 	int button_flag = 1;
 	*peak_index = 0;
@@ -40,12 +42,22 @@ int main(int argc, char *argv[])
 	blocksizelpf = 192;
 	decimation = 6;
 	gain1 = .000436;
+	numtaps = 28;
+
 
 	float lpf1[15] = {
 		1.000000, -1.711824, 1.000000, -1.894179, 0.960442,
 		1.000000, -1.365929, 1.000000, -1.855035, 0.885547,
 		1.000000, 1.000000, 0.000000, -0.921111, 0.000000
 	};
+	/*
+	float coefs[28] = {
+	 -0.001184, -0.002538, -0.004333, -0.005732, -0.005518, -0.002176, 0.005761,
+	 0.019233, 0.038204, 0.061389, 0.086280, 0.109517, 0.127547, 0.137404, 0.137404,
+	 0.127547, 0.109517, 0.086280, 0.061389, 0.038204, 0.019233, 0.005761, -0.002176,
+	 -0.005518, -0.005732, -0.004333, -0.002538, -0.001184
+  };
+	*/
 
 	setblocksize(blocksizelpf); //FUN FACT, THIS NEEDS TO BE CALLED BEFORE initialize
 	initialize(FS_48K, STEREO_IN, MONO_OUT);
