@@ -32,14 +32,16 @@ int main(int argc, char *argv[])
 	BIQUAD_T *filter1, *filter2;
 	int sections1, blocksizelpf, decimation, j,i, numtaps;
 	float *input1, *input2, *input_decimated_1, *input_decimated_2, gain1;
-	static float buffer[FFTSAMPLES] = {0};
+	static float buffer[FFTSAMPLES*2*2] = {0};
 	float *peak_index;
 	//arm_fir_decimate_instance_f32 *s;
 	peak_index = malloc(sizeof(float));
+	int intermediate1, intermediate2;
+
 	int button_flag = 1;
 	*peak_index = 0;
 	sections1 = 3;
-	blocksizelpf = 192;
+	blocksizelpf = 96*2;
 	decimation = 6;
 	gain1 = .000436;
 	numtaps = 28;
@@ -60,7 +62,7 @@ int main(int argc, char *argv[])
 	*/
 
 	setblocksize(blocksizelpf); //FUN FACT, THIS NEEDS TO BE CALLED BEFORE initialize
-	initialize(FS_48K, STEREO_IN, MONO_OUT);
+	initialize(FS_48K, STEREO_IN, STEREO_OUT);
 
 	input1 = (float *)malloc(sizeof(float)*blocksizelpf); //should be blocksizelpf long
 	input2 = (float *)malloc(sizeof(float)*blocksizelpf);
@@ -78,12 +80,14 @@ int main(int argc, char *argv[])
 	filter2 = init_biquad(sections1, gain1, lpf1, blocksizelpf);
 
 	do{
+
 		if (KeyPressed) {
       		KeyPressed = RESET;
 			button_flag *= -1;
 		}
 
-		for( j = 0; j < (FFTSAMPLES/blocksizelpf/decimation); j++){
+		// (FFTSAMPLES*2)/(blocksizelpf/decimation) -1
+		for( j = 0; j < 63; j++){
 
 			getblockstereo(input1,input2);
 
@@ -93,19 +97,23 @@ int main(int argc, char *argv[])
 			decimate(blocksizelpf, decimation, input1, input_decimated_1);
 			decimate(blocksizelpf, decimation, input2, input_decimated_2);
 
-			for(i = 0; i < blocksizelpf/decimation; i++){
-				buffer[2*i+j*(blocksizelpf/decimation)] = input_decimated_1[i];
-				buffer[2*i+j*(blocksizelpf/decimation)+1] = input_decimated_2[i];
+			// (blocksizelpf/decimation)
+			for(i = 0; i < 32; i++){
+				buffer[2*i+j*(32)] = input_decimated_1[i];
+				buffer[2*i+j*(32)+1] = input_decimated_2[i];
 			}
+
 		}
 
 		fft(buffer, 0, peak_index, button_flag);
 
+
 		velocity_conversion_display(peak_index);
-		BSP_LED_On(LED4);
+		printf("%f \n", *peak_index);
 
 
-	}while(0);
+
+	}while(1);
 
 	return 0;
 

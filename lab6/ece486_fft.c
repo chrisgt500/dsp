@@ -51,14 +51,29 @@ void peak_detect(float *data, float thresh, float *farthest_peak_index, int butt
 
 void fft(float *buffer, float thresh, float *peak_index, int button_flag)
 {
+	int i;
 	static float output[FFTSAMPLES] = {0};
 	int ifftFlag = 0;
 	int doBitReverse = 1;
+	float maxvalue = 0 ;
+	uint32_t index = 0;
 
 	//window(buffer);
 	arm_cfft_f32(&arm_cfft_sR_f32_len1024, buffer, ifftFlag, doBitReverse);
-	arm_cmplx_mag_f32(buffer, output, FFTSAMPLES*2);
-	peak_detect(output, thresh, peak_index, button_flag);
+
+	arm_cmplx_mag_f32(buffer, output, FFTSAMPLES);
+	for (i = 0; i < FFTSAMPLES; i++){
+		printf("%f,",output[i]);
+	}
+
+	printf("\n\n\n\n\n\n\n");
+
+	arm_max_f32(output, FFTSAMPLES, &maxvalue, &index );
+
+
+	BSP_LED_On(LED4);
+
+	//peak_detect(output, thresh, peak_index, button_flag);
 }
 
 //multiply by 1024 samples of a half period of sine, as a window function
