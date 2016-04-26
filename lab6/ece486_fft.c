@@ -11,12 +11,14 @@
  * @date April 23, 2016
  *
  */
+#include <stdlib.h>
 #include <stdint.h>
 #include <math.h>
 #include "arm_math.h"
 #include "arm_const_structs.h"
 #include "ece486_fft.h"
 #include "ece486.h"
+#include "init486.h"
 
 void peak_detect(float *data, float thresh, float *farthest_peak_index)
 {
@@ -49,11 +51,10 @@ void fft(float *buffer, float thresh, float *peak_index)
 	int ifftFlag = 0;
 	int doBitReverse = 1;
 
-	//set up for a 512 blocksize and fft of 512
 	arm_cfft_f32(&arm_cfft_sR_f32_len1024, buffer, ifftFlag, doBitReverse);
-	//clear_screen();
 	arm_cmplx_mag_f32(buffer, output, FFTSAMPLES*2);
 	peak_detect(output, thresh, peak_index);
+
 
 }
 

@@ -28,7 +28,8 @@ extern FlagStatus KeyPressed;
 int main(int argc, char *argv[])
 {
 	BIQUAD_T *filter1, *filter2;
-	int sections1, blocksizelpf, decimation, j, i;
+	int sections1, blocksizelpf, decimation, j;
+	volatile int i;
 	float *input1, *input2, *input_decimated_1, *input_decimated_2, gain1;
 	static float buffer[2048] = {0};
 	float *peak_index;
@@ -65,7 +66,9 @@ int main(int argc, char *argv[])
 	while(1){
 
 
+
 		for( j = 0; j < (FFTSAMPLES/blocksizelpf/decimation); j++){
+
 			getblockstereo(input1,input2);
 
 			calc_biquad(filter1, input1, input1);
@@ -84,12 +87,8 @@ int main(int argc, char *argv[])
 		}
 
 		fft(buffer, 0, peak_index);
-
-
-		//velocity_conversion_display(peak_index);
-		BSP_LCD_GLASS_DisplayString("poop   ");
-		sleep(5);
-		BSP_LED_On(LED4);
+		
+		velocity_conversion_display(peak_index);
 
 	}
 
