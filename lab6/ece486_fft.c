@@ -20,50 +20,53 @@
 #include "ece486.h"
 #include "init486.h"
 
-void peak_detect(float *data, float thresh, float *farthest_peak_index)
+void peak_detect(float *data, float thresh, float *farthest_peak_index, int button_flag)
 {
 	int i;
-	float index = 0;
 	int count = 0;
 	float peaks[FFTSAMPLES] = {0};//detects 10 peaks
 
-
-	for (i = 1; i < FFTSAMPLES-1; i++) {
-		if ((data[i] >= thresh) && (data[i-1] < data[i]) && (data[i+1] < data[i])){
-			peaks[count++] = i+1; //can probably simplify this
+	// This assumes that 0-.5 is positive freqs and .5 - 1 is negative freqs
+	if(button_flag == 1){
+		for (i = 1; i < (FFTSAMPLES/2)-1; i++) {
+			if ((data[i] >= thresh) && (data[i-1] < data[i]) && (data[i+1] < data[i])){
+				peaks[count++] = i+1; //can probably simplify this
+			}
 		}
 	}
 
-
-
-	for (i = 0; i < count; i++){
-		if (peaks[i] > index) index = peaks[i];
+	if(button_flag == -1){
+		for (i = (FFTSAMPLES/2) + 1; i < (FFTSAMPLES)-1; i++) {
+			if ((data[i] >= thresh) && (data[i-1] < data[i]) && (data[i+1] < data[i])){
+				peaks[count++] = i+1; //can probably simplify this
+			}
+		}
 	}
 
-	*farthest_peak_index = index;
+	if (button_flag == 1) *farthest_peak_index = peaks[0];
+	if (button_flag == -1) *farthest_peak_index = peaks[count-1];
 
 }
 
 
-void fft(float *buffer, float thresh, float *peak_index)
+void fft(float *buffer, float thresh, float *peak_index, int button_flag)
 {
 	static float output[FFTSAMPLES] = {0};
 	int ifftFlag = 0;
 	int doBitReverse = 1;
 
+	//window(buffer);
 	arm_cfft_f32(&arm_cfft_sR_f32_len1024, buffer, ifftFlag, doBitReverse);
 	arm_cmplx_mag_f32(buffer, output, FFTSAMPLES*2);
-	peak_detect(output, thresh, peak_index);
-
-
+	peak_detect(output, thresh, peak_index, button_flag);
 }
 
-//multiply by 512 samples of a half period of sine, as a window function
+//multiply by 1024 samples of a half period of sine, as a window function
 void window(float *input)
 {
 	int i;
 
-	static float lookup_table[1024] =
+	float lookup_table[1024] =
 	{
 		0.000000, 0.003071, 0.006142, 0.009213, 0.012284, 0.015354, 0.018425, 0.021495, 0.024565, 0.027635,
 		0.030705, 0.033774, 0.036843, 0.039912, 0.042980, 0.046048, 0.049116, 0.052183, 0.055249, 0.058315,
@@ -170,7 +173,8 @@ void window(float *input)
 		};
 
 	for(i = 0; i < FFTSAMPLES; i++){
-		input[i] *= lookup_table[i];
+		input[2*i] *= lookup_table[i];
+		input[2*i+1] *= lookup_table[i];
 	}
 }
 
@@ -179,7 +183,6 @@ void velocity_conversion_display(float *peak_index)
 	char lcd_str[8] = {0};
 	float scale = 1241.379;
 	float normalized_freq = (*peak_index)/(FFTSAMPLES*2);
-	//clear_screen();
 	sprintf(lcd_str, "%.2f   ", normalized_freq * scale);
 
 	BSP_LCD_GLASS_DisplayString((uint8_t *)lcd_str);

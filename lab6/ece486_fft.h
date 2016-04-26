@@ -6,9 +6,9 @@
 #endif
 
 //probably could take just a struct to make this better
-void peak_detect(float *data, float thresh, float *farthest_peak_index);
+void peak_detect(float *data, float thresh, float *farthest_peak_index, int button_flag);
 
-void fft(float *buffer, float thresh, float *peak_index);
+void fft(float *buffer, float thresh, float *peak_index, int button_flag);
 
 void window(float *input);
 
