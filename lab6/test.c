@@ -41,8 +41,8 @@ int main(int argc, char *argv[])
 	int button_flag = 1;
 	*peak_index = 0;
 	sections1 = 3;
-	blocksizelpf = 96*2;
-	decimation = 6;
+	blocksizelpf = FFTSAMPLES;
+	decimation = 8;
 	gain1 = .000436;
 	numtaps = 28;
 
@@ -87,23 +87,28 @@ int main(int argc, char *argv[])
 		}
 
 		// (FFTSAMPLES*2)/(blocksizelpf/decimation) -1
-		for( j = 0; j < 63; j++){
+		for( j = 0; j < 15; j++){
 
 			getblockstereo(input1,input2);
 
+
 			calc_biquad(filter1, input1, input1);
 			calc_biquad(filter2, input2, input2);
+
+
 
 			decimate(blocksizelpf, decimation, input1, input_decimated_1);
 			decimate(blocksizelpf, decimation, input2, input_decimated_2);
 
 			// (blocksizelpf/decimation)
-			for(i = 0; i < 32; i++){
-				buffer[2*i+j*(32)] = input_decimated_1[i];
-				buffer[2*i+j*(32)+1] = input_decimated_2[i];
+
+			for(i = 0; i < (FFTSAMPLES)/8; i++){
+				buffer[2*i+j*(FFTSAMPLES/8)] = input_decimated_1[i];
+				buffer[2*i+j*(FFTSAMPLES/8)+1] = input_decimated_2[i];
 			}
 
 		}
+
 
 		fft(buffer, 0, peak_index, button_flag);
 

@@ -64,8 +64,9 @@ void fft(float *buffer, float thresh, float *peak_index, int button_flag)
 	arm_cmplx_mag_f32(buffer, output, FFTSAMPLES);
 
 	for ( i = 0; i < FFTSAMPLES; i++){
-		printf("%f,",output[i]);
+		output[i] /= 500;
 	}
+	putblock(output);
 
 	arm_max_f32(output, FFTSAMPLES, &maxvalue, &index );
 
