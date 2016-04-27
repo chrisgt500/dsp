@@ -36,7 +36,7 @@ int main(int argc, char *argv[])
 	float *peak_index, *state;
 	//arm_fir_decimate_instance_f32 *s;
 	peak_index = malloc(sizeof(float));
-
+	//s = (arm_fir_decimate_instance_f32*)(malloc(sizeof(arm_fir_decimate_instance_f32)));
 	int button_flag = 1;
 	*peak_index = 0;
 	sections1 = 3;
@@ -55,16 +55,16 @@ int main(int argc, char *argv[])
 		1.000000, -1.365929, 1.000000, -1.855035, 0.885547,
 		1.000000, 1.000000, 0.000000, -0.921111, 0.000000
 	};
-	/*
+/*
 	float coefs[28] = {
 	 -0.001184, -0.002538, -0.004333, -0.005732, -0.005518, -0.002176, 0.005761,
 	 0.019233, 0.038204, 0.061389, 0.086280, 0.109517, 0.127547, 0.137404, 0.137404,
 	 0.127547, 0.109517, 0.086280, 0.061389, 0.038204, 0.019233, 0.005761, -0.002176,
 	 -0.005518, -0.005732, -0.004333, -0.002538, -0.001184
   };
-	*/
+*/
 
-	//s->pCoeffs = coefs;
+//	s->pCoeffs = coefs;
 
 	setblocksize(blocksizelpf); //FUN FACT, THIS NEEDS TO BE CALLED BEFORE initialize
 	initialize(FS_48K, STEREO_IN, STEREO_OUT);
@@ -105,8 +105,8 @@ int main(int argc, char *argv[])
 			decimate(blocksizelpf, decimation, input1, input_decimated_1);
 			decimate(blocksizelpf, decimation, input2, input_decimated_2);
 			//unsure if we need two seperate arm_fir_decimate_instance_f32's for filtering or just one
-			//arm_fir_decimate_f32(s, input1, input_decimated_1, blocksizelpf);
-			//arm_fir_decimate_f32(s, input2, input_decimated_2, blocksizelpf);
+	//		arm_fir_decimate_f32(s, input1, input_decimated_1, blocksizelpf);
+		//	arm_fir_decimate_f32(s, input2, input_decimated_2, blocksizelpf);
 			// (blocksizelpf/decimation)
 
 			for(i = 0; i < (FFTSAMPLES)/8; i++){
