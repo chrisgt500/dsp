@@ -62,11 +62,10 @@ void fft(float *buffer, float thresh, float *peak_index, int button_flag)
 	arm_cfft_f32(&arm_cfft_sR_f32_len1024, buffer, ifftFlag, doBitReverse);
 
 	arm_cmplx_mag_f32(buffer, output, FFTSAMPLES);
-	for (i = 0; i < FFTSAMPLES; i++){
+
+	for ( i = 0; i < FFTSAMPLES; i++){
 		printf("%f,",output[i]);
 	}
-
-	printf("\n\n\n\n\n\n\n");
 
 	arm_max_f32(output, FFTSAMPLES, &maxvalue, &index );
 

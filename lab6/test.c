@@ -32,7 +32,7 @@ int main(int argc, char *argv[])
 	BIQUAD_T *filter1, *filter2;
 	int sections1, blocksizelpf, decimation, j,i, numtaps;
 	float *input1, *input2, *input_decimated_1, *input_decimated_2, gain1;
-	static float buffer[FFTSAMPLES*2*2] = {0};
+	static float buffer[FFTSAMPLES*2] = {0};
 	float *peak_index;
 	//arm_fir_decimate_instance_f32 *s;
 	peak_index = malloc(sizeof(float));
@@ -113,7 +113,7 @@ int main(int argc, char *argv[])
 
 
 
-	}while(1);
+	}while(0);
 
 	return 0;
 
