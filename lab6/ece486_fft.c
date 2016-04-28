@@ -188,7 +188,7 @@ void velocity_conversion_display(float *peak_index, int button_flag)
 		return;
 	}
 	char lcd_str[8] = {0};
-	float scale =  .1515; //(6e3/1024/2/5.8e9*3e8)
+	float scale =  .15153556; //(6e3/1024/2/5.8e9*3e8)
 	if( button_flag == 1) sprintf(lcd_str, "-%.1f", *peak_index * scale);
 	if( button_flag == -1) sprintf(lcd_str, "%.1f", (FFTSAMPLES-*peak_index) * scale);
 	BSP_LCD_GLASS_DisplayString((uint8_t *)lcd_str);
