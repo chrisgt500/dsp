@@ -31,19 +31,24 @@ int main(int argc, char *argv[])
 	int blocksizelpf, decimation, j,i, numtaps;
 	float *input1, *input2, *input_decimated_1, *input_decimated_2;
 	static float buffer[FFTSAMPLES*2] = {0};
-	float *peak_index, *state;
-	arm_fir_decimate_instance_f32 *s;
+	float *peak_index, *state, *state1;
+	arm_fir_decimate_instance_f32 *s, *s1;
 	peak_index = malloc(sizeof(float));
 	s = (arm_fir_decimate_instance_f32*)(malloc(sizeof(arm_fir_decimate_instance_f32)));
+	s1 = (arm_fir_decimate_instance_f32*)(malloc(sizeof(arm_fir_decimate_instance_f32)));
 	int button_flag = 1;
 	*peak_index = 0;
 	blocksizelpf = FFTSAMPLES;
 	decimation = 8;
 	numtaps = 55;
 	state = (float *)calloc((numtaps + blocksizelpf -1),sizeof(float));
+	state1 = (float *)calloc((numtaps + blocksizelpf -1),sizeof(float));
 	s->M = decimation;
+	s1->M = decimation;
 	s->numTaps = numtaps;
+	s1->numTaps = numtaps;
 	s->pState = state;
+	s1->pState = state1;
 
 
 	float coefs[55] = {
@@ -58,6 +63,7 @@ int main(int argc, char *argv[])
 
 
 	s->pCoeffs = coefs;
+	s1->pCoeffs = coefs;
 
 	setblocksize(blocksizelpf); //FUN FACT, THIS NEEDS TO BE CALLED BEFORE initialize
 	initialize(FS_48K, STEREO_IN, STEREO_OUT);
@@ -89,7 +95,7 @@ int main(int argc, char *argv[])
 
 			//unsure if we need two seperate arm_fir_decimate_instance_f32's for filtering or just one
 			arm_fir_decimate_f32(s, input1, input_decimated_1, blocksizelpf);
-			arm_fir_decimate_f32(s, input2, input_decimated_2, blocksizelpf);
+			arm_fir_decimate_f32(s1, input2, input_decimated_2, blocksizelpf);
 
 			// (blocksizelpf/decimation)
 			for(i = 0; i < (FFTSAMPLES)/8; i++){
@@ -99,7 +105,7 @@ int main(int argc, char *argv[])
 
 		}
 
-		fft(buffer, 30, peak_index, button_flag);
+		fft(buffer, 40, peak_index, button_flag);
 
 		velocity_conversion_display(peak_index, button_flag);
 		if (button_flag == 1) printf("FORWARDS %f \n", *peak_index);
