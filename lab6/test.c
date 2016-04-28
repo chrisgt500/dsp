@@ -96,28 +96,31 @@ int main(int argc, char *argv[])
 		if (KeyPressed) {
       		KeyPressed = RESET;
 			button_flag *= -1;
+			BSP_LED_Toggle(LED4);
 		}
 
-		// (FFTSAMPLES*2)/(blocksizelpf/decimation) -1
-		for( j = 0; j < 15; j++){
+
+		for( j = 0; j < 8; j++){
 
 			getblockstereo(input1,input2);
 
 			//unsure if we need two seperate arm_fir_decimate_instance_f32's for filtering or just one
-			arm_fir_decimate_f32(s, input1, input_decimated_1, blocksizelpf);
 			arm_fir_decimate_f32(s1, input2, input_decimated_2, blocksizelpf);
+			arm_fir_decimate_f32(s, input1, input_decimated_1, blocksizelpf);
+
 
 			// (blocksizelpf/decimation)
 			for(i = 0; i < (FFTSAMPLES)/8; i++){
-				buffer[2*i+j*(FFTSAMPLES/8)] = input_decimated_1[i];
-				buffer[2*i+j*(FFTSAMPLES/8)+1] = input_decimated_2[i];
+				buffer[2*i+j*256] = input_decimated_1[i];
+				buffer[2*i+j*256+1] = input_decimated_2[i];
 			}
 
 		}
 
-		fft(buffer, 40, peak_index, button_flag);
+		fft(buffer, 30, peak_index, button_flag);
 
 		velocity_conversion_display(peak_index, button_flag);
+
 		if (button_flag == 1) printf("FORWARDS %f \n", *peak_index);
 		if (button_flag == -1) printf("Backwards %f \n", *peak_index);
 

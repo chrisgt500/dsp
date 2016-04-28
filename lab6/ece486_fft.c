@@ -184,7 +184,7 @@ void velocity_conversion_display(float *peak_index, int button_flag)
 {
 	clear_screen();
 	if( *peak_index == -1){
-		BSP_LCD_GLASS_DisplayString((uint8_t *)"No");
+		BSP_LCD_GLASS_DisplayString((uint8_t *)"------");
 		return;
 	}
 	char lcd_str[8] = {0};
