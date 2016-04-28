@@ -1,6 +1,6 @@
 TARGET=test
 #TARGET=nco_test
-OBJS=test.o ece486_fft.o arm_bitreversal2.o arm_common_tables.o arm_const_structs.o ece486_biquad.o
+OBJS=test.o ece486_fft.o arm_bitreversal2.o arm_common_tables.o arm_const_structs.o
 #OBJS=nco_test.o ece486_nco.o
 
 

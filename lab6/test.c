@@ -20,7 +20,6 @@
 #include "stm32l4xx_hal.h"
 #include "stm32l476g_discovery.h"
 #include "ece486_fft.h"
-#include "ece486_biquad.h"
 #include "arm_math.h"
 #include "arm_const_structs.h"
 
@@ -29,42 +28,33 @@ extern FlagStatus KeyPressed;
 
 int main(int argc, char *argv[])
 {
-	BIQUAD_T *filter1, *filter2;
-	int sections1, blocksizelpf, decimation, j,i, numtaps;
-	float *input1, *input2, *input_decimated_1, *input_decimated_2, gain1;
-	static float buffer[FFTSAMPLES*2] = {0};
+	int blocksizelpf, decimation, j,i, numtaps;
+	float *input1, *input2, *input_decimated_1, *input_decimated_2;
+	static float buffer[FFTSAMPLES*2*2] = {0};
 	float *peak_index, *state;
-	//arm_fir_decimate_instance_f32 *s;
+	arm_fir_decimate_instance_f32 *s;
 	peak_index = malloc(sizeof(float));
-	//s = (arm_fir_decimate_instance_f32*)(malloc(sizeof(arm_fir_decimate_instance_f32)));
+	s = (arm_fir_decimate_instance_f32*)(malloc(sizeof(arm_fir_decimate_instance_f32)));
 	int button_flag = 1;
 	*peak_index = 0;
-	sections1 = 3;
 	blocksizelpf = FFTSAMPLES;
 	decimation = 8;
-	gain1 = .000436;
 	numtaps = 28;
-	//state = (float *)calloc((numtaps + blocksizelpf -1),sizeof(float));
-	//s->M = decimation;
-	//s->numTaps = numtaps;
-	//s->pState = state;
+	state = (float *)calloc((numtaps + blocksizelpf -1),sizeof(float));
+	s->M = decimation;
+	s->numTaps = numtaps;
+	s->pState = state;
 
 
-	float lpf1[15] = {
-		1.000000, -1.711824, 1.000000, -1.894179, 0.960442,
-		1.000000, -1.365929, 1.000000, -1.855035, 0.885547,
-		1.000000, 1.000000, 0.000000, -0.921111, 0.000000
-	};
-/*
 	float coefs[28] = {
 	 -0.001184, -0.002538, -0.004333, -0.005732, -0.005518, -0.002176, 0.005761,
 	 0.019233, 0.038204, 0.061389, 0.086280, 0.109517, 0.127547, 0.137404, 0.137404,
 	 0.127547, 0.109517, 0.086280, 0.061389, 0.038204, 0.019233, 0.005761, -0.002176,
 	 -0.005518, -0.005732, -0.004333, -0.002538, -0.001184
   };
-*/
 
-//	s->pCoeffs = coefs;
+
+	s->pCoeffs = coefs;
 
 	setblocksize(blocksizelpf); //FUN FACT, THIS NEEDS TO BE CALLED BEFORE initialize
 	initialize(FS_48K, STEREO_IN, STEREO_OUT);
@@ -81,8 +71,6 @@ int main(int argc, char *argv[])
 		while(1);
 	}
 
-	filter1 = init_biquad(sections1, gain1, lpf1, blocksizelpf);
-	filter2 = init_biquad(sections1, gain1, lpf1, blocksizelpf);
 
 	do{
 
@@ -97,18 +85,11 @@ int main(int argc, char *argv[])
 			getblockstereo(input1,input2);
 
 
-			calc_biquad(filter1, input1, input1);
-			calc_biquad(filter2, input2, input2);
-
-
-
-			decimate(blocksizelpf, decimation, input1, input_decimated_1);
-			decimate(blocksizelpf, decimation, input2, input_decimated_2);
 			//unsure if we need two seperate arm_fir_decimate_instance_f32's for filtering or just one
-	//		arm_fir_decimate_f32(s, input1, input_decimated_1, blocksizelpf);
-		//	arm_fir_decimate_f32(s, input2, input_decimated_2, blocksizelpf);
-			// (blocksizelpf/decimation)
+			arm_fir_decimate_f32(s, input1, input_decimated_1, blocksizelpf);
+			arm_fir_decimate_f32(s, input2, input_decimated_2, blocksizelpf);
 
+			// (blocksizelpf/decimation)
 			for(i = 0; i < (FFTSAMPLES)/8; i++){
 				buffer[2*i+j*(FFTSAMPLES/8)] = input_decimated_1[i];
 				buffer[2*i+j*(FFTSAMPLES/8)+1] = input_decimated_2[i];
@@ -116,12 +97,11 @@ int main(int argc, char *argv[])
 
 		}
 
+		fft(buffer, 20, peak_index, button_flag);
 
-		fft(buffer, 0, peak_index, button_flag);
-
-
-		velocity_conversion_display(peak_index);
-		printf("%f \n", *peak_index);
+		velocity_conversion_display(peak_index, button_flag);
+		if (button_flag == 1) printf("FORWARDS %f \n", *peak_index);
+		if (button_flag == -1) printf("Backwards %f \n", *peak_index);
 
 
 
