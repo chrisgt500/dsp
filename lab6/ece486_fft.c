@@ -48,7 +48,6 @@ int peak_detect(float *data, float thresh, int button_flag)
 
 void fft(float *buffer, float thresh, float *peak_index, int button_flag)
 {
-	int i;
 	static float output[FFTSAMPLES] = {0};
 	int ifftFlag = 0;
 	int doBitReverse = 1;
