@@ -27,7 +27,7 @@ int peak_detect(float *data, float thresh, int button_flag)
 
 	// This assumes that 0-.5 is positive freqs and .5 - 1 is negative freqs
 	if(button_flag == 1){
-		for (i = (FFTSAMPLES/3)-1; i > 2 ; i--) {
+		for (i = (FFTSAMPLES/3)-1; i > 38 ; i--) {
 			if ((data[i] >= thresh) && (data[i-1] < data[i]) && (data[i+1] < data[i])){
 				return i;
 			}
@@ -35,7 +35,7 @@ int peak_detect(float *data, float thresh, int button_flag)
 	}
 
 	if(button_flag == -1){
-		for (i = FFTSAMPLES/3 + 1; i < (FFTSAMPLES)-1; i++) {
+		for (i = (2*FFTSAMPLES/3) + 1; i < 986; i++) {
 			if ((data[i] >= thresh) && (data[i-1] < data[i]) && (data[i+1] < data[i])){
 				return i;
 			}
@@ -49,24 +49,20 @@ int peak_detect(float *data, float thresh, int button_flag)
 void fft(float *buffer, float thresh, float *peak_index, int button_flag)
 {
 	int i;
-	static float output[FFTSAMPLES*2] = {0};
+	static float output[FFTSAMPLES] = {0};
 	int ifftFlag = 0;
 	int doBitReverse = 1;
 	float maxvalue = 0 ;
 	uint32_t index = 0;
 
-	window(buffer);
-	arm_cfft_f32(&arm_cfft_sR_f32_len2048, buffer, ifftFlag, doBitReverse);
+	//window(buffer);
+	arm_cfft_f32(&arm_cfft_sR_f32_len1024, buffer, ifftFlag, doBitReverse);
 
-	arm_cmplx_mag_f32(buffer, output, FFTSAMPLES*2);
+	arm_cmplx_mag_f32(buffer, output, FFTSAMPLES);
 
-
-	for ( i = 0 ; i < FFTSAMPLES*2; i++){
+	for ( i = 0; i < FFTSAMPLES; i++){
 		printf("%f,",output[i]);
 	}
-
-	arm_max_f32(output, FFTSAMPLES, &maxvalue, &index );
-
 	*peak_index = peak_detect(output, thresh, button_flag);
 }
 
@@ -195,10 +191,10 @@ void velocity_conversion_display(float *peak_index, int button_flag)
 		return;
 	}
 	char lcd_str[8] = {0};
-	float scale = .0758;
+	float scale =  .1515;
 	//float normalized_freq = (*peak_index)/(FFTSAMPLES*2);
-	if( button_flag == 1) sprintf(lcd_str, "-%.1f", *peak_index*scale);
-	if( button_flag == -1) sprintf(lcd_str, "%.1f", *peak_index/1024*150/2);
+	if( button_flag == 1) sprintf(lcd_str, "-%.1f", *peak_index * scale);
+	if( button_flag == -1) sprintf(lcd_str, "%.1f", (1024-*peak_index) * scale);
 	BSP_LCD_GLASS_DisplayString((uint8_t *)lcd_str);
 
 }

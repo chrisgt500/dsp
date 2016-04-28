@@ -30,7 +30,7 @@ int main(int argc, char *argv[])
 {
 	int blocksizelpf, decimation, j,i, numtaps;
 	float *input1, *input2, *input_decimated_1, *input_decimated_2;
-	static float buffer[FFTSAMPLES*2*2] = {0};
+	static float buffer[FFTSAMPLES*2] = {0};
 	float *peak_index, *state;
 	arm_fir_decimate_instance_f32 *s;
 	peak_index = malloc(sizeof(float));
@@ -83,7 +83,6 @@ int main(int argc, char *argv[])
 		for( j = 0; j < 15; j++){
 
 			getblockstereo(input1,input2);
-
 
 			//unsure if we need two seperate arm_fir_decimate_instance_f32's for filtering or just one
 			arm_fir_decimate_f32(s, input1, input_decimated_1, blocksizelpf);
