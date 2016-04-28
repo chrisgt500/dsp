@@ -99,7 +99,7 @@ int main(int argc, char *argv[])
 
 		}
 
-		fft(buffer, 20, peak_index, button_flag);
+		fft(buffer, 40, peak_index, button_flag);
 
 		velocity_conversion_display(peak_index, button_flag);
 		if (button_flag == 1) printf("FORWARDS %f \n", *peak_index);
@@ -107,7 +107,7 @@ int main(int argc, char *argv[])
 
 
 
-	}while(0);
+	}while(1);
 
 	return 0;
 
