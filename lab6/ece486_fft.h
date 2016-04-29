@@ -32,17 +32,44 @@
  *@Brief A function for detecting the peak of a passed fft.
  *
  * This function checks for peaks based on the state of button_flag. If button
- * flag is 1, then freqencies greater than the center freqency
+ * flag is 1, then freqencies greater than the center freqency are checked for
+ * peaks, of button flag is -1, then freqencies less than the center freqency
+ * are checked.
  *
  *@return The index of the detected peak is returned.
  */
-
 int peak_detect(float *data, float thresh, int button_flag);
 
+/*!
+ *@Brief A function for calculate an fft and detecting the peaks.
+ *
+ * This function uses arm routines to calculate the fft of an array of samples
+ * then also calculate its magnitude. The peak_detect() function is then used to
+ * find the peak.
+ *
+ *@return The index of the detected peak of the fft is returned.
+ */
 int fft(float *buffer, float thresh, int button_flag);
 
+/*!
+ *@Brief A function for converting an index of an fft array to a velocity.
+ *
+ * This function uses a predetermined scale to calculate the velocity from the
+ * index detected by the peak index function. The scale is a factor of the
+ * center freqency, FFT samples, filter cutoff freqency and the speed of light.
+ *
+ *@return On return, the display shows the velocity calculated from the index.
+ */
 void velocity_conversion_display(int peak_index, int button_flag);
 
+/*!
+ *@Brief A function for clearing the screen on the STM board.
+ *
+ * This function prints spaces to the screen such that it appears blank to
+ * anyone looking at it.
+ *
+ *@return On return, the screen is cleared
+ */
 void clear_screen(void);
 
 
