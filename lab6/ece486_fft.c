@@ -46,7 +46,7 @@ int peak_detect(float *data, float thresh, int button_flag)
 }
 
 
-void fft(float *buffer, float thresh, float *peak_index, int button_flag)
+int fft(float *buffer, float thresh,  int button_flag)
 {
 	static float output[FFTSAMPLES] = {0};
 	int ifftFlag = 0;
@@ -56,10 +56,10 @@ void fft(float *buffer, float thresh, float *peak_index, int button_flag)
 
 	arm_cmplx_mag_f32(buffer, output, FFTSAMPLES);
 
-	*peak_index = peak_detect(output, thresh, button_flag);
+	return peak_detect(output, thresh, button_flag);
 }
 
-void velocity_conversion_display(float *peak_index, int button_flag)
+void velocity_conversion_display(int peak_index, int button_flag)
 {
 	clear_screen();
 	if( *peak_index == -1){
@@ -68,8 +68,8 @@ void velocity_conversion_display(float *peak_index, int button_flag)
 	}
 	char lcd_str[8] = {0};
 	float scale =  .15153556; //(6e3/1024/2/5.8e9*3e8)
-	if( button_flag == 1) sprintf(lcd_str, "-%.1f", *peak_index * scale);
-	if( button_flag == -1) sprintf(lcd_str, "%.1f", (FFTSAMPLES-*peak_index) * scale);
+	if( button_flag == 1) sprintf(lcd_str, "-%.1f", peak_index * scale);
+	if( button_flag == -1) sprintf(lcd_str, "%.1f", (FFTSAMPLES-peak_index) * scale);
 	BSP_LCD_GLASS_DisplayString((uint8_t *)lcd_str);
 
 }
