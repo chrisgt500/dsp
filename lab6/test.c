@@ -1,5 +1,5 @@
 /*!
- * @file fsk_rt.c
+ * @file test.c
  *
  * @brief This file implements the functions defined by ece486_fft.c.
  *
@@ -15,7 +15,7 @@
  * @author Forrest Smith
  * @author Sean Turner
  *
- * @date April 23, 2016
+ * @date April 29, 2016
  *
  */
 

@@ -19,23 +19,24 @@
 % scaled by k.
 
 n = 7;
-rp = .2;
-rs = 70.2;
-wp = [12000/48000 15000/48000];
+rp = .49;
+rs = 70.5;
+wp = [.18 .25];
 ftype = 'bandpass';
-gain = 10^(10.1/20);
+gain = 10^(10.245/20);
 
 [b,a] = ellip(n, rp, rs, wp, ftype);
-[z,p,k] = ellip(n, rp, rs, wp, ftype);
-sos = zp2sos(z, p, gain*k);
+%[z,p,k] = ellip(n, rp, rs, wp, ftype);
+%sos = zp2sos(z, p, gain*k);
 
-fvtool(gain*b,a,sos);
+fvtool(gain*b,a);
 gd = grpdelay(sos,512);
 [h1,w1] = freqz(sos, 512);
 
 figure(7);
 plot(w1/pi , gd);
 
+%{
 %% Chebyshev Type I and Type II
 
 % n - filter order
@@ -117,3 +118,4 @@ gd1 = grpdelay(sos3,512);
 
 %plot(w2/pi , gd1);
 
+%}
