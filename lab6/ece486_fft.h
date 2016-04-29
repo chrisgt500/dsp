@@ -41,7 +41,7 @@ int peak_detect(float *data, float thresh, int button_flag);
 
 int fft(float *buffer, float thresh, int button_flag);
 
-void velocity_conversion_display(float *peak_index, int button_flag);
+void velocity_conversion_display(int peak_index, int button_flag);
 
 void clear_screen(void);
 
