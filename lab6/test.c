@@ -59,9 +59,9 @@ int main(int argc, char *argv[])
 	-0.018908, -0.016548, -0.013343, -0.009848, -0.006511, -0.003647, -0.001432, 0.000088,
 	0.000965, 0.001319, 0.001301, 0.001066, 0.000743, 0.000571
 	};
-	
-	s->pCoeffs = coefs;
-	s1->pCoeffs = coefs;
+
+	s->pCoeffs = coefs;		//I dont like this, are the coeffs altered or read only?
+	s1->pCoeffs = coefs;	//if they are read only, const might make me happier
 
 	setblocksize(blocksizelpf); //FUN FACT, THIS NEEDS TO BE CALLED BEFORE initialize
 	initialize(FS_48K, STEREO_IN, STEREO_OUT);
