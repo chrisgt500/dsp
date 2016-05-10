@@ -1,5 +1,5 @@
 M = 120;        %Number of filter coefficients: Adjust to meet spec
-
+N = 8 * 1024;
 %Desired response: Spec three separate bands by giving the corner
 %frequencies and gains at the corner frequencies. Frequencies are 
 %normalized by Fs/2. Gains are absolute values (not dB)
@@ -26,8 +26,8 @@ patch([F(5)*.5 F(6)*.5 F(6)*.5 F(5)*.5], [stop stop stop-20 stop-20], .9*[1 1 1]
 
 
 h = firpm(M-1, F, A, W);        %this is the filter creation
-r= freqz(h,1);                  %for plotting
+f = (0:N-1)/N;
+f(N/2+1+1:end) = f(N/2+1+1:end)-1;
+plot(f, 20*log10(abs(fft(h,N))));
 
-q = 0:0.5/length(r):0.5-0.5/length(r);
-plot(q,20*log10(abs(r)));
 axis([0 .5 -90 20]);
