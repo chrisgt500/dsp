@@ -25,16 +25,29 @@ wp = [.18 .25];
 ftype = 'bandpass';
 gain = 10^(10.245/20);
 
-[b,a] = ellip(n, rp, rs, wp, ftype);
+%generate f
+N = 8 * 1024;
+f = (0:N-1)/N;
+f(N/2+1+1:end) = f(N/2+1+1:end)-1;
+f(N/2+1) = NaN;
+
+%calc filter
+[b,a] = ellip(n, rp, rs, 2 .* wp, ftype);
+b = b*gain;
+
+%draw boxes
+figure(1); clf;
+hold on;
+
+
+%plot
+H = 20*log10(abs(fft(b, N))) - 20*log10(abs(fft(a, N)));
+plot(f, H);
+axis([0 .5 -rs-10 20*log10(gain)+10]);
+
 %[z,p,k] = ellip(n, rp, rs, wp, ftype);
 %sos = zp2sos(z, p, gain*k);
 
-fvtool(gain*b,a);
-gd = grpdelay(sos,512);
-[h1,w1] = freqz(sos, 512);
-
-figure(7);
-plot(w1/pi , gd);
 
 %{
 %% Chebyshev Type I and Type II
