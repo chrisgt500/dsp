@@ -8,13 +8,13 @@
 maxripple = .1;     %maximum stopband ripple [dB]
 startgain = 0;      %gain at beginning of stopband [dB]
 endgain = 0;        %gain at end of stopband [dB]
-passlow = 0;        %passband beginning frequency [normalized]
-passhigh = 0.07;    %passband ending frequency [normalized]
+passlow = 0.4;        %passband beginning frequency [normalized]
+passhigh = 0.5;    %passband ending frequency [normalized]
 
 % Stopband specs
 minreject = -80;    %minimum rejection in stopband [dB}
-stopbegin = 0.11;     %frequency stopband begins [normalized]
-stopend = 0.5;     %frequency stopband ends [normalized]
+stopbegin = 0.4;     %frequency stopband begins [normalized]
+stopend = 0.11;     %frequency stopband ends [normalized]
 
 % Other junk to specify
 N = 8 * 1024;       %number of samples
@@ -67,7 +67,7 @@ Hr =  ((abs(f) > (passlow-hrspec)) & (abs(f) < (passhigh+hrspec))) .* ...
         10 .^ (((abs(f) .* m) - (m*passlow) + startgain)/20);
 
 %plot the desired Hr for visualization
-plot(f, 20*log10(abs(Hr)));
+%plot(f, 20*log10(abs(Hr)));
 
 %From the real transfer function, obtain the complete desired transfer function
 Hd = Hr.*exp(-j*2*pi*f*(M-1)/2);
@@ -81,7 +81,8 @@ h = hd(1:M).*kaiser(M, beta)';
 
 %% Plot results
 %plot FFT of resulting, windowed filter response
-plot(f, 20*log10(abs(fft(h,N))));
+f(N/2+1) = NaN;
+plot(f, 20*log10(abs(fft(h,N))), 'color', [1 .5 0]);
 
 %optionally plot a stem plot of the windowed and non windowed impulse responses
 if(stem_logical)
