@@ -5,22 +5,23 @@
 %       more than 80dB rejection in stopband, .11 < |f| < 0.5
 
 % Passband specs
-maxripple = .1;     %maximum stopband ripple [dB]
-startgain = 0;      %gain at beginning of stopband [dB]
-endgain = 0;        %gain at end of stopband [dB]
-passlow = 0;        %passband beginning frequency [normalized]
-passhigh = 0.07;    %passband ending frequency [normalized]
+maxripple = .25;     %maximum stopband ripple [dB]
+startgain = 10;      %gain at beginning of stopband [dB]
+endgain = 10;        %gain at end of stopband [dB]
+passlow = 0.18;        %passband beginning frequency [normalized]
+passhigh = 0.25;    %passband ending frequency [normalized]
 
 % Stopband specs
-minreject = -80;    %minimum rejection in stopband [dB}
-stopbegin = 0.11;     %frequency stopband begins [normalized]
+minreject = -60;    %minimum rejection in stopband [dB}
+stopbegin = 0.28;     %frequency stopband begins [normalized]
 stopend = 0.5;     %frequency stopband ends [normalized]
+
 
 % Other junk to specify
 N = 8 * 1024;       %number of samples
-M = 121;             %number of coefficients in filter
+M = 170;             %number of coefficients in filter
 beta = 8;           %adjustable window parameter
-hrspec = .017;       %how far Hr should extend beyond spec
+hrspec = .01;       %how far Hr should extend beyond spec
 
 
 % Important junk to calculate from above info
@@ -50,7 +51,7 @@ if (passlow == 0) || (passhigh == .5)  %check type of filter
       
 else
     %if bandpass, plot two stopbands
-    patch([0 stopend stopend 0], ...
+    patch([0 .15 .15 0], ...
           [minreject minreject winlow winlow], ...
           .9*[1 1 1]);
     patch([stopbegin .5 .5 stopbegin], ...
