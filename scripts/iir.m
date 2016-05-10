@@ -18,12 +18,16 @@
 % same with the poles in the denominator.  The entire expression is then
 % scaled by k.
 
-n = 7;
+n = 8;
 rp = .49;
-rs = 70.5;
+rs = 60;
 wp = [.18 .25];
 ftype = 'bandpass';
-gain = 10^(10.245/20);
+gain = 10.245;
+s1b = 0;   %stop band 1 beginning
+s1e = .17;   %stop band 1 end
+s2b = .26;   %stop band 2 begin (only used for bandpass)
+s2e = .5;   %stop band 2 begin (only used for bandpass)
 
 %generate f
 N = 8 * 1024;
@@ -32,18 +36,21 @@ f(N/2+1+1:end) = f(N/2+1+1:end)-1;
 f(N/2+1) = NaN;
 
 %calc filter
-[b,a] = ellip(n, rp, rs, 2 .* wp, ftype);
-b = b*gain;
+[b,a] = ellip(n, rp, rs+gain+rp/2, 2 .* [wp(1)-.0001 wp(2)+.0001], ftype);
+b = b*10^((gain+rp/2)/20);
 
 %draw boxes
 figure(1); clf;
 hold on;
-
-
+patch([wp(1) wp(2) wp(2) wp(1)], [gain+rp/2 gain+rp/2 gain-rp/2 gain-rp/2], .9*[1 1 1]);    
+patch([s1b s1e s1e s1b], [-rs -rs -rs-10 -rs-10], .9*[1 1 1]);
+if (strcmp(ftype, 'bandpass') == 1)
+    patch([s2b s2e s2e s2b], [-rs -rs -rs-10 -rs-10], .9*[1 1 1]);
+end
 %plot
 H = 20*log10(abs(fft(b, N))) - 20*log10(abs(fft(a, N)));
 plot(f, H);
-axis([0 .5 -rs-10 20*log10(gain)+10]);
+axis([0 .5 -rs-10 gain+10]);
 
 %[z,p,k] = ellip(n, rp, rs, wp, ftype);
 %sos = zp2sos(z, p, gain*k);
