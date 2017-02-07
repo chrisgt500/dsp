@@ -5,22 +5,22 @@
 %       more than 80dB rejection in stopband, .11 < |f| < 0.5
 
 % Passband specs
-maxripple = .1;     %maximum stopband ripple [dB]
-startgain = 0;      %gain at beginning of stopband [dB]
-endgain = 0;        %gain at end of stopband [dB]
-passlow = 0.4;        %passband beginning frequency [normalized]
-passhigh = 0.5;    %passband ending frequency [normalized]
+maxripple = .2;     %maximum stopband ripple [dB]
+startgain = 20;      %gain at beginning of stopband [dB]
+endgain = 20;        %gain at end of stopband [dB]
+passlow = 0;        %passband beginning frequency [normalized]
+passhigh = 0.08;    %passband ending frequency [normalized]
 
 % Stopband specs
-minreject = -80;    %minimum rejection in stopband [dB}
-stopbegin = 0.4;     %frequency stopband begins [normalized]
-stopend = 0.11;     %frequency stopband ends [normalized]
+minreject = -70;    %minimum rejection in stopband [dB}
+stopbegin = 0.12;     %frequency stopband begins [normalized]
+stopend = 0.5;     %frequency stopband ends [normalized]
 
 % Other junk to specify
 N = 8 * 1024;       %number of samples
-M = 121;             %number of coefficients in filter
-beta = 8;           %adjustable window parameter
-hrspec = .017;       %how far Hr should extend beyond spec
+M = 130;             %number of coefficients in filter
+beta = 9;           %adjustable window parameter
+hrspec = .015;       %how far Hr should extend beyond spec
 
 
 % Important junk to calculate from above info
@@ -33,7 +33,7 @@ stem_logical = 0;
 % Generate stop and pass bands
 figure(1); clf; hold on;
 winlow = minreject-10;
-winhigh = 20;
+winhigh = max(startgain,endgain)+10;
 axis([0 .5 winlow winhigh]);    %set window size
 
 %plot passband
